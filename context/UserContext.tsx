@@ -39,6 +39,10 @@ export interface User {
     accessToken: string;
     tokenType: string;
     [key: string]: any; // Extendable for additional fields
+    employeeInfo: {};
+    additionalAccessibility: {
+        canClockAttendance: boolean
+    };
 }
 
 interface UserContextType {

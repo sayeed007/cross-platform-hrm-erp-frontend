@@ -16,3 +16,33 @@ export const userLogIn = (username: string, password: string) => {
         });
 };
 
+
+export const getUserAdditionalAccessibility = (employeeId: number, token: string) => {
+    return axiosInstance.get(`/employee/${employeeId}/additional-access`, {
+        headers: {
+            Authorization: "Bearer " + token,
+        },
+    })
+        .then(response => {
+            return [response.data];
+        })
+        .catch(error => {
+            return resolveApiError(error);
+        });
+};
+
+
+export const getUserInfo = (employeeId: number, token: string) => {
+    return axiosInstance.get(`/employee/${employeeId}`, {
+        headers: {
+            Authorization: "Bearer " + token,
+        },
+    })
+        .then(response => {
+            return [response.data];
+        })
+        .catch(error => {
+            return resolveApiError(error);
+        });
+};
+

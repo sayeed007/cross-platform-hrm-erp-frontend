@@ -10,7 +10,7 @@ export interface DecodedToken {
 const isAuth = async (): Promise<{ isValid: boolean; user: any | null }> => {
     try {
         // Retrieve user data from AsyncStorage
-        const storedAuth = await AsyncStorage.getItem('w_auth');
+        const storedAuth = await AsyncStorage.getItem('user');
         if (!storedAuth) return { isValid: false, user: null };
 
         const user = JSON.parse(storedAuth);

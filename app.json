@@ -2,9 +2,12 @@
   "expo": {
     "name": "cross-platform-hrm-erp-frontend",
     "slug": "cross-platform-hrm-erp-frontend",
+    "extra": {
+      "API_URL": "http://hrm.tafuritechnologies.com:49002"
+    },
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/Tafuri-hrms-logo-animation.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {

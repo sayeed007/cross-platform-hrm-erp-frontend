@@ -11,71 +11,73 @@ import MenuScreen from '../screens/MenuScreen';
 
 const BottomBar = createBottomTabNavigator();
 
-type Props = {
-    barColor: string;
+// Extract the screenOptions logic
+const getScreenOptions = ({ route }: { route: any }) => ({
+    tabBarIcon: ({ focused }: { focused: boolean }) => {
+        let iconName: keyof typeof Ionicons.glyphMap | undefined;
+
+        if (route.name === 'Home') iconName = 'home';
+        else if (route.name === 'Attendance') iconName = 'calendar';
+        else if (route.name === 'Leave') iconName = 'log-out';
+        else if (route.name === 'Menu') iconName = 'menu';
+
+        return (
+            <Ionicons
+                name={iconName}
+                size={24}
+                color={focused ? '#4F46E5' : '#A0AEC0'}
+            />
+        );
+    },
+    tabBarLabel: ({ focused }: { focused: boolean }) => (
+        <Text style={{ fontSize: 12, color: focused ? '#4F46E5' : '#A0AEC0' }}>
+            {route.name}
+        </Text>
+    ),
+    headerShown: false,
+    tabBarStyle: styles.tabBarStyle,
+});
+
+export const TabBar: React.FC = () => {
+
+    return (
+        <BottomBar.Navigator
+            screenOptions={getScreenOptions}
+        >
+            <BottomBar.Screen
+                name="Home"
+                component={HomeScreen}
+            />
+            <BottomBar.Screen
+                name="Attendance"
+                component={AttendanceScreen}
+            />
+            <BottomBar.Screen
+                name="Add"
+                component={EmptyScreen}
+                options={{
+                    tabBarButton: (props) => (
+                        <TabBarAdvancedButton
+                            {...props}
+                        />
+                    ),
+                }}
+            />
+            <BottomBar.Screen
+                name="Leave"
+                component={LeaveScreen}
+            />
+            <BottomBar.Screen
+                name="Menu"
+                component={MenuScreen}
+            />
+        </BottomBar.Navigator>
+    )
 };
-
-export const TabBar: React.FC<Props> = () => (
-    <BottomBar.Navigator
-        screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused }) => {
-                let iconName: keyof typeof Ionicons.glyphMap | undefined;
-
-                if (route.name === 'Home') iconName = 'home';
-                else if (route.name === 'Attendance') iconName = 'calendar';
-                else if (route.name === 'Leave') iconName = 'log-out';
-                else if (route.name === 'Menu') iconName = 'menu';
-
-                return (
-                    <Ionicons
-                        name={iconName}
-                        size={24}
-                        color={focused ? '#4F46E5' : '#A0AEC0'}
-                    />
-                );
-            },
-            tabBarLabel: ({ focused }) => (
-                <Text style={{ fontSize: 12, color: focused ? '#4F46E5' : '#A0AEC0' }}>
-                    {route.name}
-                </Text>
-            ),
-            headerShown: false,
-            tabBarStyle: styles.tabBarStyle,
-        })}
-    >
-        <BottomBar.Screen
-            name="Home"
-            component={HomeScreen}
-        />
-        <BottomBar.Screen
-            name="Attendance"
-            component={AttendanceScreen}
-        />
-        <BottomBar.Screen
-            name="Add"
-            component={EmptyScreen}
-            options={{
-                tabBarButton: (props) => (
-                    <TabBarAdvancedButton
-                        {...props}
-                    />
-                )
-            }}
-        />
-        <BottomBar.Screen
-            name="Leave"
-            component={LeaveScreen}
-        />
-        <BottomBar.Screen
-            name="Menu"
-            component={MenuScreen}
-        />
-    </BottomBar.Navigator>
-);
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
     },
     tabBarStyle: {
         position: 'absolute',
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: {
             width: 0,
             height: 1,
@@ -101,13 +103,13 @@ const styles = StyleSheet.create({
     navigator: {
         borderTopWidth: 0,
         backgroundColor: 'transparent',
-        elevation: 30
+        elevation: 30,
     },
     xFillLine: {
         position: 'absolute',
         bottom: 0,
         left: 0,
         right: 0,
-        height: 34
-    }
+        height: 34,
+    },
 });

@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import AuthStack from './AuthStack';
-import MainTabs from './MainTabs';
-import WelcomeScreen from '../screens/WelcomeScreen';
-import SplashScreen from '../screens/SplashScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserProvider, useUser } from '../context/UserContext'; // Import the UserContext
+import React, { useEffect, useState } from 'react';
+import { useUser } from '../context/UserContext'; // Import the UserContext
+import SplashScreen from '../screens/SplashScreen';
+import WelcomeScreen from '../screens/WelcomeScreen';
+import AuthStack from './AuthStack';
 import { TabBar } from './MainTabsModified';
 
 export default function RootNavigation() {
@@ -34,7 +32,7 @@ export default function RootNavigation() {
         };
 
         initialize();
-    }, [setUser]);
+    }, []);
 
     if (loading) {
         // Show a splash screen while loading
@@ -48,7 +46,7 @@ export default function RootNavigation() {
 
     return (
         <>
-            {user ? <TabBar barColor="#FFFFFF" /> : <AuthStack />}
+            {user ? <TabBar /> : <AuthStack />}
         </>
     );
 }

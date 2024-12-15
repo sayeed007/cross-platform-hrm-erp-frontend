@@ -8,7 +8,7 @@ import { LoginScreenNavigationProp } from './navigationTypes';
 import FullPageLoader from '../components/common/FullPageLoader';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { userLogIn } from '../apis/LogIn';
+import { getUserAdditionalAccessibility, getUserInfo, userLogIn } from '../apis/LogIn';
 import { useSuccessModal } from '../context/SuccessModalProvider';
 import { useErrorModal } from '../context/ErrorModalProvider';
 import { User, useUser } from '../context/UserContext';
@@ -25,8 +25,12 @@ const LoginScreen: React.FC = () => {
 
     const { handleSubmit, handleChange, values, touched, errors, handleBlur } = useFormik({
         initialValues: {
-            username: "sayeed.bappy@neural-semiconductor.com",
-            password: "SHB987654321.",
+            // PRODUCTION
+            // username: "sayeed.bappy@neural-semiconductor.com",
+            // password: "SHB987654321.",
+            // DEMO
+            username: "200014",
+            password: "123456",
         },
         validationSchema: Yup.object({
             username: Yup.string().required("Username is required"),
@@ -48,8 +52,25 @@ const LoginScreen: React.FC = () => {
 
     const handleSuccessClose = (userInfo: User) => {
         console.log('successFully login');
-        setUser(userInfo); // Save user in context and storage
-        // navigation.navigate('Home'); // Navigate to main tabs
+
+        getUserInfo(userInfo?.employeeId, userInfo?.accessToken).then(employeeInfoResponse => {
+            if (employeeInfoResponse?.[0]) {
+                getUserAdditionalAccessibility(userInfo?.employeeId, userInfo?.
+                    accessToken).then(additionalAccessibilityResponse => {
+                        if (additionalAccessibilityResponse?.[0]) {
+                            setUser({
+                                ...userInfo,
+                                employeeInfo: { ...employeeInfoResponse?.[0] },
+                                additionalAccessibility: { ...additionalAccessibilityResponse?.[0] }
+                            });
+                        } else {
+                            showError(additionalAccessibilityResponse?.[1]);
+                        }
+                    })
+            } else {
+                showError(employeeInfoResponse?.[1]);
+            }
+        })
     };
 
 
@@ -61,7 +82,6 @@ const LoginScreen: React.FC = () => {
             }
 
             <View style={styles.container}>
-
 
                 {/* Header Section */}
                 <LinearGradient colors={['#1488CC', '#2B32B2']} style={styles.header}>
