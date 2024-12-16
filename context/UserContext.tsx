@@ -4,7 +4,7 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { useNavigation } from '@react-navigation/native'; // React Navigation for logout redirection
 import { useErrorModal } from './ErrorModalProvider';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../screens/navigationTypes';
+import { RootStackParamList } from '../typeInterfaces/navigationTypes';
 
 // Define the User type
 export interface User {

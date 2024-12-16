@@ -6,4 +6,6 @@ config.resolver.alias = {
     'lodash-es': 'lodash',
 };
 
+config.resolver.assetExts.push('json');
+
 module.exports = config;

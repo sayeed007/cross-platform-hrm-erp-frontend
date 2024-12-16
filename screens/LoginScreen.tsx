@@ -4,7 +4,7 @@ import Checkbox from 'expo-checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { LoginScreenNavigationProp } from './navigationTypes';
+import { LoginScreenNavigationProp } from '../typeInterfaces/navigationTypes';
 import FullPageLoader from '../components/common/FullPageLoader';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -26,11 +26,11 @@ const LoginScreen: React.FC = () => {
     const { handleSubmit, handleChange, values, touched, errors, handleBlur } = useFormik({
         initialValues: {
             // PRODUCTION
-            // username: "sayeed.bappy@neural-semiconductor.com",
-            // password: "SHB987654321.",
+            username: "sayeed.bappy@neural-semiconductor.com",
+            password: "SHB987654321.",
             // DEMO
-            username: "200014",
-            password: "123456",
+            // username: "200014",
+            // password: "123456",
         },
         validationSchema: Yup.object({
             username: Yup.string().required("Username is required"),

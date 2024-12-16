@@ -57,7 +57,7 @@ const HeaderWithBackgroundImage = () => {
 
 const styles = StyleSheet.create({
     backgroundImage: {
-        height: 300,
+        height: 250,
         flex: 1,
         resizeMode: 'cover',
         marginTop: 24,

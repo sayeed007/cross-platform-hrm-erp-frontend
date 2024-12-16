@@ -77,9 +77,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         flex: 1,
-        width: '96%',
+        width: '100%',
         top: -70,
-        left: '2%',
+        left: '4%',
     },
     attendanceTitle: {
         fontSize: 16,

@@ -17,6 +17,17 @@ export const getEmployeeAttendanceForClocking = (employeeId: number, timeStamp: 
 };
 
 
+export const getEmployeeContactDetails = () => {
+    return axiosInstance.get(`/employee/contact_details/all`)
+        .then(response => {
+            return [response.data];
+        })
+        .catch(error => {
+            return resolveApiError(error);
+        });
+};
+
+
 
 // ###################################################################
 //  UPDATE API's

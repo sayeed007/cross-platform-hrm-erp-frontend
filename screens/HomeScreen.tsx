@@ -11,14 +11,24 @@ import AttendanceCard from '../components/home/AttendanceCard';
 import AttendanceCardWithClockIn from '../components/home/AttendanceCardWithClockIn';
 import HeaderWithBackgroundImage from '../components/home/HeaderWithBackgroundImage';
 import { useUser } from '../context/UserContext';
+import PendingLeaveAndAttendance from '../components/home/PendingLeaveAndAttendance';
+import AbsentNotification from '../components/home/AbsentNotification';
+import { useNavigation } from '@react-navigation/native';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { HomeScreenNavigationProp } from '../typeInterfaces/navigationTypes';
+import DirectorySection from '../components/home/DirectorySection';
 
 
 const HomeScreen = () => {
-    const { user, setUser } = useUser();
+
+    const { user } = useUser();
+    const navigation = useNavigation<HomeScreenNavigationProp>();
 
     const canClockAttendance = user?.additionalAccessibility?.canClockAttendance;
 
-
+    const attendanceHandleLinkPress = () => {
+        navigation.navigate('Attendance');
+    };
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -39,52 +49,22 @@ const HomeScreen = () => {
                     }
 
                     {/* Pending Requests Block */}
-                    <View style={{ ...styles.pendingBlock, marginTop: canClockAttendance ? 160 : 80 }}>
-
-                        <View style={styles.pendingItem}>
-                            <Text style={styles.pendingNumber}>04</Text>
-                            <Text style={styles.pendingLabel}>Leave Requests</Text>
-                        </View>
-                        <View style={styles.pendingItem}>
-                            <Text style={styles.pendingNumber}>01</Text>
-                            <Text style={styles.pendingLabel}>Attendance Requests</Text>
-                        </View>
-
+                    <View style={{ marginTop: canClockAttendance ? 160 : 80 }}>
+                        <PendingLeaveAndAttendance />
                     </View>
 
                     {/* Absent Block */}
-                    <View style={styles.absentBlock}>
-                        <Ionicons name="alert-circle-outline" size={20} color="#FFA500" />
-                        <Text style={styles.absentText}>
-                            You were absent for 2 days. Please submit your leave request.{' '}
-                            <Text style={styles.link}>See absent days</Text>
-                        </Text>
-                    </View>
+                    <AbsentNotification onLinkPress={attendanceHandleLinkPress} />
 
                     {/* Directory Section */}
-                    <View style={styles.directorySection}>
-                        <Text style={styles.sectionTitle}>Directory</Text>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                            {['Philip', 'Brandon', 'Julia', 'Dianne'].map((name, index) => (
-                                <View key={index} style={styles.avatarContainer}>
-                                    <Ionicons name="person-circle" size={48} color="#A0AEC0" />
-                                    <Text style={styles.avatarName}>{name}</Text>
-                                </View>
-                            ))}
-                        </ScrollView>
-                    </View>
+                    <DirectorySection />
 
                     {/* Latest Policy Section */}
                     <View style={styles.policySection}>
                         <Text style={styles.sectionTitle}>Latest Policies</Text>
                         <Text style={styles.policyText}>View the latest company policies here.</Text>
                     </View>
-
-
                 </View>
-
-
-
 
             </ScrollView>
         </SafeAreaView>
@@ -100,28 +80,6 @@ const styles = StyleSheet.create({
         width: '100%',
         padding: '4%',
         position: 'relative',
-    },
-    pendingBlock: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginBottom: 16,
-    },
-    pendingItem: {
-        backgroundColor: '#FFFFFF',
-        padding: 12,
-        borderRadius: 8,
-        alignItems: 'center',
-        width: 140,
-        elevation: 2,
-    },
-    pendingNumber: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#4F46E5',
-    },
-    pendingLabel: {
-        fontSize: 12,
-        color: '#6B7280',
     },
     absentBlock: {
         flexDirection: 'row',
@@ -167,6 +125,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#6B7280',
     },
+
 });
 
 export default HomeScreen;

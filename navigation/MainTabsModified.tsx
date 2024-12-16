@@ -8,6 +8,7 @@ import { EmptyScreen } from '../screens/EmptyScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LeaveScreen from '../screens/LeaveScreen';
 import MenuScreen from '../screens/MenuScreen';
+import HomeStack from '../Stack/HomeStack';
 
 const BottomBar = createBottomTabNavigator();
 
@@ -46,7 +47,7 @@ export const TabBar: React.FC = () => {
         >
             <BottomBar.Screen
                 name="Home"
-                component={HomeScreen}
+                component={HomeStack}
             />
             <BottomBar.Screen
                 name="Attendance"

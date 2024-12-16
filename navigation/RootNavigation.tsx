@@ -5,6 +5,9 @@ import SplashScreen from '../screens/SplashScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import AuthStack from './AuthStack';
 import { TabBar } from './MainTabsModified';
+import { SafeAreaView, StyleSheet } from 'react-native';
+
+
 
 export default function RootNavigation() {
     const { user, setUser } = useUser(); // Access the user context
@@ -45,8 +48,14 @@ export default function RootNavigation() {
     }
 
     return (
-        <>
+        <SafeAreaView style={styles.container}>
             {user ? <TabBar /> : <AuthStack />}
-        </>
+        </SafeAreaView>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});

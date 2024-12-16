@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axiosInstance from '../utils/axiosInstance';
-import { ForgotPasswordScreenNavigationProp } from './navigationTypes';
+import { ForgotPasswordScreenNavigationProp } from '../typeInterfaces/navigationTypes';
 import { useSuccessModal } from '../context/SuccessModalProvider';
 import { requestToUpdatePassword } from '../apis/ForgetPassword';
 import { useErrorModal } from '../context/ErrorModalProvider';
