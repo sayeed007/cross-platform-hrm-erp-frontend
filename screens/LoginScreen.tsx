@@ -51,8 +51,6 @@ const LoginScreen: React.FC = () => {
     });
 
     const handleSuccessClose = (userInfo: User) => {
-        console.log('successFully login');
-
         getUserInfo(userInfo?.employeeId, userInfo?.accessToken).then(employeeInfoResponse => {
             if (employeeInfoResponse?.[0]) {
                 getUserAdditionalAccessibility(userInfo?.employeeId, userInfo?.
