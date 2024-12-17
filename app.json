@@ -3,7 +3,10 @@
     "name": "cross-platform-hrm-erp-frontend",
     "slug": "cross-platform-hrm-erp-frontend",
     "extra": {
-      "API_URL": "http://hrm.tafuritechnologies.com:49002"
+      "API_URL": "http://hrm.tafuritechnologies.com:49002",
+      "eas": {
+        "projectId": "9a5c40ab-0107-436a-b6f9-7eeec8e9179b"
+      }
     },
     "version": "1.0.0",
     "orientation": "portrait",
@@ -22,13 +25,24 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/Tafuri-hrms-logo-animation.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.shb007.crossplatformhrmerpfrontend"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ]
   }
 }

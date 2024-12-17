@@ -1,22 +1,26 @@
-import { LinearGradient } from 'expo-linear-gradient'; // Use expo-linear-gradient for Expo projects
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import {
     ScrollView,
     StyleSheet,
     Text,
     TextInput,
+    TouchableOpacity,
     View
 } from 'react-native';
 import { DirectoryEmployeeOption } from '../typeInterfaces/DirectoryEmployee';
 import { SeeAllCoWorkersContactScreenProps } from '../typeInterfaces/navigationTypes';
+import EmployeeContactDetailsModal from '../components/home/EmployeeContactDetailsModal';
+
 
 const SeeAllCoWorkersContactScreen: React.FC<SeeAllCoWorkersContactScreenProps> = ({
     route,
 }) => {
-    const { employees } = route.params; // Receive data from HomeScreen
-    const [search, setSearch] = useState('');
+    const { employees }: { employees: DirectoryEmployeeOption[] } = route.params;
+    const [search, setSearch] = useState<string>('');
+    const [selectedEmployee, setSelectedEmployee] = useState<DirectoryEmployeeOption | null>(null);
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-    // Filter employees based on the search input
     const filteredEmployees = search
         ? employees.filter((employee: DirectoryEmployeeOption) => {
             return (
@@ -28,17 +32,17 @@ const SeeAllCoWorkersContactScreen: React.FC<SeeAllCoWorkersContactScreenProps> 
         })
         : employees;
 
+    const handleCardPress = (employee: DirectoryEmployeeOption) => {
+        setSelectedEmployee(employee);
+        setModalVisible(true);
+    }
+
     return (
         <View style={styles.container}>
             {/* Gradient Header */}
-            <LinearGradient
-                colors={['#1488CC', '#2B32B2']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.headerContainer}
-            >
+            {/* <LinearGradient colors={['#1488CC', '#2B32B2']} style={styles.headerContainer}>
                 <Text style={styles.subHeaderText}>Co-Workers Contact Details</Text>
-            </LinearGradient>
+            </LinearGradient> */}
 
             {/* Search Input */}
             <TextInput
@@ -51,42 +55,37 @@ const SeeAllCoWorkersContactScreen: React.FC<SeeAllCoWorkersContactScreenProps> 
 
             {/* Employees List */}
             <ScrollView>
-                {filteredEmployees.map((employee: DirectoryEmployeeOption) => (
-                    <View key={employee.employeeId} style={styles.employeeCard}>
+                {filteredEmployees.map((employee) => (
+                    <TouchableOpacity
+                        key={employee.employeeId}
+                        style={styles.employeeCard}
+                        onPress={() => handleCardPress(employee)}
+                    >
                         {employee?.profileShowImage}
-
                         <View style={styles.employeeInfo}>
                             <Text style={styles.employeeName}>{employee.label}</Text>
                             <Text style={styles.employeeRole}>{employee.designation}</Text>
                         </View>
                         <Text style={styles.department}>{employee.department}</Text>
-                    </View>
+                    </TouchableOpacity>
                 ))}
             </ScrollView>
+
+            {/* Employee Details Modal */}
+            <EmployeeContactDetailsModal
+                employee={selectedEmployee}
+                visible={modalVisible}
+                onClose={() => setModalVisible(false)}
+            />
+
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#F8FAFC',
-    },
-    headerContainer: {
-        padding: 20,
-        paddingHorizontal: 25,
-    },
-    headerText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#FFFFFF',
-        marginBottom: 4,
-    },
-    subHeaderText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#FFFFFF',
-    },
+    container: { flex: 1, backgroundColor: '#F8FAFC' },
+    headerContainer: { padding: 20 },
+    subHeaderText: { fontSize: 20, fontWeight: 'bold', color: '#FFFFFF' },
     searchBar: {
         backgroundColor: '#FFFFFF',
         borderRadius: 8,
@@ -94,8 +93,6 @@ const styles = StyleSheet.create({
         margin: 16,
         borderColor: '#E2E8F0',
         borderWidth: 1,
-        fontSize: 14,
-        color: '#111827',
     },
     employeeCard: {
         flexDirection: 'row',
@@ -106,25 +103,10 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginBottom: 12,
         marginHorizontal: 16,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 2,
     },
-    employeeInfo: {
-        flex: 1,
-        marginLeft: 10,
-    },
-    employeeName: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#111827',
-    },
-    employeeRole: {
-        fontSize: 12,
-        color: '#6B7280',
-    },
+    employeeInfo: { flex: 1, marginLeft: 10 },
+    employeeName: { fontSize: 16, fontWeight: 'bold' },
+    employeeRole: { fontSize: 12, color: '#6B7280' },
     department: {
         fontSize: 12,
         fontWeight: '600',
@@ -134,6 +116,7 @@ const styles = StyleSheet.create({
         paddingVertical: 4,
         borderRadius: 4,
     },
+
 });
 
 export default SeeAllCoWorkersContactScreen;

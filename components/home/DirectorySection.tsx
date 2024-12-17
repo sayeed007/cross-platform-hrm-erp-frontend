@@ -99,24 +99,6 @@ const DirectorySection = () => {
                     return temp;
                 });
 
-                // Add placeholder option at the start
-                // options.unshift({
-                //     value: '',
-                //     label: 'Search Employees Here',
-                //     customAbbreviation: (
-                //         <div>
-                //             <Avatar
-                //                 size={30} // Size of the avatar
-                //                 rounded   // Makes it circular
-                //                 title={`Search`} // Fallback initials
-                //                 overlayContainerStyle={{ backgroundColor: '#4A5568' }} // Background color
-                //                 titleStyle={{ color: '#FFFFFF', fontWeight: 'bold' }} // Style for initials
-                //             />
-                //         </div>
-                //     ),
-                //     isDisabled: true,
-                // });
-
                 // Update state
                 setAllEmployeeOptions(options);
             }
