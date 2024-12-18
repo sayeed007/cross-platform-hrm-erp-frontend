@@ -16,7 +16,6 @@ import PendingLeaveAndAttendance from '../components/home/PendingLeaveAndAttenda
 import { useUser } from '../context/UserContext';
 import { HomeScreenNavigationProp } from '../typeInterfaces/navigationTypes';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import UpcomingBirthday from '../components/home/UpcomingBirthday';
 import UpcomingHoliday from '../components/home/UpcomingHoliday';
 
 
@@ -71,11 +70,6 @@ const HomeScreen = () => {
 
                         {/* Upcoming Holiday Section */}
                         <UpcomingHoliday />
-
-
-                        {/* Upcoming Birthday Section */}
-                        {/* <UpcomingBirthday /> */}
-
 
                     </View>
 

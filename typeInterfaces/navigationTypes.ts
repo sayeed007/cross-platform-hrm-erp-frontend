@@ -1,10 +1,9 @@
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { DirectoryEmployeeOption } from './DirectoryEmployee';
-import { Notice, NoticeWithMonth } from './Notice';
-import { BirthdayEmployeeWithMonth } from './Birthday';
 import { HolidayWithMonth } from './Holiday';
+import { NoticeWithMonth } from './Notice';
 
 // Define the stack's parameter list
 export type RootStackParamList = {
@@ -16,7 +15,6 @@ export type RootStackParamList = {
     SeeAllCoWorkersContact: { employees: DirectoryEmployeeOption[] }; // New route with employees
     Notice: { noticeList: NoticeWithMonth[] };
     Holiday: { holidayList: HolidayWithMonth[] };
-    Birthday: { currentMonthBirthdayList: BirthdayEmployeeWithMonth };
 };
 
 // Define the bottom tab's parameter list
@@ -99,23 +97,3 @@ export type HolidayScreenProps = {
     navigation: HolidayNavigationProp;
     route: HolidayRouteProp;
 };
-
-
-// Navigation prop for Upcoming Birthday
-export type BirthdayNavigationProp = StackNavigationProp<
-    RootStackParamList,
-    'Birthday'
->;
-
-// Route prop for Upcoming Birthday
-export type BirthdayRouteProp = RouteProp<
-    RootStackParamList,
-    'Birthday'
->;
-
-// Combined props for Upcoming Birthday
-export type BirthdayScreenProps = {
-    navigation: BirthdayNavigationProp;
-    route: BirthdayRouteProp;
-};
-

@@ -7,7 +7,6 @@ import { RootStackParamList } from '../typeInterfaces/navigationTypes';
 import { LinearGradient } from 'expo-linear-gradient'; // Use expo-linear-gradient for Expo projects
 import Icon from 'react-native-vector-icons/Feather';
 import NoticeScreen from '../screens/NoticeScreen';
-import BirthdayScreen from '../screens/BirthdayScreen';
 import HolidayScreen from '../screens/HolidayScreen';
 
 // Define the stack with RootStackParamList
@@ -67,20 +66,6 @@ const HomeStack = () => {
                 component={HolidayScreen}
                 options={{ headerShown: false }} // Hide header for Home screen
             />
-
-            {/* Birthday Screen */}
-            {/* <Stack.Screen
-                name="Birthday"
-                component={BirthdayScreen}
-                options={({ navigation }) => ({
-                    header: () => (
-                        <GradientHeader
-                            title="Birthday"
-                            navigation={navigation}
-                        />
-                    ),
-                })}
-            /> */}
         </Stack.Navigator>
     );
 };
