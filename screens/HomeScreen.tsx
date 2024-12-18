@@ -3,6 +3,7 @@ import React from 'react';
 import {
     SafeAreaView,
     ScrollView,
+    StatusBar,
     StyleSheet,
     View
 } from 'react-native';
@@ -15,7 +16,6 @@ import LatestNotice from '../components/home/LatestNotice';
 import PendingLeaveAndAttendance from '../components/home/PendingLeaveAndAttendance';
 import { useUser } from '../context/UserContext';
 import { HomeScreenNavigationProp } from '../typeInterfaces/navigationTypes';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import UpcomingHoliday from '../components/home/UpcomingHoliday';
 
 
@@ -31,52 +31,55 @@ const HomeScreen = () => {
     };
 
     return (
-        <SafeAreaProvider>
-            <SafeAreaView style={styles.safeArea} >
+        <SafeAreaView style={styles.safeArea} >
+            {/* Adjust StatusBar for better visibility */}
+            <StatusBar
+                barStyle="dark-content" // Change to "light-content" if needed
+                backgroundColor="transparent"
+                translucent
+            />
 
-                <ScrollView
-                    style={{ flex: 1 }}
-                    contentContainerStyle={{ flexGrow: 1 }}
-                    scrollEnabled={true}
-                    nestedScrollEnabled={true}
-                >
-                    {/* HEADER - NOTIFICATION - GREETINGS */}
-                    <HeaderWithBackgroundImage />
-
-
-                    <View style={styles?.container}>
-
-                        {/* Attendance Time Card */}
-                        {canClockAttendance ?
-                            <AttendanceCardWithClockIn />
-                            :
-                            <AttendanceCard />
-                        }
-
-                        {/* Pending Requests Block */}
-                        <View style={{ marginTop: canClockAttendance ? 160 : 80 }}>
-                            <PendingLeaveAndAttendance />
-                        </View>
-
-                        {/* Absent Block */}
-                        <AbsentNotification onLinkPress={attendanceHandleLinkPress} />
-
-                        {/* Directory Section */}
-                        <DirectorySection />
-
-                        {/* Latest Notice Section */}
-                        <LatestNotice />
+            <ScrollView
+                style={{ flex: 1 }}
+                contentContainerStyle={{ flexGrow: 1 }}
+                scrollEnabled={true}
+                nestedScrollEnabled={true}
+            >
+                {/* HEADER - NOTIFICATION - GREETINGS */}
+                <HeaderWithBackgroundImage />
 
 
-                        {/* Upcoming Holiday Section */}
-                        <UpcomingHoliday />
+                <View style={styles?.container}>
 
+                    {/* Attendance Time Card */}
+                    {canClockAttendance ?
+                        <AttendanceCardWithClockIn />
+                        :
+                        <AttendanceCard />
+                    }
+
+                    {/* Pending Requests Block */}
+                    <View style={{ marginTop: canClockAttendance ? 160 : 80 }}>
+                        <PendingLeaveAndAttendance />
                     </View>
 
-                </ScrollView>
-            </SafeAreaView>
-        </SafeAreaProvider>
+                    {/* Absent Block */}
+                    <AbsentNotification onLinkPress={attendanceHandleLinkPress} />
 
+                    {/* Directory Section */}
+                    <DirectorySection />
+
+                    {/* Latest Notice Section */}
+                    <LatestNotice />
+
+
+                    {/* Upcoming Holiday Section */}
+                    <UpcomingHoliday />
+
+                </View>
+
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 

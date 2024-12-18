@@ -6,6 +6,7 @@ import WelcomeScreen from '../screens/WelcomeScreen';
 import AuthStack from './AuthStack';
 import { TabBar } from './MainTabsModified';
 import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 
 
@@ -48,9 +49,12 @@ export default function RootNavigation() {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            {user ? <TabBar /> : <AuthStack />}
-        </SafeAreaView>
+        <SafeAreaProvider>
+            <SafeAreaView style={styles.container}>
+                {user ? <TabBar /> : <AuthStack />}
+            </SafeAreaView>
+        </SafeAreaProvider>
+
     );
 }
 

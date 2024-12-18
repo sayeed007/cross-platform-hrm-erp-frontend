@@ -5,7 +5,6 @@ import { StyleSheet, Text } from 'react-native';
 import { TabBarAdvancedButton } from '../components/tab/TabBarAdvancedButton';
 import AttendanceScreen from '../screens/AttendanceScreen';
 import { EmptyScreen } from '../screens/EmptyScreen';
-import HomeScreen from '../screens/HomeScreen';
 import LeaveScreen from '../screens/LeaveScreen';
 import MenuScreen from '../screens/MenuScreen';
 import HomeStack from '../Stack/HomeStack';
