@@ -27,6 +27,26 @@ export const getEmployeeContactDetails = () => {
         });
 };
 
+export const getCompanyWiseAllNotice = (companyId: number) => {
+    return axiosInstance.get(`/notice/company/${companyId}/all`)
+        .then(response => {
+            return [response.data];
+        })
+        .catch(error => {
+            return resolveApiError(error);
+        });
+};
+
+export const getYearWiseAllHolidayForEmployee = (employeeId: number, startDate: string, endDate: string) => {
+    return axiosInstance.get(`/employee-holiday/${employeeId}?startDate=${startDate}&endDate=${endDate}`)
+        .then(response => {
+            return [response.data];
+        })
+        .catch(error => {
+            return resolveApiError(error);
+        });
+};
+
 
 
 // ###################################################################

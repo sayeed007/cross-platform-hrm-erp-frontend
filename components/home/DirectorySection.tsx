@@ -20,7 +20,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../typeInterfaces/navigationTypes';
 
 
-type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeMain'>;
+type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 const DirectorySection = () => {
 

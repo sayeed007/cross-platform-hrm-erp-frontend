@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, TouchableOpacity } from 'react-native'
+import { Image, Platform, TouchableOpacity } from 'react-native'
 import { Text, View, StyleSheet, ImageBackground } from 'react-native'
 import { BASE_URL } from '../../Server'
 import { useUser } from '../../context/UserContext'
@@ -60,9 +60,9 @@ const styles = StyleSheet.create({
         height: 250,
         flex: 1,
         resizeMode: 'cover',
-        marginTop: 24,
         padding: 16,
         paddingBottom: 90,
+        marginTop: Platform.OS === 'android' ? 24 : 0,
     },
     header: {
         flexDirection: 'row',

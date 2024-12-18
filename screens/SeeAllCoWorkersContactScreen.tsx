@@ -9,14 +9,22 @@ import {
     View
 } from 'react-native';
 import { DirectoryEmployeeOption } from '../typeInterfaces/DirectoryEmployee';
-import { SeeAllCoWorkersContactScreenProps } from '../typeInterfaces/navigationTypes';
+import { RootStackParamList, SeeAllCoWorkersContactScreenProps } from '../typeInterfaces/navigationTypes';
 import EmployeeContactDetailsModal from '../components/home/EmployeeContactDetailsModal';
+import Icon from 'react-native-vector-icons/Feather';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 
+type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeRoot'>;
 
 const SeeAllCoWorkersContactScreen: React.FC<SeeAllCoWorkersContactScreenProps> = ({
     route,
 }) => {
     const { employees }: { employees: DirectoryEmployeeOption[] } = route.params;
+
+    const navigation = useNavigation<NavigationProp>();
+
+
     const [search, setSearch] = useState<string>('');
     const [selectedEmployee, setSelectedEmployee] = useState<DirectoryEmployeeOption | null>(null);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -40,9 +48,18 @@ const SeeAllCoWorkersContactScreen: React.FC<SeeAllCoWorkersContactScreenProps> 
     return (
         <View style={styles.container}>
             {/* Gradient Header */}
-            {/* <LinearGradient colors={['#1488CC', '#2B32B2']} style={styles.headerContainer}>
+            <LinearGradient colors={['#1488CC', '#2B32B2']} style={styles.header}>
+                <View style={styles.navBar}>
+                    <TouchableOpacity onPress={() => navigation.navigate('HomeRoot')}>
+                        <Icon name="arrow-left" size={24} color="#FFFFFF" />
+                    </TouchableOpacity>
+                    <Text style={styles.navTitle}>Directory</Text>
+                    <Text></Text>
+                </View>
+
                 <Text style={styles.subHeaderText}>Co-Workers Contact Details</Text>
-            </LinearGradient> */}
+
+            </LinearGradient>
 
             {/* Search Input */}
             <TextInput
@@ -83,9 +100,36 @@ const SeeAllCoWorkersContactScreen: React.FC<SeeAllCoWorkersContactScreenProps> 
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#F8FAFC' },
-    headerContainer: { padding: 20 },
-    subHeaderText: { fontSize: 20, fontWeight: 'bold', color: '#FFFFFF' },
+    container: {
+        flex: 1,
+        backgroundColor: '#F8FAFC',
+    },
+    header: {
+        paddingTop: 40,
+        paddingBottom: 10,
+    },
+    navBar: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 16,
+        alignItems: 'center',
+    },
+    navTitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#FFFFFF',
+        marginLeft: 12,
+    },
+    headerContainer: {
+        padding: 20
+    },
+    subHeaderText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#FFFFFF',
+        paddingVertical: 15,
+        paddingHorizontal: 15,
+    },
     searchBar: {
         backgroundColor: '#FFFFFF',
         borderRadius: 8,

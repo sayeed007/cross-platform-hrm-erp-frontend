@@ -1,22 +1,23 @@
-import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
     SafeAreaView,
     ScrollView,
     StyleSheet,
-    Text,
     View
 } from 'react-native';
+import AbsentNotification from '../components/home/AbsentNotification';
 import AttendanceCard from '../components/home/AttendanceCard';
 import AttendanceCardWithClockIn from '../components/home/AttendanceCardWithClockIn';
-import HeaderWithBackgroundImage from '../components/home/HeaderWithBackgroundImage';
-import { useUser } from '../context/UserContext';
-import PendingLeaveAndAttendance from '../components/home/PendingLeaveAndAttendance';
-import AbsentNotification from '../components/home/AbsentNotification';
-import { useNavigation } from '@react-navigation/native';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { HomeScreenNavigationProp } from '../typeInterfaces/navigationTypes';
 import DirectorySection from '../components/home/DirectorySection';
+import HeaderWithBackgroundImage from '../components/home/HeaderWithBackgroundImage';
+import LatestNotice from '../components/home/LatestNotice';
+import PendingLeaveAndAttendance from '../components/home/PendingLeaveAndAttendance';
+import { useUser } from '../context/UserContext';
+import { HomeScreenNavigationProp } from '../typeInterfaces/navigationTypes';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import UpcomingBirthday from '../components/home/UpcomingBirthday';
+import UpcomingHoliday from '../components/home/UpcomingHoliday';
 
 
 const HomeScreen = () => {
@@ -31,43 +32,57 @@ const HomeScreen = () => {
     };
 
     return (
-        <SafeAreaView style={styles.safeArea}>
+        <SafeAreaProvider>
+            <SafeAreaView style={styles.safeArea} >
 
-            <ScrollView>
+                <ScrollView
+                    style={{ flex: 1 }}
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    scrollEnabled={true}
+                    nestedScrollEnabled={true}
+                >
+                    {/* HEADER - NOTIFICATION - GREETINGS */}
+                    <HeaderWithBackgroundImage />
 
-                {/* HEADER - NOTIFICATION - GREETINGS */}
-                <HeaderWithBackgroundImage />
+
+                    <View style={styles?.container}>
+
+                        {/* Attendance Time Card */}
+                        {canClockAttendance ?
+                            <AttendanceCardWithClockIn />
+                            :
+                            <AttendanceCard />
+                        }
+
+                        {/* Pending Requests Block */}
+                        <View style={{ marginTop: canClockAttendance ? 160 : 80 }}>
+                            <PendingLeaveAndAttendance />
+                        </View>
+
+                        {/* Absent Block */}
+                        <AbsentNotification onLinkPress={attendanceHandleLinkPress} />
+
+                        {/* Directory Section */}
+                        <DirectorySection />
+
+                        {/* Latest Notice Section */}
+                        <LatestNotice />
 
 
-                <View style={styles?.container}>
+                        {/* Upcoming Holiday Section */}
+                        <UpcomingHoliday />
 
-                    {/* Attendance Time Card */}
-                    {canClockAttendance ?
-                        <AttendanceCardWithClockIn />
-                        :
-                        <AttendanceCard />
-                    }
 
-                    {/* Pending Requests Block */}
-                    <View style={{ marginTop: canClockAttendance ? 160 : 80 }}>
-                        <PendingLeaveAndAttendance />
+                        {/* Upcoming Birthday Section */}
+                        {/* <UpcomingBirthday /> */}
+
+
                     </View>
 
-                    {/* Absent Block */}
-                    <AbsentNotification onLinkPress={attendanceHandleLinkPress} />
+                </ScrollView>
+            </SafeAreaView>
+        </SafeAreaProvider>
 
-                    {/* Directory Section */}
-                    <DirectorySection />
-
-                    {/* Latest Policy Section */}
-                    <View style={styles.policySection}>
-                        <Text style={styles.sectionTitle}>Latest Policies</Text>
-                        <Text style={styles.policyText}>View the latest company policies here.</Text>
-                    </View>
-                </View>
-
-            </ScrollView>
-        </SafeAreaView>
     );
 };
 
@@ -80,6 +95,7 @@ const styles = StyleSheet.create({
         width: '100%',
         padding: '4%',
         position: 'relative',
+        paddingBottom: 80,
     },
     absentBlock: {
         flexDirection: 'row',

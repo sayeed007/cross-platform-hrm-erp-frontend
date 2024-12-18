@@ -19,7 +19,8 @@
       "backgroundColor": "#0F75BC"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.shb007.crossplatformhrmerpfrontend"
     },
     "android": {
       "adaptiveIcon": {
