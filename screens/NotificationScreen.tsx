@@ -16,16 +16,18 @@ import { useSubscription } from '../context/SubscriptionContext';
 import { RootStackParamList } from '../typeInterfaces/navigationTypes';
 import { Notification } from '../typeInterfaces/Notification';
 import { setTabBarVisibility } from '../utils/navigationUtils';
+import { useUser } from '../context/UserContext';
+import { markAllNotificationAsRead } from '../apis/HomeScreen';
 
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeRoot'>;
 
 
 const NotificationScreen = () => {
-
+    const { user } = useUser();
     const navigation = useNavigation<NavigationProp>();
     const dropdownRef = useRef(null);
-    const { notifications, unreadCount, visible } = useSubscription();
+    const { notifications, fetchNotifications, unreadCount, visible } = useSubscription();
 
     const [dropdownVisible, setDropdownVisible] = useState(false);
 
@@ -43,8 +45,18 @@ const NotificationScreen = () => {
     };
 
     const markAllRead = () => {
-        setDropdownVisible(false);
-        // console.log('Marked all as read');
+
+        if (user?.employeeId) {
+            markAllNotificationAsRead(user?.employeeId ?? 0).then((markedAllReadResponse) => {
+                if (markedAllReadResponse?.[0]) {
+                    fetchNotifications();
+                    setDropdownVisible(false);
+                } else {
+
+                }
+            })
+
+        }
     };
 
     const clearAll = () => {
@@ -74,7 +86,7 @@ const NotificationScreen = () => {
                 <View style={styles.secondaryHeader}>
                     <View>
                         <Text style={styles.unread}>
-                            Unread {unreadCount && `(${unreadCount})`}
+                            Unread {unreadCount > 0 && `(${unreadCount})`}
                         </Text>
                     </View>
 
@@ -91,10 +103,10 @@ const NotificationScreen = () => {
                             <Text style={styles.dropdownText}>Mark all reads</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.dropdownItem} onPress={clearAll}>
+                        {/* <TouchableOpacity style={styles.dropdownItem} onPress={clearAll}>
                             <MaterialCommunityIcons name="trash-can-outline" size={20} color="#EF4444" />
                             <Text style={[styles.dropdownText, { color: '#EF4444' }]}>Clear all</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
                 )}
 

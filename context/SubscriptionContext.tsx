@@ -13,6 +13,7 @@ interface SubscriptionContextType {
     setVisible: (value: boolean | ((prev: boolean) => boolean)) => void;
     connectToWebSocket: () => void;
     notifications: Notification[];
+    fetchNotifications: () => void;
 }
 
 interface CustomError {
@@ -140,7 +141,7 @@ export const SubscriptionProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
     return (
         <SubscriptionContext.Provider
-            value={{ message, unreadCount, visible, setVisible, notifications, connectToWebSocket }}
+            value={{ message, unreadCount, visible, setVisible, notifications, connectToWebSocket, fetchNotifications }}
         >
             {children}
         </SubscriptionContext.Provider>

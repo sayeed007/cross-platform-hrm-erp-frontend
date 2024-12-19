@@ -74,3 +74,14 @@ export const modifyAttendanceClockInOut = (formData: ModifyAttendanceClockInOutF
             return resolveApiError(error);
         });
 };
+
+
+export const markAllNotificationAsRead = (employeeId: number) => {
+    return axiosInstance.put(`/notification/v1/update/${employeeId}/all_notification`)
+        .then(response => {
+            return [response.data];
+        })
+        .catch(error => {
+            return resolveApiError(error);
+        });
+};
