@@ -15,6 +15,7 @@ export type RootStackParamList = {
     SeeAllCoWorkersContact: { employees: DirectoryEmployeeOption[] }; // New route with employees
     Notice: { noticeList: NoticeWithMonth[] };
     Holiday: { holidayList: HolidayWithMonth[] };
+    Notification: undefined;
 };
 
 // Define the bottom tab's parameter list

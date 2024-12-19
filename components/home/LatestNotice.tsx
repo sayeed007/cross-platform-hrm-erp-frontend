@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
 import LatestNoticeCard from './LatestNoticeCard';
 import { useUser } from '../../context/UserContext';
@@ -18,6 +18,7 @@ const LatestNotice = () => {
     const { user } = useUser();
     const navigation = useNavigation<NavigationProp>();
 
+    const [loading, setLoading] = useState(true);
     const [noticeList, setNoticeList] = useState<NoticeWithMonth[]>([]);
 
     const handleSeeAllPress = () => {
@@ -35,6 +36,7 @@ const LatestNotice = () => {
     useEffect(() => {
         if (user?.companyId) {
             getCompanyWiseAllNotice(user?.companyId).then((noticeResponse) => {
+                setLoading(false);
                 if (noticeResponse?.[0]?.length) {
                     const sortedNotices = [...noticeResponse]?.[0].sort((a: Notice, b: Notice) => {
                         const dateA = a.lastModifiedDate
@@ -67,16 +69,27 @@ const LatestNotice = () => {
                 </TouchableOpacity>
             </View>
 
-            {/* Notice Card */}
-            {noticeList.length > 0 ? (
-                <LatestNoticeCard
-                    noticeTitle={noticeList[0]?.noticeTitle}
-                    noticeDescription={noticeList[0]?.noticeDescription}
-                    uploadedDate={noticeList[0]?.uploadedDate}
-                />
-            ) : (
-                <Text style={styles.noNotice}>No notices available</Text>
-            )}
+            {loading ?
+                <>
+                    <View style={[styles.loadingContainer, styles.marginBottom]}>
+                        <ActivityIndicator size="large" color="#4F46E5" />
+                        <Text style={styles.loadingText}>Loading...</Text>
+                    </View>
+                </>
+                :
+                <>
+                    {/* Notice Card */}
+                    {noticeList.length > 0 ? (
+                        <LatestNoticeCard
+                            noticeTitle={noticeList[0]?.noticeTitle}
+                            noticeDescription={noticeList[0]?.noticeDescription}
+                            uploadedDate={noticeList[0]?.uploadedDate}
+                        />
+                    ) : (
+                        <Text style={styles.noNotice}>No notices available</Text>
+                    )}
+                </>
+            }
         </>
     );
 };
@@ -108,6 +121,19 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#999999',
         marginTop: 12,
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingText: {
+        marginTop: 10,
+        fontSize: 16,
+        color: '#4B5563',
+    },
+    marginBottom: {
+        marginBottom: 16,
     },
 });
 

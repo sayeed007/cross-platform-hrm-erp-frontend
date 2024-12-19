@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { getYearWiseAllHolidayForEmployee } from '../../apis/HomeScreen';
 import { useUser } from '../../context/UserContext';
 import { defaultHolidayWithMonth, HolidayWithMonth } from '../../typeInterfaces/Holiday';
@@ -20,6 +20,7 @@ const UpcomingHoliday = () => {
     const startOfYear = moment().startOf('year').format('YYYY-MM-DD');
     const endOfYear = moment().endOf('year').format('YYYY-MM-DD');
 
+    const [loading, setLoading] = useState(true);
     const [holidayList, setHolidayList] = useState<HolidayWithMonth[]>([]);
     const [latestHoliday, setLatestHoliday] = useState<HolidayWithMonth>({ ...defaultHolidayWithMonth });
 
@@ -35,6 +36,7 @@ const UpcomingHoliday = () => {
     useEffect(() => {
         if (user?.companyId) {
             getYearWiseAllHolidayForEmployee(user?.employeeId, startOfYear, endOfYear).then((holidayResponse) => {
+                setLoading(false);
                 if (holidayResponse?.[0]?.holidays?.length) {
                     const holidayList = [...holidayResponse?.[0]?.holidays];
 
@@ -79,19 +81,30 @@ const UpcomingHoliday = () => {
                 </TouchableOpacity>
             </View>
 
-            {/* Notice Card */}
-            {holidayList.length > 0 ? (
-                <HolidayCard
-                    holidayTitle={latestHoliday?.holidayTitle}
-                    startDate={latestHoliday?.holidayStartDate}
-                    endDate={latestHoliday?.holidayEndDate}
-                    duration={latestHoliday?.holidayDuration}
-                />
-            ) : (
-                <Text style={styles.noNotice}>
-                    No upcoming holidays for the year.
-                </Text>
-            )}
+            {loading ?
+                <>
+                    <View style={[styles.loadingContainer, styles.marginBottom]}>
+                        <ActivityIndicator size="large" color="#4F46E5" />
+                        <Text style={styles.loadingText}>Loading...</Text>
+                    </View>
+                </>
+                :
+                <>
+                    {/* Notice Card */}
+                    {holidayList.length > 0 ? (
+                        <HolidayCard
+                            holidayTitle={latestHoliday?.holidayTitle}
+                            startDate={latestHoliday?.holidayStartDate}
+                            endDate={latestHoliday?.holidayEndDate}
+                            duration={latestHoliday?.holidayDuration}
+                        />
+                    ) : (
+                        <Text style={styles.noNotice}>
+                            No upcoming holidays for the year.
+                        </Text>
+                    )}
+                </>
+            }
         </>
     );
 };
@@ -123,6 +136,19 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#999999',
         marginTop: 12,
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingText: {
+        marginTop: 10,
+        fontSize: 16,
+        color: '#4B5563',
+    },
+    marginBottom: {
+        marginBottom: 16,
     },
 });
 

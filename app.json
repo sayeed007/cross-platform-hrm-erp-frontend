@@ -27,7 +27,10 @@
         "foregroundImage": "./assets/images/Tafuri-hrms-logo-animation.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.shb007.crossplatformhrmerpfrontend"
+      "package": "com.shb007.crossplatformhrmerpfrontend",
+      "permissions": [
+        "RECEIVE_BOOT_COMPLETED"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"

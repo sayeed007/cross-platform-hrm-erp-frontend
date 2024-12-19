@@ -8,6 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient'; // Use expo-linear-gradie
 import Icon from 'react-native-vector-icons/Feather';
 import NoticeScreen from '../screens/NoticeScreen';
 import HolidayScreen from '../screens/HolidayScreen';
+import NotificationScreen from '../screens/NotificationScreen';
 
 // Define the stack with RootStackParamList
 const Stack = createStackNavigator<RootStackParamList>();
@@ -64,6 +65,14 @@ const HomeStack = () => {
             <Stack.Screen
                 name="Holiday"
                 component={HolidayScreen}
+                options={{ headerShown: false }} // Hide header for Home screen
+            />
+
+
+            {/* Notification Screen */}
+            <Stack.Screen
+                name="Notification"
+                component={NotificationScreen}
                 options={{ headerShown: false }} // Hide header for Home screen
             />
         </Stack.Navigator>

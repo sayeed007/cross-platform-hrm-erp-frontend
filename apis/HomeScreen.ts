@@ -47,6 +47,16 @@ export const getYearWiseAllHolidayForEmployee = (employeeId: number, startDate: 
         });
 };
 
+export const getAllNotificationsForEmployee = (employeeId: number) => {
+    return axiosInstance.get(`/notification/v1/previousNotifications/${employeeId}`)
+        .then(response => {
+            return [response.data];
+        })
+        .catch(error => {
+            return resolveApiError(error);
+        });
+};
+
 
 
 // ###################################################################

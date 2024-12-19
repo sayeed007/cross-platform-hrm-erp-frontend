@@ -1,5 +1,7 @@
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     ScrollView,
     StyleSheet,
@@ -8,12 +10,11 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
+import EmployeeContactDetailsModal from '../components/home/EmployeeContactDetailsModal';
 import { DirectoryEmployeeOption } from '../typeInterfaces/DirectoryEmployee';
 import { RootStackParamList, SeeAllCoWorkersContactScreenProps } from '../typeInterfaces/navigationTypes';
-import EmployeeContactDetailsModal from '../components/home/EmployeeContactDetailsModal';
-import Icon from 'react-native-vector-icons/Feather';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
+import { setTabBarVisibility } from '../utils/navigationUtils';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeRoot'>;
 
@@ -28,6 +29,16 @@ const SeeAllCoWorkersContactScreen: React.FC<SeeAllCoWorkersContactScreenProps> 
     const [search, setSearch] = useState<string>('');
     const [selectedEmployee, setSelectedEmployee] = useState<DirectoryEmployeeOption | null>(null);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+
+    useEffect(() => {
+        setTabBarVisibility(navigation, false); // Hide tab bar
+
+        return () => {
+            setTabBarVisibility(navigation, true); // Show tab bar when unmounting
+        };
+    }, [navigation]);
+
 
     const filteredEmployees = search
         ? employees.filter((employee: DirectoryEmployeeOption) => {

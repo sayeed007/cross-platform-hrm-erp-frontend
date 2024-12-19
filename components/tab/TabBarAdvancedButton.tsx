@@ -8,8 +8,7 @@ type Props = BottomTabBarButtonProps;
 
 export const TabBarAdvancedButton: React.FC<Props> = ({ ...props }) => (
     <View
-        style={styles.container}
-        pointerEvents="box-none"
+        style={[styles.container, { pointerEvents: "box-none" }]}
     >
         <TabBg
             style={styles.background}
@@ -31,7 +30,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         width: 75,
         alignItems: 'center',
-        backgroundColor: '#F6F6F6'
+        backgroundColor: '#F6F6F6',
     },
     background: {
         position: 'absolute',

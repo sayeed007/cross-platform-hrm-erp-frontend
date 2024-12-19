@@ -1,88 +1,128 @@
 // NEW IMPLEMENTATION - 10 DEC, 2024
 import axios from "axios";
-import React, { useEffect } from 'react';
-import SockJS from 'sockjs-client';
-import Stomp from 'stompjs';
-import { BASE_URL } from '../Server';
+import React, { useEffect } from "react";
+import SockJS from "sockjs-client";
+import Stomp, { Client, Message } from "stompjs";
+import { BASE_URL } from "../Server";
+import { useUser } from "../context/UserContext";
 
-const SubscriptionConnection = (props) => {
+// Define props interface
+interface SubscriptionConnectionProps {
+    setMessage: (message: string) => void;
+    setLength: (length: number) => void;
+    visible: boolean;
+    setVisible: (visible: boolean) => void;
+}
 
-    const { employeeId: userId, username, accessToken: token } = JSON.parse(localStorage.w_auth || '{}') || {};
+interface Notification {
+    hasSeen: boolean;
+}
 
+// Define user type from localStorage
+interface UserAuth {
+    employeeId: string;
+    username: string;
+    accessToken: string;
+}
+
+const SubscriptionConnection: React.FC<SubscriptionConnectionProps> = (props) => {
+    const { user } = useUser();
+    const username = user?.username;
+    const employeeId = user?.employeeId ? user?.employeeId?.toString() : '';
+    const token = user?.accessToken ?? '';
+
+    // Define constants
     const notificationBaseApi = `${BASE_URL.baseApi}`;
-    const stompEndpoint = '/userNotification';
-    const destinationPrefix = '/users';
-    const destination = '/queue/messages';
+    const stompEndpoint = "/userNotification";
+    const destinationPrefix = "/users";
+    const destination = "/queue/messages";
     const subscribeUrl = `${destinationPrefix}${destination}`;
 
+    // Connect to WebSocket
     const connect = () => {
         try {
             const socket = new SockJS(`${notificationBaseApi}${stompEndpoint}`);
-            const stompClient = Stomp.over(socket);
-            stompClient.connect({ username }, (frame) => {
-                console.info('Connected to WebSocket:', frame);
-                subscribe(stompClient, subscribeUrl, userId);
-            });
+            const stompClient: Client = Stomp.over(socket);
+
+            stompClient.connect(
+                { username, Authorization: `Bearer ${token}` },
+                (frame) => {
+                    console.info("Connected to WebSocket:", frame);
+                    subscribe(stompClient, subscribeUrl, employeeId);
+                },
+                (error) => {
+                    console.error("Connection error:", error);
+                }
+            );
+
         } catch (error) {
-            console.error('Error connecting to WebSocket:', error);
+            console.error("Error connecting to WebSocket:", error);
         }
     };
 
-    const subscribe = (stompClient, destination, userId) => {
+    // Subscribe to a specific destination
+    const subscribe = (stompClient: Client, destination: string, employeeId: string) => {
         try {
             if (stompClient) {
                 stompClient.subscribe(
                     destination,
-                    (message) => {
+                    (message: Message) => {
                         handleNewMessage(message?.body);
                     },
-                    { id: userId }
+                    { id: employeeId }
                 );
             }
         } catch (error) {
-            console.error('Error during subscription:', error);
+            console.error("Error during subscription:", error);
         }
     };
 
-    const handleNewMessage = (messageBody) => {
-        getNotification(token, userId);
+    // Handle new messages
+    const handleNewMessage = (messageBody: string) => {
+        getNotification(token, employeeId);
         props.setMessage(messageBody);
     };
 
-    const getNotification = async (token, userId) => {
+    // Fetch unread notifications
+    const getNotification = async (token: string, employeeId: string) => {
         try {
-            const response = await axios.get(`${notificationBaseApi}/notification/v1/previousNotifications/${userId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            const response = await axios.get<Notification[]>(
+                `${notificationBaseApi}/notification/v1/previousNotifications/${employeeId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
             const unreadCount = response.data.filter((item) => !item.hasSeen).length;
             props.setLength(unreadCount);
-            props.setVisible(!props.visible)
+            props.setVisible(!props.visible);
         } catch (error) {
-            console.info('No notifications found:', error.message);
+            console.info("No notifications found:", error?.message);
         }
     };
 
+    // Connect and set an interval
     useEffect(() => {
-        if (userId && username) {
+        if (employeeId && username) {
             connect();
         }
 
         const intervalId = setInterval(() => {
-            if (userId && username) {
+            if (employeeId && username) {
                 connect();
             }
         }, 120000);
 
         return () => clearInterval(intervalId); // Cleanup interval on component unmount
-    }, [userId, username]);
+    }, [employeeId && username]);
 
-    return <></>;
+    return null; // No UI rendered
 };
 
 export default SubscriptionConnection;
+
 
 
 

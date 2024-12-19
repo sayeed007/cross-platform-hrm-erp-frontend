@@ -1,12 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { useUser } from '../context/UserContext'; // Import the UserContext
 import SplashScreen from '../screens/SplashScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import AuthStack from './AuthStack';
 import { TabBar } from './MainTabsModified';
-import { SafeAreaView, StyleSheet } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 
 
@@ -49,12 +48,9 @@ export default function RootNavigation() {
     }
 
     return (
-        <SafeAreaProvider>
-            <SafeAreaView style={styles.container}>
-                {user ? <TabBar /> : <AuthStack />}
-            </SafeAreaView>
-        </SafeAreaProvider>
-
+        <SafeAreaView style={styles.container}>
+            {user ? <TabBar /> : <AuthStack />}
+        </SafeAreaView>
     );
 }
 

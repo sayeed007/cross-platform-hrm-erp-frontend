@@ -276,6 +276,7 @@ const AttendanceCardWithClockIn: React.FC = () => {
                                 <Image
                                     source={require('../../assets/images/AttendanceClock.png')}
                                     style={styles.image}
+                                    resizeMode='contain'
                                 />
 
                                 <Text style={styles.checkInStatusText}>Yet to check in</Text>
@@ -288,6 +289,7 @@ const AttendanceCardWithClockIn: React.FC = () => {
                                         <Image
                                             source={require('../../assets/images/Fingerprint.png')}
                                             style={styles.smallImage}
+                                            resizeMode='contain'
                                         />
 
                                         <Text style={styles.buttonText}>
@@ -340,13 +342,11 @@ const styles = StyleSheet.create({
     image: {
         width: 100,
         height: 100,
-        resizeMode: 'contain',
         margin: 'auto'
     },
     smallImage: {
         width: 24,
         height: 24,
-        resizeMode: 'contain',
         marginRight: 10,
     },
     timerContainer: {

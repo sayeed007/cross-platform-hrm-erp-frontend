@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/Feather';
@@ -8,6 +8,7 @@ import { NoticeWithMonth } from '../typeInterfaces/Notice';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { throttle } from 'lodash';
+import { setTabBarVisibility } from '../utils/navigationUtils';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const fullMonthNames = [
@@ -32,6 +33,14 @@ const NoticeScreen: React.FC<NoticeScreenProps> = ({ route }) => {
         title: fullMonthNames[index],
         data: noticeList.filter((notice) => notice.month === month),
     }));
+
+    useEffect(() => {
+        setTabBarVisibility(navigation, false); // Hide tab bar
+
+        return () => {
+            setTabBarVisibility(navigation, true); // Show tab bar when unmounting
+        };
+    }, [navigation]);
 
     // Scroll to specific section
     const handleMonthClick = (month: string) => {
@@ -112,10 +121,7 @@ const NoticeScreen: React.FC<NoticeScreenProps> = ({ route }) => {
                             onPress={() => handleMonthClick(month)}
                         >
                             <Text
-                                style={[
-                                    styles.monthTabText,
-                                    selectedMonth === month && styles.activeMonthTabText,
-                                ]}
+                                style={styles.monthTabText}
                             >
                                 {month}
                             </Text>
@@ -190,14 +196,13 @@ const styles = StyleSheet.create({
         borderRadius: 16,
     },
     activeMonthTab: {
-        backgroundColor: '#2563EB',
+        borderWidth: 1,
+        borderColor: '#FFFFFF',
+        borderRadius: 16,
     },
     monthTabText: {
         fontSize: 14,
         fontWeight: '600',
-        color: '#FFFFFF',
-    },
-    activeMonthTabText: {
         color: '#FFFFFF',
     },
     noticeContainer: {

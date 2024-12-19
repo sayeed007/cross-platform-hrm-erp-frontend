@@ -1,6 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import {
+    Modal,
+    Platform,
     SafeAreaView,
     ScrollView,
     StatusBar,
@@ -17,7 +19,9 @@ import PendingLeaveAndAttendance from '../components/home/PendingLeaveAndAttenda
 import { useUser } from '../context/UserContext';
 import { HomeScreenNavigationProp } from '../typeInterfaces/navigationTypes';
 import UpcomingHoliday from '../components/home/UpcomingHoliday';
-
+import { setTabBarVisibility } from '../utils/navigationUtils';
+import { useSubscription } from '../context/SubscriptionContext';
+import * as Notifications from "expo-notifications";
 
 const HomeScreen = () => {
 
@@ -30,14 +34,16 @@ const HomeScreen = () => {
         navigation.navigate('Attendance');
     };
 
+    useLayoutEffect(() => {
+        setTabBarVisibility(navigation, true); // Ensure tab bar is visible on home
+    }, [navigation]);
+
+
+
     return (
-        <SafeAreaView style={styles.safeArea} >
-            {/* Adjust StatusBar for better visibility */}
-            <StatusBar
-                barStyle="dark-content" // Change to "light-content" if needed
-                backgroundColor="transparent"
-                translucent
-            />
+        <>
+
+            {/* <SafeAreaView style={styles.safeArea} > */}
 
             <ScrollView
                 style={{ flex: 1 }}
@@ -79,7 +85,9 @@ const HomeScreen = () => {
                 </View>
 
             </ScrollView>
-        </SafeAreaView>
+            {/* </SafeAreaView> */}
+        </>
+
     );
 };
 
@@ -92,7 +100,7 @@ const styles = StyleSheet.create({
         width: '100%',
         padding: '4%',
         position: 'relative',
-        paddingBottom: 80,
+        paddingBottom: 40,
     },
     absentBlock: {
         flexDirection: 'row',
@@ -138,7 +146,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#6B7280',
     },
-
 });
 
 export default HomeScreen;
