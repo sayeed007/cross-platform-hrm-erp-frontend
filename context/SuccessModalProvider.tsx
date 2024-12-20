@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useRef } from 'react';
 import { Modal, View, Text, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '../utils/colors';
+import { textStyle } from '../utils/textStyle';
 
 interface SuccessModalContextType {
     showSuccess: (message: string, onClose?: () => void, delay?: number) => void;
@@ -84,8 +85,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     message: {
-        fontSize: 16,
-        fontWeight: '600',
+        ...textStyle?.semibold16,
         textAlign: 'center',
         marginVertical: 16,
         color: colors?.black,

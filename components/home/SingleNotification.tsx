@@ -5,6 +5,7 @@ import { Avatar } from "react-native-elements";
 import moment from "moment";
 import { colors } from "../../utils/colors";
 import shadowStyles from "../../utils/shadowStyles";
+import { textStyle } from "../../utils/textStyle";
 
 
 interface SingleNotificationProps {
@@ -41,7 +42,7 @@ export const SingleNotification: React.FC<SingleNotificationProps> = ({ item }) 
                         rounded   // Makes it circular
                         title={'HRM'} // Fallback initials
                         overlayContainerStyle={{ backgroundColor: colors?.gray3 }} // Background color
-                        titleStyle={{ color: colors?.white, fontWeight: 400, fontSize: 12 }} // Style for initials
+                        titleStyle={{ color: colors?.white, ...textStyle?.regular12 }} // Style for initials
                     />
                 </View>
             }
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
         marginVertical: 4,
     },
     time: {
-        fontSize: 12,
+        ...textStyle?.regular12,
         color: colors?.gray1,
     },
 });

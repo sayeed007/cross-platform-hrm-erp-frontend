@@ -12,6 +12,7 @@ import { requestToUpdatePassword } from '../apis/ForgetPassword';
 import { useErrorModal } from '../context/ErrorModalProvider';
 import FullPageLoader from '../components/common/FullPageLoader';
 import { colors } from '../utils/colors';
+import { textStyle } from '../utils/textStyle';
 
 const ForgotPasswordScreen: React.FC = () => {
     const navigation = useNavigation<ForgotPasswordScreenNavigationProp>();
@@ -143,16 +144,15 @@ const styles = StyleSheet.create({
         elevation: 4, // For Android
     },
     title: {
-        fontSize: 24,
-        fontWeight: 'bold',
+        ...textStyle?.bold24,
         textAlign: 'center',
         marginBottom: 8,
     },
     emoji: {
-        fontSize: 24,
+        ...textStyle?.regular24,
     },
     subtitle: {
-        fontSize: 14,
+        ...textStyle?.regular14,
         textAlign: 'center',
         color: colors?.black,
         marginBottom: 24,
@@ -172,11 +172,11 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         height: 50,
-        fontSize: 16,
+        ...textStyle?.regular16,
         padding: 5,
     },
     rememberPassword: {
-        fontSize: 14,
+        ...textStyle?.regular14,
         color: colors?.info,
         textAlign: 'center',
         marginVertical: 16,
@@ -193,18 +193,15 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: colors?.white,
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...textStyle?.bold16,
     },
     errorText: {
         color: colors?.error,
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...textStyle?.bold16,
     },
     validationText: {
         color: colors?.error,
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...textStyle?.bold16,
     },
 });
 

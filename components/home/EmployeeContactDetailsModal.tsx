@@ -13,6 +13,7 @@ import * as Clipboard from 'expo-clipboard';
 import Icon from 'react-native-vector-icons/Feather'; // Icons library
 import { DirectoryEmployeeOption } from '../../typeInterfaces/DirectoryEmployee';
 import { colors } from '../../utils/colors';
+import { textStyle } from '../../utils/textStyle';
 
 interface EmployeeContactDetailsModalProps {
     employee: DirectoryEmployeeOption | null;
@@ -152,16 +153,14 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     employeeName: {
-        fontSize: 16,
-        fontWeight: 'bold'
+        ...textStyle?.bold16,
     },
     employeeRole: {
-        fontSize: 12,
+        ...textStyle?.regular12,
         color: colors?.gray2
     },
     department: {
-        fontSize: 12,
-        fontWeight: '600',
+        ...textStyle?.semibold12,
         color: colors?.info,
         backgroundColor: colors?.infoBG,
         paddingHorizontal: 8,
@@ -175,7 +174,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     contactText: {
-        fontSize: 14,
+        ...textStyle?.regular14,
         color: colors?.black,
         flex: 1,
         marginLeft: 8

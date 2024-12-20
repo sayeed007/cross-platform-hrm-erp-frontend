@@ -3,6 +3,7 @@ import { Modal, View, Text, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '../utils/colors';
 import shadowStyles from '../utils/shadowStyles';
+import { textStyle } from '../utils/textStyle';
 
 interface ErrorModalContextType {
     showError: (message: string, onClose?: () => void, delay?: number) => void;
@@ -81,8 +82,7 @@ const styles = StyleSheet.create({
         ...shadowStyles?.popUpShadow2
     },
     message: {
-        fontSize: 16,
-        fontWeight: '600',
+        ...textStyle?.semibold16,
         textAlign: 'center',
         marginVertical: 16,
         color: colors?.black,

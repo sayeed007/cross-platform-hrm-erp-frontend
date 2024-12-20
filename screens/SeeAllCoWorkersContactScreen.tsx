@@ -16,6 +16,7 @@ import { DirectoryEmployeeOption } from '../typeInterfaces/DirectoryEmployee';
 import { RootStackParamList, SeeAllCoWorkersContactScreenProps } from '../typeInterfaces/navigationTypes';
 import { setTabBarVisibility } from '../utils/navigationUtils';
 import { colors } from '../utils/colors';
+import { textStyle } from '../utils/textStyle';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeRoot'>;
 
@@ -127,8 +128,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     navTitle: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...textStyle?.bold16,
         color: colors?.white,
         marginLeft: 12,
     },
@@ -136,8 +136,7 @@ const styles = StyleSheet.create({
         padding: 20
     },
     subHeaderText: {
-        fontSize: 20,
-        fontWeight: 'bold',
+        ...textStyle?.bold20,
         color: colors?.white,
         paddingVertical: 15,
         paddingHorizontal: 15,
@@ -165,16 +164,14 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     employeeName: {
-        fontSize: 16,
-        fontWeight: 'bold'
+        ...textStyle?.bold16,
     },
     employeeRole: {
-        fontSize: 12,
+        ...textStyle?.regular12,
         color: colors?.gray2,
     },
     department: {
-        fontSize: 12,
-        fontWeight: '600',
+        ...textStyle?.semibold12,
         color: colors?.info,
         backgroundColor: colors?.infoBG,
         paddingHorizontal: 8,

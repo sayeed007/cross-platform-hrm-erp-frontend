@@ -5,6 +5,7 @@ import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
 import { TabBg } from '../../svg/TabBg';
 import { colors } from '../../utils/colors';
 import Feather from '@expo/vector-icons/Feather';
+import { textStyle } from '../../utils/textStyle';
 
 
 type Props = BottomTabBarButtonProps;
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors?.info,
     },
     buttonIcon: {
-        fontSize: 16,
+        ...textStyle?.regular16,
         color: colors?.white
     }
 });

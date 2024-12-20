@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather'; // For icons
 import { colors } from '../../utils/colors';
 import shadowStyles from '../../utils/shadowStyles';
+import { textStyle } from '../../utils/textStyle';
 
 interface HolidayCardProps {
     holidayTitle: string | null;
@@ -51,10 +52,9 @@ const styles = StyleSheet.create({
         ...shadowStyles?.popUpShadow2
     },
     title: {
-        fontSize: 16,
-        fontWeight: '600',
         color: colors?.black,
         marginBottom: 4,
+        ...textStyle?.semibold16,
     },
     dateRow: {
         flexDirection: 'row',
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         gap: 6,
     },
     dateText: {
-        fontSize: 12,
+        ...textStyle?.regular12,
         color: colors?.gray2,
     },
     durationBadge: {
@@ -76,8 +76,7 @@ const styles = StyleSheet.create({
     },
     durationText: {
         color: colors?.info,
-        fontWeight: 'bold',
-        fontSize: 12,
+        ...textStyle?.bold12,
     },
 });
 

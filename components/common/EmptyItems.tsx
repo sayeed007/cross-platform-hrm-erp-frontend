@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 import { colors } from '../../utils/colors';
+import { textStyle } from '../../utils/textStyle';
 
 type EmptyItemsProps = {
     title?: string;
@@ -34,14 +35,13 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     emptyTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
         marginBottom: 10,
         textAlign: 'center',
         color: colors?.gray4,
+        ...textStyle?.bold20,
     },
     emptySubtitle: {
-        fontSize: 14,
+        ...textStyle?.regular14,
         color: colors?.gray2,
         textAlign: 'center',
     },

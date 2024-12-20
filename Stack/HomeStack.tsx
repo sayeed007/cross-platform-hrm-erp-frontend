@@ -10,6 +10,7 @@ import NoticeScreen from '../screens/NoticeScreen';
 import HolidayScreen from '../screens/HolidayScreen';
 import NotificationScreen from '../screens/NotificationScreen';
 import { colors } from '../utils/colors';
+import { textStyle } from '../utils/textStyle';
 
 // Define the stack with RootStackParamList
 const Stack = createStackNavigator<RootStackParamList>();
@@ -87,8 +88,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     navTitle: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...textStyle?.bold16,
         color: colors?.white,
         marginLeft: 12,
     },

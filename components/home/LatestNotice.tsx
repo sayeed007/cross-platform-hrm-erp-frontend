@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../typeInterfaces/navigationTypes';
 import { colors } from '../../utils/colors';
+import { textStyle } from '../../utils/textStyle';
 
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -103,8 +104,7 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     headerTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
+        ...textStyle.bold18,
         color: colors?.black,
     },
     seeAll: {
@@ -112,14 +112,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     seeAllText: {
-        fontSize: 14,
-        fontWeight: '600',
+        ...textStyle.semibold14,
         color: colors?.info,
         marginRight: 4,
     },
     noNotice: {
         textAlign: 'center',
-        fontSize: 14,
+        ...textStyle?.regular14,
         color: colors?.gray2,
         marginTop: 12,
     },
@@ -130,7 +129,7 @@ const styles = StyleSheet.create({
     },
     loadingText: {
         marginTop: 10,
-        fontSize: 16,
+        ...textStyle?.regular16,
         color: colors?.gray2,
     },
     marginBottom: {

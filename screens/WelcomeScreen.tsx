@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colors } from '../utils/colors';
+import { textStyle } from '../utils/textStyle';
 
 interface WelcomeScreen {
     setHasSeenWelcome: (value: boolean) => void; // Define the type of the setLoading function
@@ -53,14 +54,13 @@ const styles = StyleSheet.create({
         marginBottom: 24,
     },
     title: {
-        fontSize: 24,
-        fontWeight: 'bold',
+        ...textStyle?.bold24,
         textAlign: 'center',
         color: colors?.black,
         marginBottom: 8,
     },
     subtitle: {
-        fontSize: 14,
+        ...textStyle?.regular14,
         textAlign: 'center',
         color: colors?.black,
         marginBottom: 40,
@@ -77,8 +77,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: colors?.white,
-        fontWeight: 'bold',
-        fontSize: 16,
+        ...textStyle?.bold16,
     },
 });
 

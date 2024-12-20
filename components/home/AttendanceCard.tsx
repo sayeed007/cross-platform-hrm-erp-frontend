@@ -5,6 +5,7 @@ import { getEmployeeAttendanceForClocking } from '../../apis/HomeScreen';
 import moment from 'moment';
 import { UserAttendanceInformationForClocking } from '../../typeInterfaces/UserAttendanceInformationForClocking';
 import { colors } from '../../utils/colors';
+import { textStyle } from '../../utils/textStyle';
 
 const presentStatus = ['present', 'late'];
 
@@ -83,17 +84,15 @@ const styles = StyleSheet.create({
         left: '4%',
     },
     attendanceTitle: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...textStyle?.bold16,
         color: colors?.gray2,
     },
     attendanceTime: {
-        fontSize: 48,
-        fontWeight: 'bold',
+        ...textStyle?.bold48,
         color: colors?.gray4,
     },
     attendanceDetails: {
-        fontSize: 14,
+        ...textStyle?.regular14,
         color: colors?.gray3,
     },
 })

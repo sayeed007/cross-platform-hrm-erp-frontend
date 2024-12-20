@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { throttle } from 'lodash';
 import { setTabBarVisibility } from '../utils/navigationUtils';
 import { colors } from '../utils/colors';
+import { textStyle } from '../utils/textStyle';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const fullMonthNames = [
@@ -182,8 +183,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     navTitle: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...textStyle?.bold16,
         color: colors?.white,
     },
     monthTabs: {
@@ -202,8 +202,7 @@ const styles = StyleSheet.create({
         borderRadius: 16,
     },
     monthTabText: {
-        fontSize: 14,
-        fontWeight: '600',
+        ...textStyle?.semibold14,
         color: colors?.white,
     },
     noticeContainer: {
@@ -212,14 +211,13 @@ const styles = StyleSheet.create({
         marginTop: 8,
     },
     sectionTitle: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...textStyle?.bold16,
         color: colors?.gray4,
         marginBottom: 12,
     },
     noNotices: {
         textAlign: 'center',
-        fontSize: 14,
+        ...textStyle?.regular14,
         color: colors?.gray3,
         marginVertical: 10,
     },

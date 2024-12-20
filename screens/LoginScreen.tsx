@@ -13,6 +13,7 @@ import { useSuccessModal } from '../context/SuccessModalProvider';
 import { useErrorModal } from '../context/ErrorModalProvider';
 import { User, useUser } from '../context/UserContext';
 import { colors } from '../utils/colors';
+import { textStyle } from '../utils/textStyle';
 
 const LoginScreen: React.FC = () => {
     const navigation = useNavigation<LoginScreenNavigationProp>();
@@ -217,16 +218,15 @@ const styles = StyleSheet.create({
         paddingTop: 20,
     },
     title: {
-        fontSize: 24,
-        fontWeight: 'bold',
+        ...textStyle?.bold24,
         textAlign: 'center',
         marginBottom: 8,
     },
     emoji: {
-        fontSize: 24,
+        ...textStyle?.regular24,
     },
     subtitle: {
-        fontSize: 14,
+        ...textStyle?.regular14,
         textAlign: 'center',
         color: colors?.black,
         marginBottom: 24,
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         height: 50,
-        fontSize: 16,
+        ...textStyle?.regular16,
         padding: 5,
     },
     optionsContainer: {
@@ -260,12 +260,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     checkboxLabel: {
-        fontSize: 14,
+        ...textStyle?.regular14,
         color: colors?.black,
         marginLeft: 8,
     },
     forgotPassword: {
-        fontSize: 14,
+        ...textStyle?.regular14,
         color: colors?.info,
         textDecorationLine: 'underline',
     },
@@ -280,13 +280,11 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: colors?.white,
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...textStyle?.bold16,
     },
     validationText: {
         color: colors?.error,
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...textStyle?.bold16,
     },
 });
 

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons'; // Icon library for the warning icon
 import { colors } from '../../utils/colors';
 import shadowStyles from '../../utils/shadowStyles';
+import { textStyle } from '../../utils/textStyle';
 
 interface AbsentNotificationProps {
     onLinkPress: () => void; // Function with no parameters and no return value
@@ -50,13 +51,14 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     message: {
-        fontSize: 14,
+        ...textStyle?.regular14,
         color: colors?.black,
         lineHeight: 20,
     },
     link: {
         color: colors?.info, // Blue color for link
-        fontWeight: 'bold',
+        ...textStyle?.bold13,
+
     },
 });
 

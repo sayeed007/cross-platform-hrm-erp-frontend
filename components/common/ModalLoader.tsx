@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, View, StyleSheet, ActivityIndicator, Text } from 'react-native';
 import { colors } from '../../utils/colors';
 import shadowStyles from '../../utils/shadowStyles';
+import { textStyle } from '../../utils/textStyle';
 
 interface LoaderModalProps {
     visible: boolean;
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     },
     message: {
         marginTop: 12,
-        fontSize: 16,
+        ...textStyle?.regular16,
         color: colors?.black,
         textAlign: 'center',
     },

@@ -10,6 +10,7 @@ import { RootStackParamList } from '../../typeInterfaces/navigationTypes'
 import { useNavigation } from '@react-navigation/native'
 import { useSubscription } from '../../context/SubscriptionContext'
 import { colors } from '../../utils/colors'
+import { textStyle } from '../../utils/textStyle'
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -98,10 +99,9 @@ const styles = StyleSheet.create({
         borderColor: colors?.white
     },
     routeName: {
-        fontSize: 18,
         color: colors?.white,
-        fontWeight: 'bold',
         marginLeft: 10,
+        ...textStyle?.bold18,
     },
     notificationIcon: {
         position: 'relative',
@@ -119,13 +119,12 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     greetingText: {
-        fontSize: 20,
+        ...textStyle?.regular20,
         color: colors?.white,
     },
     userName: {
-        fontSize: 24,
-        fontWeight: 'bold',
         color: colors?.white,
+        ...textStyle?.bold24,
     },
 
 })

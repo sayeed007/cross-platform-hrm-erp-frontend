@@ -13,6 +13,7 @@ import * as Notifications from "expo-notifications";
 import { SingleNotification } from '../components/home/SingleNotification';
 import { defaultNotification } from '../typeInterfaces/Notification';
 import { colors } from '../utils/colors';
+import { textStyle } from '../utils/textStyle';
 const BottomBar = createBottomTabNavigator();
 
 // Extract the screenOptions logic
@@ -34,7 +35,7 @@ const getScreenOptions = ({ route }: { route: any }) => ({
         );
     },
     tabBarLabel: ({ focused }: { focused: boolean }) => (
-        <Text style={{ fontSize: 12, color: focused ? colors?.spinner : colors?.bottomNav }}>
+        <Text style={{ ...textStyle?.regular12, color: focused ? colors?.spinner : colors?.bottomNav }}>
             {route.name}
         </Text>
     ),

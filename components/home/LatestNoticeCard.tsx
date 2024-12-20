@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather'; // For icons
 import { colors } from '../../utils/colors';
 import shadowStyles from '../../utils/shadowStyles';
+import { textStyle } from '../../utils/textStyle';
 
 interface LatestNoticeCardProps {
     noticeTitle: string;
@@ -50,13 +51,12 @@ const styles = StyleSheet.create({
         ...shadowStyles?.popUpShadow2
     },
     cardTitle: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...textStyle?.bold16,
         color: colors?.black,
         marginBottom: 8,
     },
     cardBody: {
-        fontSize: 14,
+        ...textStyle?.regular14,
         color: colors.gray2,
         marginBottom: 12,
     },
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         paddingVertical: 4,
     },
     dateText: {
-        fontSize: 12,
+        ...textStyle?.regular12,
         color: colors.gray2,
     },
 });

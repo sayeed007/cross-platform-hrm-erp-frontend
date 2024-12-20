@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useUser } from '../../context/UserContext'
 import { colors } from '../../utils/colors';
+import { textStyle } from '../../utils/textStyle';
 
 const PendingLeaveAndAttendance = () => {
     const { user, setUser } = useUser();
@@ -29,8 +30,7 @@ const PendingLeaveAndAttendance = () => {
 
 const styles = StyleSheet.create({
     titleText: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...textStyle?.bold16,
         marginBottom: 8,
     },
     pendingBlock: {
@@ -51,8 +51,7 @@ const styles = StyleSheet.create({
         height: 48,
         width: '30%',
         borderRadius: 6,
-        fontSize: 24,
-        fontWeight: 'bold',
+        ...textStyle?.bold24,
         color: colors?.white,
         padding: 'auto',
         textAlign: 'center',
@@ -65,8 +64,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors?.warning,
     },
     pendingLabel: {
-        fontSize: 14,
-        fontWeight: '600', // React Native uses numeric font weights, no 'semibold'
+        ...textStyle?.semibold14,
         marginLeft: 8,
         flexWrap: 'wrap', // Enable wrapping
         width: '70%', // Ensure the container has a constrained width

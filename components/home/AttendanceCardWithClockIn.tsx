@@ -12,6 +12,7 @@ import { useErrorModal } from '../../context/ErrorModalProvider';
 import { ModifyAttendanceClockInOutFormData } from '../../typeInterfaces/ModifyAttendanceClockInOutFormData';
 import { colors } from '../../utils/colors';
 import shadowStyles from '../../utils/shadowStyles';
+import { textStyle } from '../../utils/textStyle';
 
 
 const AttendanceCardWithClockIn: React.FC = () => {
@@ -355,8 +356,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     timerText: {
-        fontSize: 36,
-        fontWeight: 'bold',
+        ...textStyle?.bold36,
         color: colors.gray3,
         backgroundColor: colors.offWhite1,
         height: 62,
@@ -366,19 +366,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     colon: {
-        fontSize: 36,
-        fontWeight: 'bold',
+        ...textStyle?.bold36,
         color: colors.gray3,
         marginHorizontal: 4,
     },
     checkInStatusText: {
-        fontSize: 16,
+        ...textStyle?.regular16,
         color: colors.red,
         marginBottom: 8,
         margin: 'auto'
     },
     checkedInTimeText: {
-        fontSize: 16,
+        ...textStyle?.regular16,
         color: colors.gray3,
         marginBottom: 8,
     },
@@ -399,12 +398,11 @@ const styles = StyleSheet.create({
         ...shadowStyles?.orangishShadow
     },
     buttonText: {
-        fontSize: 16,
+        ...textStyle?.bold16,
         color: colors?.white,
-        fontWeight: 'bold',
     },
     attendanceDetails: {
-        fontSize: 14,
+        ...textStyle?.regular14,
         color: colors?.gray3,
     },
 });

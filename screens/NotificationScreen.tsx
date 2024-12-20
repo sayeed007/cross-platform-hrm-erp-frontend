@@ -20,6 +20,7 @@ import { useUser } from '../context/UserContext';
 import { markAllNotificationAsRead } from '../apis/HomeScreen';
 import { colors } from '../utils/colors';
 import { EmptyItems } from '../components/common/EmptyItems';
+import { textStyle } from '../utils/textStyle';
 
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeRoot'>;
@@ -147,8 +148,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     headerTitle: {
-        fontSize: 20,
-        fontWeight: 600,
+        ...textStyle?.semibold20,
     },
     secondaryHeader: {
         flexDirection: 'row',
@@ -157,8 +157,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     unread: {
-        fontSize: 20,
-        fontWeight: 'bold',
+        ...textStyle?.bold20,
     },
     dropdown: {
         position: 'absolute',
@@ -179,7 +178,7 @@ const styles = StyleSheet.create({
     },
     dropdownText: {
         marginLeft: 8,
-        fontSize: 16,
+        ...textStyle?.regular16,
         color: colors?.black,
     },
 });
