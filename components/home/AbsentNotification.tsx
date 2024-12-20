@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons'; // Icon library for the warning icon
+import { colors } from '../../utils/colors';
+import shadowStyles from '../../utils/shadowStyles';
 
 interface AbsentNotificationProps {
     onLinkPress: () => void; // Function with no parameters and no return value
@@ -12,7 +14,10 @@ const AbsentNotification: React.FC<AbsentNotificationProps> = ({ onLinkPress }) 
             <MaterialIcons
                 // name="error-outline"
                 name="warning"
-                size={24} color="#FFA726" style={styles.icon} />
+                size={24}
+                color={colors?.orange}
+                style={styles.icon}
+            />
             <View style={styles.textContainer}>
                 <Text style={styles.message}>
                     You were absent for 2 days. Please submit your leave request.{' '}
@@ -28,19 +33,15 @@ const AbsentNotification: React.FC<AbsentNotificationProps> = ({ onLinkPress }) 
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        backgroundColor: '#F8FAFC',
+        backgroundColor: colors?.white,
         borderRadius: 8,
         paddingVertical: 12,
         paddingHorizontal: 16,
         alignItems: 'center',
         borderLeftWidth: 4,
-        borderLeftColor: '#FFA726', // Orange border
-        elevation: 2, // Shadow effect for Android
-        shadowColor: '#000', // Shadow effect for iOS
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
+        borderLeftColor: colors?.orange, // Orange border
         marginBottom: 16,
+        ...shadowStyles?.popUpShadow2
     },
     icon: {
         marginRight: 12,
@@ -50,11 +51,11 @@ const styles = StyleSheet.create({
     },
     message: {
         fontSize: 14,
-        color: '#333333',
+        color: colors?.black,
         lineHeight: 20,
     },
     link: {
-        color: '#285FEC', // Blue color for link
+        color: colors?.info, // Blue color for link
         fontWeight: 'bold',
     },
 });

@@ -10,6 +10,8 @@ import Geolocation from 'react-native-geolocation-service';
 import { useSuccessModal } from '../../context/SuccessModalProvider';
 import { useErrorModal } from '../../context/ErrorModalProvider';
 import { ModifyAttendanceClockInOutFormData } from '../../typeInterfaces/ModifyAttendanceClockInOutFormData';
+import { colors } from '../../utils/colors';
+import shadowStyles from '../../utils/shadowStyles';
 
 
 const AttendanceCardWithClockIn: React.FC = () => {
@@ -220,11 +222,10 @@ const AttendanceCardWithClockIn: React.FC = () => {
                 <ModalLoader
                     visible={true}
                     message="Requesting for clock in/out."
-                    color="#10B981"
+                    color={colors?.success}
                     backgroundOpacity={0.6}
                 />
             }
-
 
             <View style={styles.attendanceCardWithClock}>
                 {/* Image/Icon */}
@@ -318,7 +319,7 @@ const AttendanceCardWithClockIn: React.FC = () => {
 // Styles
 const styles = StyleSheet.create({
     attendanceCardWithClock: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors?.white,
         paddingHorizontal: 16,
         paddingVertical: 24,
         borderRadius: 8,
@@ -356,8 +357,8 @@ const styles = StyleSheet.create({
     timerText: {
         fontSize: 36,
         fontWeight: 'bold',
-        color: '#1F2937',
-        backgroundColor: '#F4F6F8',
+        color: colors.gray3,
+        backgroundColor: colors.offWhite1,
         height: 62,
         width: 62,
         display: 'flex',
@@ -367,18 +368,18 @@ const styles = StyleSheet.create({
     colon: {
         fontSize: 36,
         fontWeight: 'bold',
-        color: '#1F2937',
+        color: colors.gray3,
         marginHorizontal: 4,
     },
     checkInStatusText: {
         fontSize: 16,
-        color: '#DC2626',
+        color: colors.red,
         marginBottom: 8,
         margin: 'auto'
     },
     checkedInTimeText: {
         fontSize: 16,
-        color: '#4B5563',
+        color: colors.gray3,
         marginBottom: 8,
     },
     button: {
@@ -390,38 +391,22 @@ const styles = StyleSheet.create({
         marginVertical: 20,
     },
     checkInButton: {
-        backgroundColor: '#10B981', // Green background
-        shadowColor: '#0D8050', // Slightly darker green for contrast
-        shadowOffset: { width: 0, height: 4 }, // Larger offset for more visible shadow
-        shadowOpacity: 0.6, // Increase opacity for more prominent shadow
-        shadowRadius: 6, // Larger blur radius for a smoother shadow
-        elevation: 10, // Higher elevation for Android
+        backgroundColor: colors?.success, // Green background
+        ...shadowStyles?.greenishShadow,
     },
     checkOutButton: {
-        backgroundColor: '#F97316', // Orange background
-        shadowColor: '#D9630E', // Slightly darker orange for contrast
-        shadowOffset: { width: 0, height: 4 }, // Larger offset for more visible shadow
-        shadowOpacity: 0.6, // Increase opacity for more prominent shadow
-        shadowRadius: 6, // Larger blur radius for a smoother shadow
-        elevation: 10, // Higher elevation for Android
+        backgroundColor: colors?.deepOrange, // Orange background
+        ...shadowStyles?.orangishShadow
     },
     buttonText: {
         fontSize: 16,
-        color: '#FFFFFF',
+        color: colors?.white,
         fontWeight: 'bold',
-    },
-    shiftText: {
-        fontSize: 14,
-        color: '#6B7280',
-        marginTop: 8,
     },
     attendanceDetails: {
         fontSize: 14,
-        color: '#637381',
+        color: colors?.gray3,
     },
-    centeredText: {
-        margin: 'auto'
-    }
 });
 
 export default AttendanceCardWithClockIn;

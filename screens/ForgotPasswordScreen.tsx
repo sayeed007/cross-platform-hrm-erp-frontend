@@ -11,6 +11,7 @@ import { useSuccessModal } from '../context/SuccessModalProvider';
 import { requestToUpdatePassword } from '../apis/ForgetPassword';
 import { useErrorModal } from '../context/ErrorModalProvider';
 import FullPageLoader from '../components/common/FullPageLoader';
+import { colors } from '../utils/colors';
 
 const ForgotPasswordScreen: React.FC = () => {
     const navigation = useNavigation<ForgotPasswordScreenNavigationProp>();
@@ -55,9 +56,9 @@ const ForgotPasswordScreen: React.FC = () => {
             }
 
             <View style={styles.container}>
-                <LinearGradient colors={['#1488CC', '#2B32B2']} style={styles.header}>
+                <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.header}>
                     <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                        <MaterialIcons name="arrow-back" size={24} color="#fff" />
+                        <MaterialIcons name="arrow-back" size={24} color={colors?.white} />
                     </TouchableOpacity>
                 </LinearGradient>
                 <View style={styles.content}>
@@ -68,11 +69,11 @@ const ForgotPasswordScreen: React.FC = () => {
                         Please enter your email address to request a password reset.
                     </Text>
                     <View style={styles.inputContainer}>
-                        <MaterialIcons name="email" size={24} color="#888" style={styles.icon} />
+                        <MaterialIcons name="email" size={24} color={colors?.black} style={styles.icon} />
                         <TextInput
                             style={styles.input}
                             placeholder="Enter your email"
-                            placeholderTextColor="#888"
+                            placeholderTextColor={colors?.black}
                             keyboardType="email-address"
                             onChangeText={handleChange('email')}
                             onBlur={handleBlur('email')}
@@ -84,7 +85,7 @@ const ForgotPasswordScreen: React.FC = () => {
                     {loading &&
                         <ActivityIndicator
                             size="large"
-                            color="#1488CC"
+                            color={colors?.spinner}
                         />
                     }
 
@@ -93,7 +94,7 @@ const ForgotPasswordScreen: React.FC = () => {
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.buttonContainer} onPress={() => handleSubmit()} disabled={loading}>
-                        <LinearGradient colors={['#1488CC', '#2B32B2']} style={styles.button}>
+                        <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.button}>
                             <Text style={styles.buttonText}>Send Instructions</Text>
                         </LinearGradient>
                     </TouchableOpacity>
@@ -109,7 +110,7 @@ const ForgotPasswordScreen: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: colors?.white,
         position: 'relative',
     },
     header: {
@@ -130,12 +131,12 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '90%',
-        backgroundColor: '#fff',
+        backgroundColor: colors?.white,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         paddingHorizontal: 20,
         paddingTop: 30,
-        shadowColor: '#000',
+        shadowColor: colors?.black,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
         shadowRadius: 4,
@@ -153,16 +154,16 @@ const styles = StyleSheet.create({
     subtitle: {
         fontSize: 14,
         textAlign: 'center',
-        color: '#888',
+        color: colors?.black,
         marginBottom: 24,
     },
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: '#ddd',
+        borderColor: colors?.offWhite5,
         borderRadius: 8,
-        backgroundColor: '#f9f9f9',
+        backgroundColor: colors?.white,
         marginBottom: 16,
     },
     icon: {
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
     },
     rememberPassword: {
         fontSize: 14,
-        color: '#1488CC',
+        color: colors?.info,
         textAlign: 'center',
         marginVertical: 16,
         textDecorationLine: 'underline',
@@ -191,17 +192,17 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     buttonText: {
-        color: '#fff',
+        color: colors?.white,
         fontSize: 16,
         fontWeight: 'bold',
     },
     errorText: {
-        color: '#DA5850',
+        color: colors?.error,
         fontSize: 16,
         fontWeight: 'bold',
     },
     validationText: {
-        color: '#DA5850',
+        color: colors?.error,
         fontSize: 16,
         fontWeight: 'bold',
     },

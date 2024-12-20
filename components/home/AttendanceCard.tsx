@@ -4,6 +4,7 @@ import { useUser } from '../../context/UserContext';
 import { getEmployeeAttendanceForClocking } from '../../apis/HomeScreen';
 import moment from 'moment';
 import { UserAttendanceInformationForClocking } from '../../typeInterfaces/UserAttendanceInformationForClocking';
+import { colors } from '../../utils/colors';
 
 const presentStatus = ['present', 'late'];
 
@@ -67,7 +68,7 @@ const AttendanceCard = () => {
 
 const styles = StyleSheet.create({
     attendanceCard: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors?.white,
         paddingHorizontal: 16,
         paddingVertical: 24,
         borderRadius: 8,
@@ -84,16 +85,16 @@ const styles = StyleSheet.create({
     attendanceTitle: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#637381',
+        color: colors?.gray2,
     },
     attendanceTime: {
         fontSize: 48,
         fontWeight: 'bold',
-        color: '#1D1E25',
+        color: colors?.gray4,
     },
     attendanceDetails: {
         fontSize: 14,
-        color: '#637381',
+        color: colors?.gray3,
     },
 })
 

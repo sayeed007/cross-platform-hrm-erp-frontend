@@ -18,6 +18,8 @@ import { Notification } from '../typeInterfaces/Notification';
 import { setTabBarVisibility } from '../utils/navigationUtils';
 import { useUser } from '../context/UserContext';
 import { markAllNotificationAsRead } from '../apis/HomeScreen';
+import { colors } from '../utils/colors';
+import { EmptyItems } from '../components/common/EmptyItems';
 
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeRoot'>;
@@ -77,7 +79,7 @@ const NotificationScreen = () => {
                 {/* Header */}
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => navigation.navigate('HomeRoot')}>
-                        <Ionicons name="arrow-back" size={24} color="#000" />
+                        <Ionicons name="arrow-back" size={24} color={colors?.black} />
                     </TouchableOpacity>
                     <Text style={styles.headerTitle}>Notification</Text>
                     <Text></Text>
@@ -91,7 +93,7 @@ const NotificationScreen = () => {
                     </View>
 
                     <TouchableOpacity onPress={toggleDropdown} ref={dropdownRef}>
-                        <MaterialCommunityIcons name="dots-horizontal" size={24} color="#000" />
+                        <MaterialCommunityIcons name="dots-horizontal" size={24} color={colors?.black} />
                     </TouchableOpacity>
                 </View>
 
@@ -99,13 +101,13 @@ const NotificationScreen = () => {
                 {dropdownVisible && (
                     <View style={styles.dropdown}>
                         <TouchableOpacity style={styles.dropdownItem} onPress={markAllRead}>
-                            <MaterialCommunityIcons name="check" size={20} color="#000" />
+                            <MaterialCommunityIcons name="check" size={20} color={colors?.black} />
                             <Text style={styles.dropdownText}>Mark all reads</Text>
                         </TouchableOpacity>
 
                         {/* <TouchableOpacity style={styles.dropdownItem} onPress={clearAll}>
-                            <MaterialCommunityIcons name="trash-can-outline" size={20} color="#EF4444" />
-                            <Text style={[styles.dropdownText, { color: '#EF4444' }]}>Clear all</Text>
+                            <MaterialCommunityIcons name="trash-can-outline" size={20} color={colors?.error} />
+                            <Text style={[styles.dropdownText, { color: {colors?.error} }]}>Clear all</Text>
                         </TouchableOpacity> */}
                     </View>
                 )}
@@ -119,16 +121,10 @@ const NotificationScreen = () => {
                         showsVerticalScrollIndicator={false}
                     />
                 ) : (
-                    <View style={styles.emptyState}>
-                        <Image
-                            source={require('../assets/images/EmptyBox.png')}
-                            style={styles.emptyImage}
-                        />
-                        <Text style={styles.emptyTitle}>No notification to show</Text>
-                        <Text style={styles.emptySubtitle}>
-                            Stay in the loop, you will be notified in any activities
-                        </Text>
-                    </View>
+                    <EmptyItems
+                        title={'No notification to show'}
+                        subtitle={'Stay in the loop, you will be notified in any activities.'}
+                    />
                 )}
             </View>
 
@@ -140,9 +136,8 @@ const NotificationScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F6F6F6',
+        backgroundColor: colors?.offWhite1,
         marginTop: Platform.OS === 'android' ? 24 : 0,
-
     },
     header: {
         flexDirection: 'row',
@@ -165,84 +160,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
     },
-    options: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 8,
-    },
-    optionButton: {
-        padding: 8,
-    },
-    optionText: {
-        fontSize: 14,
-        color: '#6B7280',
-    },
-    clearText: {
-        color: '#EF4444',
-    },
-    notificationContainer: {
-        flexDirection: 'row',
-        padding: 12,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 4,
-        elevation: 2,
-        backgroundColor: '#F3F4F6',
-    },
-    hasSeen: {
-        backgroundColor: '#FFFFFF',
-    },
-    avatar: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        marginHorizontal: 16,
-    },
-    avatarContainer: {
-        marginHorizontal: 16,
-    },
-    messageContainer: {
-        flex: 1,
-    },
-    sender: {
-        fontWeight: 'bold',
-        color: '#1F2937',
-    },
-    message: {
-        color: '#4B5563',
-        marginVertical: 4,
-    },
-    time: {
-        fontSize: 12,
-        color: '#9CA3AF',
-    },
-    emptyState: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    emptyImage: {
-        width: 250,
-        height: 250,
-        marginBottom: 16,
-    },
-    emptyTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#1F2937',
-    },
-    emptySubtitle: {
-        fontSize: 14,
-        color: '#6B7280',
-        textAlign: 'center',
-        marginTop: 8,
-    },
     dropdown: {
         position: 'absolute',
         right: 16,
         top: 100, // Adjust based on the position of your 3-dots
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors?.white,
         borderRadius: 8,
         elevation: 5, // Adds shadow
         paddingVertical: 8,
@@ -258,7 +180,7 @@ const styles = StyleSheet.create({
     dropdownText: {
         marginLeft: 8,
         fontSize: 16,
-        color: '#333333',
+        color: colors?.black,
     },
 });
 

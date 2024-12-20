@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Image, StyleSheet, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'; // Use expo-linear-gradient
+import { colors } from '../utils/colors';
 
 interface SplashScreenProps {
     setLoading: (value: boolean) => void; // Define the type of the setLoading function
@@ -39,12 +40,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ setLoading }) => {
                         { transform: [{ scaleX }] }, // Use scaleX for animation
                     ]}
                 >
-                    <LinearGradient
-                        colors={['#007AFF', '#0056b3']} // Gradient colors
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 0 }}
-                        style={styles.gradient}
-                    />
+                    <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.gradient} />
                 </Animated.View>
             </View>
         </View>
@@ -66,7 +62,7 @@ const styles = StyleSheet.create({
         bottom: 30,
         width: '80%',
         height: 10,
-        backgroundColor: '#e0e0e0', // Light gray for the background
+        backgroundColor: colors?.offWhite1, // Light gray for the background
         borderRadius: 5,
         overflow: 'hidden',
     },

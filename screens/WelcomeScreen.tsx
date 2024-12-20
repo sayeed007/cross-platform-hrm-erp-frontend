@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import { colors } from '../utils/colors';
 
 interface WelcomeScreen {
     setHasSeenWelcome: (value: boolean) => void; // Define the type of the setLoading function
@@ -30,16 +31,11 @@ const WelcomeScreen: React.FC<WelcomeScreen> = ({ setHasSeenWelcome }) => {
                 Your all-in-one solution for attendance, leave & all other HR modules.
             </Text>
             <TouchableOpacity onPress={handleGetStarted} style={styles.buttonContainer}>
-                <LinearGradient
-                    colors={['#007BFF', '#4A90E2']} // Gradient colors
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.button}
-                >
+                <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.button}>
                     <Text style={styles.buttonText}>Get Started</Text>
                 </LinearGradient>
             </TouchableOpacity>
-        </View>
+        </View >
     );
 };
 
@@ -49,7 +45,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
-        backgroundColor: '#fff',
+        backgroundColor: colors?.white,
     },
     image: {
         width: '70%',
@@ -60,13 +56,13 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         textAlign: 'center',
-        color: '#000',
+        color: colors?.black,
         marginBottom: 8,
     },
     subtitle: {
         fontSize: 14,
         textAlign: 'center',
-        color: '#666',
+        color: colors?.black,
         marginBottom: 40,
         paddingHorizontal: 20,
     },
@@ -80,7 +76,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonText: {
-        color: '#fff',
+        color: colors?.white,
         fontWeight: 'bold',
         fontSize: 16,
     },

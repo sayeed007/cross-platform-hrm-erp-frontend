@@ -9,6 +9,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { throttle } from 'lodash';
 import { setTabBarVisibility } from '../utils/navigationUtils';
+import { colors } from '../utils/colors';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const fullMonthNames = [
@@ -95,10 +96,10 @@ const NoticeScreen: React.FC<NoticeScreenProps> = ({ route }) => {
     return (
         <View style={styles.container}>
             {/* Gradient Header */}
-            <LinearGradient colors={['#1488CC', '#2B32B2']} style={styles.header}>
+            <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.header}>
                 <View style={styles.navBar}>
                     <TouchableOpacity onPress={() => navigation.navigate('HomeRoot')}>
-                        <Icon name="arrow-left" size={24} color="#FFFFFF" />
+                        <Icon name="arrow-left" size={24} color={colors?.white} />
                     </TouchableOpacity>
                     <Text style={styles.navTitle}>Notice</Text>
                     <View />
@@ -168,7 +169,7 @@ const NoticeScreen: React.FC<NoticeScreenProps> = ({ route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F9FAFB',
+        backgroundColor: colors?.offWhite1,
     },
     header: {
         paddingTop: 40,
@@ -183,7 +184,7 @@ const styles = StyleSheet.create({
     navTitle: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#FFFFFF',
+        color: colors?.white,
     },
     monthTabs: {
         paddingVertical: 15,
@@ -197,13 +198,13 @@ const styles = StyleSheet.create({
     },
     activeMonthTab: {
         borderWidth: 1,
-        borderColor: '#FFFFFF',
+        borderColor: colors?.white,
         borderRadius: 16,
     },
     monthTabText: {
         fontSize: 14,
         fontWeight: '600',
-        color: '#FFFFFF',
+        color: colors?.white,
     },
     noticeContainer: {
         flex: 1,
@@ -213,13 +214,13 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#374151',
+        color: colors?.gray4,
         marginBottom: 12,
     },
     noNotices: {
         textAlign: 'center',
         fontSize: 14,
-        color: '#9CA3AF',
+        color: colors?.gray3,
         marginVertical: 10,
     },
 });

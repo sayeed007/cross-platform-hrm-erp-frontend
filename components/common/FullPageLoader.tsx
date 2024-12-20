@@ -1,5 +1,7 @@
 import React from 'react';
 import { Modal, View, StyleSheet, Image } from 'react-native';
+import { colors } from '../../utils/colors';
+import shadowStyles from '../../utils/shadowStyles';
 
 interface LoaderProps {
     visible: boolean;
@@ -31,19 +33,15 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.2)', // Semi-transparent overlay
+        backgroundColor: colors?.modalBG, // Semi-transparent overlay
     },
     loaderContainer: {
         width: '100%',
         height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5, // For Android shadow
+        backgroundColor: colors?.offWhite1,
+        ...shadowStyles?.popUpShadow2
     },
     loaderImage: {
         width: '60%',

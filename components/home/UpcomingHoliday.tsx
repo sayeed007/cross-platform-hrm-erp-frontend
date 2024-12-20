@@ -9,6 +9,7 @@ import { useUser } from '../../context/UserContext';
 import { defaultHolidayWithMonth, HolidayWithMonth } from '../../typeInterfaces/Holiday';
 import { RootStackParamList } from '../../typeInterfaces/navigationTypes';
 import HolidayCard from './HolidayCard';
+import { colors } from '../../utils/colors';
 
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -77,14 +78,14 @@ const UpcomingHoliday = () => {
                 <Text style={styles.headerTitle}>Upcoming Holiday</Text>
                 <TouchableOpacity onPress={handleSeeAllPress} style={styles.seeAll}>
                     <Text style={styles.seeAllText}>See All</Text>
-                    <Feather name="arrow-up-right" size={14} color="#2563EB" />
+                    <Feather name="arrow-up-right" size={14} color={colors?.info} />
                 </TouchableOpacity>
             </View>
 
             {loading ?
                 <>
                     <View style={[styles.loadingContainer, styles.marginBottom]}>
-                        <ActivityIndicator size="large" color="#4F46E5" />
+                        <ActivityIndicator size="large" color={colors?.spinner} />
                         <Text style={styles.loadingText}>Loading...</Text>
                     </View>
                 </>
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#111827',
+        color: colors?.gray4,
     },
     seeAll: {
         flexDirection: 'row',
@@ -128,13 +129,13 @@ const styles = StyleSheet.create({
     seeAllText: {
         fontSize: 14,
         fontWeight: '600',
-        color: '#2563EB',
+        color: colors?.info,
         marginRight: 4,
     },
     noNotice: {
         textAlign: 'center',
         fontSize: 14,
-        color: '#999999',
+        color: colors?.gray2,
         marginTop: 12,
     },
     loadingContainer: {
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
     loadingText: {
         marginTop: 10,
         fontSize: 16,
-        color: '#4B5563',
+        color: colors?.gray2,
     },
     marginBottom: {
         marginBottom: 16,

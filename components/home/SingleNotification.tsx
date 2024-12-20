@@ -3,6 +3,8 @@ import { Notification } from "../../typeInterfaces/Notification";
 import { BASE_URL } from "../../Server";
 import { Avatar } from "react-native-elements";
 import moment from "moment";
+import { colors } from "../../utils/colors";
+import shadowStyles from "../../utils/shadowStyles";
 
 
 interface SingleNotificationProps {
@@ -38,8 +40,8 @@ export const SingleNotification: React.FC<SingleNotificationProps> = ({ item }) 
                         size={40} // Size of the avatar
                         rounded   // Makes it circular
                         title={'HRM'} // Fallback initials
-                        overlayContainerStyle={{ backgroundColor: '#4A5568' }} // Background color
-                        titleStyle={{ color: '#FFFFFF', fontWeight: 400, fontSize: 12 }} // Style for initials
+                        overlayContainerStyle={{ backgroundColor: colors?.gray3 }} // Background color
+                        titleStyle={{ color: colors?.white, fontWeight: 400, fontSize: 12 }} // Style for initials
                     />
                 </View>
             }
@@ -61,15 +63,11 @@ const styles = StyleSheet.create({
     notificationContainer: {
         flexDirection: 'row',
         padding: 12,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 4,
-        elevation: 2,
-        backgroundColor: '#EFF2F4',
+        backgroundColor: colors?.offWhite3,
+        ...shadowStyles?.popUpShadow2
     },
     hasSeen: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors?.white,
     },
     avatar: {
         width: 40,
@@ -83,16 +81,12 @@ const styles = StyleSheet.create({
     messageContainer: {
         flex: 1,
     },
-    sender: {
-        fontWeight: 'bold',
-        color: '#1F2937',
-    },
     message: {
-        color: '#4B5563',
+        color: colors?.gray4,
         marginVertical: 4,
     },
     time: {
         fontSize: 12,
-        color: '#9CA3AF',
+        color: colors?.gray1,
     },
 });

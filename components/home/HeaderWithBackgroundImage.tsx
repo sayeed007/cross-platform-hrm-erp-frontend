@@ -9,6 +9,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { RootStackParamList } from '../../typeInterfaces/navigationTypes'
 import { useNavigation } from '@react-navigation/native'
 import { useSubscription } from '../../context/SubscriptionContext'
+import { colors } from '../../utils/colors'
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -48,7 +49,7 @@ const HeaderWithBackgroundImage = () => {
                         </TouchableOpacity>
 
                         <TouchableOpacity style={styles.notificationIcon} onPress={handleNotificationPress}>
-                            <Ionicons name="notifications-outline" size={28} color="#FFFFFF" />
+                            <Ionicons name="notifications-outline" size={28} color={colors?.white} />
                             {(unreadCount > 0) && <View style={styles.redDot} />}
                         </TouchableOpacity>
                     </View>
@@ -94,11 +95,11 @@ const styles = StyleSheet.create({
         height: 40,
         borderRadius: 20,
         borderWidth: 2,
-        borderColor: '#FFFFFF'
+        borderColor: colors?.white
     },
     routeName: {
         fontSize: 18,
-        color: '#FFFFFF',
+        color: colors?.white,
         fontWeight: 'bold',
         marginLeft: 10,
     },
@@ -119,12 +120,12 @@ const styles = StyleSheet.create({
     },
     greetingText: {
         fontSize: 20,
-        color: '#FFFFFF',
+        color: colors?.white,
     },
     userName: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: '#FFFFFF',
+        color: colors?.white,
     },
 
 })

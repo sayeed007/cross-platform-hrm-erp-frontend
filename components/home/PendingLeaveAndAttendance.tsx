@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useUser } from '../../context/UserContext'
+import { colors } from '../../utils/colors';
 
 const PendingLeaveAndAttendance = () => {
     const { user, setUser } = useUser();
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     pendingItem: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors?.white,
         padding: 12,
         borderRadius: 8,
         alignItems: 'center',
@@ -52,16 +53,16 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         fontSize: 24,
         fontWeight: 'bold',
-        color: '#FFFFFF',
+        color: colors?.white,
         padding: 'auto',
         textAlign: 'center',
         lineHeight: 48,
     },
     leaveBackground: {
-        backgroundColor: '#349B67',
+        backgroundColor: colors?.success,
     },
     attendanceBackground: {
-        backgroundColor: '#FBA05E',
+        backgroundColor: colors?.warning,
     },
     pendingLabel: {
         fontSize: 14,

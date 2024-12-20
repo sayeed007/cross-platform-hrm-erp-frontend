@@ -12,6 +12,7 @@ import { useSubscription } from '../context/SubscriptionContext';
 import * as Notifications from "expo-notifications";
 import { SingleNotification } from '../components/home/SingleNotification';
 import { defaultNotification } from '../typeInterfaces/Notification';
+import { colors } from '../utils/colors';
 const BottomBar = createBottomTabNavigator();
 
 // Extract the screenOptions logic
@@ -28,12 +29,12 @@ const getScreenOptions = ({ route }: { route: any }) => ({
             <Ionicons
                 name={iconName}
                 size={24}
-                color={focused ? '#4F46E5' : '#A0AEC0'}
+                color={focused ? colors?.spinner : colors?.bottomNav}
             />
         );
     },
     tabBarLabel: ({ focused }: { focused: boolean }) => (
-        <Text style={{ fontSize: 12, color: focused ? '#4F46E5' : '#A0AEC0' }}>
+        <Text style={{ fontSize: 12, color: focused ? colors?.spinner : colors?.bottomNav }}>
             {route.name}
         </Text>
     ),
@@ -141,54 +142,20 @@ const styles = StyleSheet.create({
     },
     tabBarStyle: {
         position: 'absolute',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors?.white,
         height: 60,
+        borderColor: colors?.offWhite1,
         borderTopWidth: 0, // Remove the border
         shadowColor: 'transparent', // Remove shadow for iOS
         elevation: 0, // Remove shadow for Android
-    },
-    navigatorContainer: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.22,
-        shadowRadius: 2.22,
-    },
-    navigator: {
-        borderTopWidth: 0,
-        backgroundColor: 'transparent',
-        elevation: 30,
-    },
-    xFillLine: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: 34,
     },
     modalContainer: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        backgroundColor: colors?.modalBG,
         paddingHorizontal: 20,
         paddingVertical: 40,
     },
-    modalContent: {
-        width: "80%",
-        backgroundColor: "white",
-        borderRadius: 10,
-        padding: 20,
-        alignItems: "center",
-    },
-    modalText: {
-        fontSize: 18,
-        fontWeight: "bold",
-    },
+
 });

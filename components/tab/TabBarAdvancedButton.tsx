@@ -3,6 +3,9 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { FontAwesome as Icon } from '@expo/vector-icons';
 import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
 import { TabBg } from '../../svg/TabBg';
+import { colors } from '../../utils/colors';
+import Feather from '@expo/vector-icons/Feather';
+
 
 type Props = BottomTabBarButtonProps;
 
@@ -17,10 +20,7 @@ export const TabBarAdvancedButton: React.FC<Props> = ({ ...props }) => (
             style={styles.button}
             onPress={props.onPress}
         >
-            <Icon
-                name="plus"
-                style={styles.buttonIcon}
-            />
+            <Feather name="plus" size={24} color="white" />
         </TouchableOpacity>
     </View>
 );
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         width: 75,
         alignItems: 'center',
-        backgroundColor: '#F6F6F6',
+        backgroundColor: colors?.offWhite1,
     },
     background: {
         position: 'absolute',
@@ -43,10 +43,10 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 27,
-        backgroundColor: '#4263EB',
+        backgroundColor: colors?.info,
     },
     buttonIcon: {
-        fontSize: 24,
-        color: '#F6F7EB'
+        fontSize: 16,
+        color: colors?.white
     }
 });

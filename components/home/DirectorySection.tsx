@@ -18,6 +18,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../typeInterfaces/navigationTypes';
+import { colors } from '../../utils/colors';
 
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -70,8 +71,8 @@ const DirectorySection = () => {
                                 size={30} // Size of the avatar
                                 rounded   // Makes it circular
                                 title={`${obj.firstName.charAt(0)}${obj.lastName.charAt(0)}`} // Fallback initials
-                                overlayContainerStyle={{ backgroundColor: '#4A5568' }} // Background color
-                                titleStyle={{ color: '#FFFFFF', fontWeight: 'bold' }} // Style for initials
+                                overlayContainerStyle={{ backgroundColor: colors?.gray3 }} // Background color
+                                titleStyle={{ color: colors?.white, fontWeight: 'bold' }} // Style for initials
                             />
                         );
                         profileShowImage = (
@@ -79,8 +80,8 @@ const DirectorySection = () => {
                                 size={60} // Size of the avatar
                                 rounded   // Makes it circular
                                 title={`${obj.firstName.charAt(0)}${obj.lastName.charAt(0)}`} // Fallback initials
-                                overlayContainerStyle={{ backgroundColor: '#4A5568' }} // Background color
-                                titleStyle={{ color: '#FFFFFF', fontWeight: 'bold' }} // Style for initials
+                                overlayContainerStyle={{ backgroundColor: colors?.gray3 }} // Background color
+                                titleStyle={{ color: colors?.white, fontWeight: 'bold' }} // Style for initials
                             />
                         );
                     }
@@ -112,7 +113,7 @@ const DirectorySection = () => {
                 <Text style={styles.title}>Directory</Text>
                 <TouchableOpacity onPress={handleSeeAllPress} style={styles.seeAll}>
                     <Text style={styles.seeAllText}>See All</Text>
-                    <Feather name="arrow-up-right" size={14} color="#2563EB" />
+                    <Feather name="arrow-up-right" size={14} color={colors?.info} />
                 </TouchableOpacity>
             </View>
 
@@ -120,7 +121,7 @@ const DirectorySection = () => {
             {loading ?
                 <>
                     <View style={[styles.loadingContainer, styles.marginBottom]}>
-                        <ActivityIndicator size="large" color="#4F46E5" />
+                        <ActivityIndicator size="large" color={colors?.info} />
                         <Text style={styles.loadingText}>Loading...</Text>
                     </View>
                 </>
@@ -153,7 +154,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#111827',
+        color: colors?.black,
     },
     seeAll: {
         flexDirection: 'row',
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
     seeAllText: {
         fontSize: 14,
         fontWeight: '600',
-        color: '#2563EB',
+        color: colors?.info,
         marginRight: 4,
     },
     avatarContainer: {
@@ -177,7 +178,7 @@ const styles = StyleSheet.create({
     },
     avatarName: {
         fontSize: 12,
-        color: '#4B5563',
+        color: colors?.black,
         width: 60,
         textAlign: 'center',
     },
@@ -196,7 +197,7 @@ const styles = StyleSheet.create({
     loadingText: {
         marginTop: 10,
         fontSize: 16,
-        color: '#4B5563',
+        color: colors?.black,
     },
 });
 

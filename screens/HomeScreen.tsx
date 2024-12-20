@@ -1,11 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import {
-    Modal,
-    Platform,
-    SafeAreaView,
     ScrollView,
-    StatusBar,
     StyleSheet,
     View
 } from 'react-native';
@@ -16,12 +12,11 @@ import DirectorySection from '../components/home/DirectorySection';
 import HeaderWithBackgroundImage from '../components/home/HeaderWithBackgroundImage';
 import LatestNotice from '../components/home/LatestNotice';
 import PendingLeaveAndAttendance from '../components/home/PendingLeaveAndAttendance';
+import UpcomingHoliday from '../components/home/UpcomingHoliday';
 import { useUser } from '../context/UserContext';
 import { HomeScreenNavigationProp } from '../typeInterfaces/navigationTypes';
-import UpcomingHoliday from '../components/home/UpcomingHoliday';
+import { colors } from '../utils/colors';
 import { setTabBarVisibility } from '../utils/navigationUtils';
-import { useSubscription } from '../context/SubscriptionContext';
-import * as Notifications from "expo-notifications";
 
 const HomeScreen = () => {
 
@@ -94,57 +89,13 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: 'F6F6F6',
+        backgroundColor: colors?.offWhite1,
     },
     container: {
         width: '100%',
         padding: '4%',
         position: 'relative',
         paddingBottom: 40,
-    },
-    absentBlock: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#FFFAF0',
-        padding: 12,
-        borderRadius: 8,
-        marginBottom: 16,
-    },
-    absentText: {
-        marginLeft: 8,
-        color: '#6B7280',
-    },
-    link: {
-        color: '#4F46E5',
-        textDecorationLine: 'underline',
-    },
-    directorySection: {
-        marginBottom: 16,
-    },
-    sectionTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 8,
-    },
-    avatarContainer: {
-        alignItems: 'center',
-        marginRight: 16,
-    },
-    avatarName: {
-        marginTop: 4,
-        fontSize: 12,
-        color: '#6B7280',
-    },
-    policySection: {
-        marginBottom: 16,
-        padding: 16,
-        backgroundColor: '#FFFFFF',
-        borderRadius: 8,
-        elevation: 2,
-    },
-    policyText: {
-        fontSize: 14,
-        color: '#6B7280',
     },
 });
 

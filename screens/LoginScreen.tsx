@@ -12,6 +12,7 @@ import { getUserAdditionalAccessibility, getUserInfo, userLogIn } from '../apis/
 import { useSuccessModal } from '../context/SuccessModalProvider';
 import { useErrorModal } from '../context/ErrorModalProvider';
 import { User, useUser } from '../context/UserContext';
+import { colors } from '../utils/colors';
 
 const LoginScreen: React.FC = () => {
     const navigation = useNavigation<LoginScreenNavigationProp>();
@@ -82,7 +83,7 @@ const LoginScreen: React.FC = () => {
             <View style={styles.container}>
 
                 {/* Header Section */}
-                <LinearGradient colors={['#1488CC', '#2B32B2']} style={styles.header}>
+                <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.header}>
                     <Image
                         source={require('../assets/images/Tafuri-HRMS-Logo-On-Blue.png')}
                         style={styles.logo}
@@ -102,11 +103,11 @@ const LoginScreen: React.FC = () => {
 
                         {/* Email Input */}
                         <View style={styles.inputContainer}>
-                            <MaterialIcons name="email" size={24} color="#888" style={styles.icon} />
+                            <MaterialIcons name="email" size={24} color={colors?.black} style={styles.icon} />
                             <TextInput
                                 style={styles.input}
                                 placeholder="Email"
-                                placeholderTextColor="#888"
+                                placeholderTextColor={colors?.black}
                                 keyboardType="email-address"
                                 value={values?.username}
                                 onChangeText={handleChange('username')}
@@ -119,13 +120,13 @@ const LoginScreen: React.FC = () => {
                         {/* Password Input */}
                         <View style={styles.inputContainer}>
                             {/* Lock Icon */}
-                            <MaterialIcons name="lock" size={24} color="#888" style={styles.icon} />
+                            <MaterialIcons name="lock" size={24} color={colors?.black} style={styles.icon} />
 
                             {/* Password TextInput */}
                             <TextInput
                                 style={styles.input}
                                 placeholder="Password"
-                                placeholderTextColor="#888"
+                                placeholderTextColor={colors?.black}
                                 secureTextEntry={!isPasswordVisible} // Toggle secureTextEntry based on visibility
                                 value={values?.password}
                                 onChangeText={handleChange('password')}
@@ -137,7 +138,7 @@ const LoginScreen: React.FC = () => {
                                 <MaterialIcons
                                     name={isPasswordVisible ? 'visibility' : 'visibility-off'}
                                     size={24}
-                                    color="#888"
+                                    color={colors?.black}
                                     style={styles.icon}
                                 />
                             </TouchableOpacity>
@@ -151,7 +152,7 @@ const LoginScreen: React.FC = () => {
                                 <Checkbox
                                     value={isChecked}
                                     onValueChange={setIsChecked}
-                                    color={isChecked ? '#007BFF' : undefined}
+                                    color={isChecked ? colors?.info : undefined}
                                 />
                                 <Text style={styles.checkboxLabel}>Remember me</Text>
                             </View>
@@ -162,7 +163,7 @@ const LoginScreen: React.FC = () => {
 
                         {/* Sign In Button */}
                         <TouchableOpacity style={styles.buttonContainer} onPress={() => handleSubmit()}>
-                            <LinearGradient colors={['#1488CC', '#2B32B2']} style={styles.button}>
+                            <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.button}>
                                 <Text style={styles.buttonText}>Sign In</Text>
                             </LinearGradient>
                         </TouchableOpacity>
@@ -176,7 +177,7 @@ const LoginScreen: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: colors?.white,
         position: 'relative',
     },
     header: {
@@ -198,7 +199,7 @@ const styles = StyleSheet.create({
         height: '70%',
 
         // Shadow for iOS
-        shadowColor: '#000',
+        shadowColor: colors?.black,
         shadowOffset: { width: 0, height: -3 },
         shadowOpacity: 0.1,
         shadowRadius: 6,
@@ -209,7 +210,7 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         width: '100%',
-        backgroundColor: '#fff',
+        backgroundColor: colors?.white,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         paddingHorizontal: 20,
@@ -227,17 +228,17 @@ const styles = StyleSheet.create({
     subtitle: {
         fontSize: 14,
         textAlign: 'center',
-        color: '#888',
+        color: colors?.black,
         marginBottom: 24,
     },
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: '#ddd',
+        borderColor: colors?.offWhite5,
         borderRadius: 8,
         marginBottom: 16,
-        backgroundColor: '#f9f9f9',
+        backgroundColor: colors?.white,
     },
     icon: {
         marginHorizontal: 8,
@@ -260,12 +261,12 @@ const styles = StyleSheet.create({
     },
     checkboxLabel: {
         fontSize: 14,
-        color: '#444',
+        color: colors?.black,
         marginLeft: 8,
     },
     forgotPassword: {
         fontSize: 14,
-        color: '#007BFF',
+        color: colors?.info,
         textDecorationLine: 'underline',
     },
     buttonContainer: {
@@ -278,12 +279,12 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     buttonText: {
-        color: '#fff',
+        color: colors?.white,
         fontSize: 16,
         fontWeight: 'bold',
     },
     validationText: {
-        color: '#DA5850',
+        color: colors?.error,
         fontSize: 16,
         fontWeight: 'bold',
     },

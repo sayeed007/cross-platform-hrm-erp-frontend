@@ -12,6 +12,7 @@ import {
 import * as Clipboard from 'expo-clipboard';
 import Icon from 'react-native-vector-icons/Feather'; // Icons library
 import { DirectoryEmployeeOption } from '../../typeInterfaces/DirectoryEmployee';
+import { colors } from '../../utils/colors';
 
 interface EmployeeContactDetailsModalProps {
     employee: DirectoryEmployeeOption | null;
@@ -75,7 +76,7 @@ const EmployeeContactDetailsModal: React.FC<EmployeeContactDetailsModalProps> = 
 
                             {/* Phone */}
                             <View style={styles.contactRow}>
-                                <Icon name="phone" size={20} color="#111827" style={styles.icon} />
+                                <Icon name="phone" size={20} color={colors?.black} style={styles.icon} />
                                 <Text style={styles.contactText}>
                                     {employee.phone || 'N/A'}
                                 </Text>
@@ -84,7 +85,7 @@ const EmployeeContactDetailsModal: React.FC<EmployeeContactDetailsModalProps> = 
                                     <TouchableOpacity
                                         onPress={() => openPhoneDialer(employee.phone || '')}
                                     >
-                                        <Icon name="phone-call" size={20} color="#34D399" />
+                                        <Icon name="phone-call" size={20} color={colors?.green} />
                                     </TouchableOpacity>
                                     {/* Copy Icon */}
                                     <TouchableOpacity
@@ -93,7 +94,7 @@ const EmployeeContactDetailsModal: React.FC<EmployeeContactDetailsModalProps> = 
                                         <Icon
                                             name={copiedField === 'phone' ? 'check' : 'copy'}
                                             size={20}
-                                            color={copiedField === 'phone' ? '#22C55E' : '#2563EB'}
+                                            color={copiedField === 'phone' ? colors?.green : colors?.info}
                                         />
                                     </TouchableOpacity>
                                 </View>
@@ -101,7 +102,7 @@ const EmployeeContactDetailsModal: React.FC<EmployeeContactDetailsModalProps> = 
 
                             {/* Email */}
                             <View style={styles.contactRow}>
-                                <Icon name="mail" size={20} color="#111827" style={styles.icon} />
+                                <Icon name="mail" size={20} color={colors?.black} style={styles.icon} />
                                 <Text style={styles.contactText}>
                                     {employee.email || 'N/A'}
                                 </Text>
@@ -111,7 +112,7 @@ const EmployeeContactDetailsModal: React.FC<EmployeeContactDetailsModalProps> = 
                                     <Icon
                                         name={copiedField === 'email' ? 'check' : 'copy'}
                                         size={20}
-                                        color={copiedField === 'email' ? '#22C55E' : '#2563EB'}
+                                        color={copiedField === 'email' ? colors?.green : colors?.info}
                                     />
                                 </TouchableOpacity>
                             </View>
@@ -128,10 +129,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: colors?.modalBG,
     },
     modalContent: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors?.white,
         padding: 20,
         borderRadius: 8,
         width: '85%',
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 16,
         borderBottomWidth: 1,
-        borderColor: '#C4CDD5',
+        borderColor: colors?.offWhite5,
         paddingBottom: 8,
     },
     employeeInfo: {
@@ -156,13 +157,13 @@ const styles = StyleSheet.create({
     },
     employeeRole: {
         fontSize: 12,
-        color: '#6B7280'
+        color: colors?.gray2
     },
     department: {
         fontSize: 12,
         fontWeight: '600',
-        color: '#2563EB',
-        backgroundColor: '#E0F2FE',
+        color: colors?.info,
+        backgroundColor: colors?.infoBG,
         paddingHorizontal: 8,
         paddingVertical: 4,
         borderRadius: 4,
@@ -175,7 +176,7 @@ const styles = StyleSheet.create({
     },
     contactText: {
         fontSize: 14,
-        color: '#111827',
+        color: colors?.black,
         flex: 1,
         marginLeft: 8
     },

@@ -1,5 +1,7 @@
 import React from 'react';
 import { Modal, View, StyleSheet, ActivityIndicator, Text } from 'react-native';
+import { colors } from '../../utils/colors';
+import shadowStyles from '../../utils/shadowStyles';
 
 interface LoaderModalProps {
     visible: boolean;
@@ -11,7 +13,7 @@ interface LoaderModalProps {
 const ModalLoader: React.FC<LoaderModalProps> = ({
     visible,
     message = 'Loading...', // Default message
-    color = '#4F46E5', // Default spinner color
+    color = colors?.spinner, // Default spinner color
     backgroundOpacity = 0.4, // Default background opacity
 }) => {
     return (
@@ -41,19 +43,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 16,
-        backgroundColor: '#FFF',
+        backgroundColor: colors?.white,
         borderRadius: 12,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5, // For Android shadow
         minWidth: 150,
+        ...shadowStyles?.popUpShadow2
     },
     message: {
         marginTop: 12,
         fontSize: 16,
-        color: '#333',
+        color: colors?.black,
         textAlign: 'center',
     },
 });

@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import NoticeScreen from '../screens/NoticeScreen';
 import HolidayScreen from '../screens/HolidayScreen';
 import NotificationScreen from '../screens/NotificationScreen';
+import { colors } from '../utils/colors';
 
 // Define the stack with RootStackParamList
 const Stack = createStackNavigator<RootStackParamList>();
@@ -21,16 +22,11 @@ const GradientHeader = ({
     title: string;
     navigation: StackNavigationProp<RootStackParamList>;
 }) => (
-    <LinearGradient
-        colors={['#1488CC', '#2B32B2']} // Single gradient for header and nav
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.headerGradient}
-    >
+    <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.headerGradient}>
         {/* Navigation Section */}
         <View style={styles.navBar}>
             <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-                <Icon name="arrow-left" size={24} color="#FFFFFF" />
+                <Icon name="arrow-left" size={24} color={colors?.white} />
             </TouchableOpacity>
             <Text style={styles.navTitle}>{title}</Text>
         </View>
@@ -93,7 +89,7 @@ const styles = StyleSheet.create({
     navTitle: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#FFFFFF',
+        color: colors?.white,
         marginLeft: 12,
     },
 });

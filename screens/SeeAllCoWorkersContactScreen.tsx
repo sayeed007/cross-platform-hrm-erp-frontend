@@ -15,6 +15,7 @@ import EmployeeContactDetailsModal from '../components/home/EmployeeContactDetai
 import { DirectoryEmployeeOption } from '../typeInterfaces/DirectoryEmployee';
 import { RootStackParamList, SeeAllCoWorkersContactScreenProps } from '../typeInterfaces/navigationTypes';
 import { setTabBarVisibility } from '../utils/navigationUtils';
+import { colors } from '../utils/colors';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeRoot'>;
 
@@ -59,10 +60,10 @@ const SeeAllCoWorkersContactScreen: React.FC<SeeAllCoWorkersContactScreenProps> 
     return (
         <View style={styles.container}>
             {/* Gradient Header */}
-            <LinearGradient colors={['#1488CC', '#2B32B2']} style={styles.header}>
+            <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.header}>
                 <View style={styles.navBar}>
                     <TouchableOpacity onPress={() => navigation.navigate('HomeRoot')}>
-                        <Icon name="arrow-left" size={24} color="#FFFFFF" />
+                        <Icon name="arrow-left" size={24} color={colors?.white} />
                     </TouchableOpacity>
                     <Text style={styles.navTitle}>Directory</Text>
                     <Text></Text>
@@ -76,7 +77,7 @@ const SeeAllCoWorkersContactScreen: React.FC<SeeAllCoWorkersContactScreenProps> 
             <TextInput
                 style={styles.searchBar}
                 placeholder="Search here"
-                placeholderTextColor="#6B7280"
+                placeholderTextColor={colors?.gray2}
                 value={search}
                 onChangeText={setSearch}
             />
@@ -113,7 +114,7 @@ const SeeAllCoWorkersContactScreen: React.FC<SeeAllCoWorkersContactScreenProps> 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F8FAFC',
+        backgroundColor: colors?.offWhite1,
     },
     header: {
         paddingTop: 40,
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
     navTitle: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#FFFFFF',
+        color: colors?.white,
         marginLeft: 12,
     },
     headerContainer: {
@@ -137,36 +138,45 @@ const styles = StyleSheet.create({
     subHeaderText: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#FFFFFF',
+        color: colors?.white,
         paddingVertical: 15,
         paddingHorizontal: 15,
     },
     searchBar: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors?.white,
         borderRadius: 8,
         padding: 10,
         margin: 16,
-        borderColor: '#E2E8F0',
+        borderColor: colors?.offWhite5,
         borderWidth: 1,
     },
     employeeCard: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors?.white,
         padding: 12,
         borderRadius: 8,
         marginBottom: 12,
         marginHorizontal: 16,
     },
-    employeeInfo: { flex: 1, marginLeft: 10 },
-    employeeName: { fontSize: 16, fontWeight: 'bold' },
-    employeeRole: { fontSize: 12, color: '#6B7280' },
+    employeeInfo: {
+        flex: 1,
+        marginLeft: 10
+    },
+    employeeName: {
+        fontSize: 16,
+        fontWeight: 'bold'
+    },
+    employeeRole: {
+        fontSize: 12,
+        color: colors?.gray2,
+    },
     department: {
         fontSize: 12,
         fontWeight: '600',
-        color: '#2563EB',
-        backgroundColor: '#E0F2FE',
+        color: colors?.info,
+        backgroundColor: colors?.infoBG,
         paddingHorizontal: 8,
         paddingVertical: 4,
         borderRadius: 4,

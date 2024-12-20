@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useRef } from 'react';
 import { Modal, View, Text, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { colors } from '../utils/colors';
 
 interface SuccessModalContextType {
     showSuccess: (message: string, onClose?: () => void, delay?: number) => void;
@@ -45,7 +46,7 @@ export const SuccessModalProvider: React.FC<{ children: React.ReactNode }> = ({ 
                 <Modal animationType="fade" transparent visible={isVisible}>
                     <View style={styles.overlay}>
                         <View style={styles.modalContainer}>
-                            <MaterialIcons name="check-circle" size={64} color="#4CAF50" />
+                            <MaterialIcons name="check-circle" size={64} color={colors?.success} />
                             <Text style={styles.message}>{message}</Text>
                         </View>
                     </View>
@@ -68,15 +69,15 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: colors?.modalBG,
     },
     modalContainer: {
         width: '60%',
         padding: 20,
-        backgroundColor: '#fff',
+        backgroundColor: colors?.white,
         borderRadius: 8,
         alignItems: 'center',
-        shadowColor: '#000',
+        shadowColor: colors?.black,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 4,
@@ -87,6 +88,6 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         textAlign: 'center',
         marginVertical: 16,
-        color: '#333',
+        color: colors?.black,
     },
 });

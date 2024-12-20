@@ -2,6 +2,8 @@ import moment from 'moment';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather'; // For icons
+import { colors } from '../../utils/colors';
+import shadowStyles from '../../utils/shadowStyles';
 
 interface HolidayCardProps {
     holidayTitle: string | null;
@@ -23,7 +25,7 @@ const HolidayCard: React.FC<HolidayCardProps> = ({
 
             {/* Dates */}
             <View style={styles.dateRow}>
-                <Icon name="calendar" size={16} color="#6B7280" />
+                <Icon name="calendar" size={16} color={colors?.gray2} />
                 <Text style={styles.dateText}>
                     {`${moment(startDate).format('MMM DD, YYYY')} - ${moment(endDate).format('MMM DD, YYYY')}`}
                 </Text>
@@ -39,23 +41,19 @@ const HolidayCard: React.FC<HolidayCardProps> = ({
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors?.white,
         borderRadius: 12,
         padding: 16,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 4,
         borderLeftWidth: 4,
-        borderColor: '#2563EB',
+        borderColor: colors?.info,
         marginVertical: 8,
         position: 'relative',
+        ...shadowStyles?.popUpShadow2
     },
     title: {
         fontSize: 16,
         fontWeight: '600',
-        color: '#333333',
+        color: colors?.black,
         marginBottom: 4,
     },
     dateRow: {
@@ -65,19 +63,19 @@ const styles = StyleSheet.create({
     },
     dateText: {
         fontSize: 12,
-        color: '#6B7280',
+        color: colors?.gray2,
     },
     durationBadge: {
         position: 'absolute',
         bottom: 16,
         right: 16,
-        backgroundColor: '#E0EAFF',
+        backgroundColor: colors?.infoBG,
         borderRadius: 8,
         paddingVertical: 4,
         paddingHorizontal: 8,
     },
     durationText: {
-        color: '#2563EB',
+        color: colors?.info,
         fontWeight: 'bold',
         fontSize: 12,
     },

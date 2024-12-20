@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useRef } from 'react';
 import { Modal, View, Text, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { colors } from '../utils/colors';
+import shadowStyles from '../utils/shadowStyles';
 
 interface ErrorModalContextType {
     showError: (message: string, onClose?: () => void, delay?: number) => void;
@@ -45,7 +47,7 @@ export const ErrorModalProvider: React.FC<{ children: React.ReactNode }> = ({ ch
                 <Modal animationType="fade" transparent visible={isVisible}>
                     <View style={styles.overlay}>
                         <View style={styles.modalContainer}>
-                            <MaterialIcons name="error" size={64} color="#F44336" />
+                            <MaterialIcons name="error" size={64} color={colors?.error} />
                             <Text style={styles.message}>{message}</Text>
                         </View>
                     </View>
@@ -68,25 +70,21 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: colors?.modalBG,
     },
     modalContainer: {
         width: '60%',
         padding: 20,
-        backgroundColor: '#fff',
+        backgroundColor: colors?.white,
         borderRadius: 8,
         alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
+        ...shadowStyles?.popUpShadow2
     },
     message: {
         fontSize: 16,
         fontWeight: '600',
         textAlign: 'center',
         marginVertical: 16,
-        color: '#333',
+        color: colors?.black,
     },
 });
