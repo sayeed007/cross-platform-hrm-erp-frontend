@@ -15,6 +15,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
 import { colors } from "./utils/colors";
 import { textStyle } from "./utils/textStyle";
+import { ShiftSpec } from "@react-navigation/bottom-tabs/lib/typescript/commonjs/src/TransitionConfigs/TransitionSpecs";
+import shadowStyles from "./utils/shadowStyles";
 
 
 export default function App() {
@@ -66,6 +68,18 @@ export default function App() {
     //     </TouchableOpacity>
     //   </View>
     // ),
+    // Custom "error" toast
+    // customError: ({ text1, text2, props }) => (
+    //   <View style={[styles.toastContainer, styles.errorContainer]}>
+    //     <Text style={styles.toastTitle}>{text1}</Text>
+    //     <Text style={styles.toastMessage}>{text2}</Text>
+    //     <TouchableOpacity
+    //       style={styles.checkButton}
+    //       onPress={props.onCheckPress}>
+    //       <Text style={styles.checkText}>Check Now →</Text>
+    //     </TouchableOpacity>
+    //   </View>
+    // ),
     // approval success
     approvalSuccess: ({ text1, text2, props }) => (
       <View style={[styles?.approvalContainer, styles.approvalSuccess]}>
@@ -98,18 +112,22 @@ export default function App() {
         </TouchableOpacity>
       </View>
     ),
-    // Custom "error" toast
-    // customError: ({ text1, text2, props }) => (
-    //   <View style={[styles.toastContainer, styles.errorContainer]}>
-    //     <Text style={styles.toastTitle}>{text1}</Text>
-    //     <Text style={styles.toastMessage}>{text2}</Text>
-    //     <TouchableOpacity
-    //       style={styles.checkButton}
-    //       onPress={props.onCheckPress}>
-    //       <Text style={styles.checkText}>Check Now →</Text>
-    //     </TouchableOpacity>
-    //   </View>
-    // ),
+    // Info Toast
+    infoToast: ({ text1 }) => (
+      <View style={[styles.infoContainer]}>
+        <Feather name="info" size={18} color="white" style={styles.marginRight} />
+        <Text style={styles.toastMessage}>{text1}</Text>
+      </View>
+    ),
+    // failed Toast
+    failedToast: ({ text1 }) => (
+      <View style={[styles.failedContainer]}>
+        <Feather name="info" size={18} color="white" style={styles.marginRight} />
+        <Text style={styles.toastMessage}>{text1}</Text>
+      </View>
+    ),
+
+
   };
 
   // Render loader if fonts are not loaded
@@ -238,6 +256,26 @@ const styles = StyleSheet.create({
   },
   marginLeft: {
     marginLeft: 10,
+  },
+  infoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.info, // Set a background color for info
+    padding: 12,
+    borderRadius: 8,
+    marginHorizontal: 16,
+    marginVertical: 8,
+    ...shadowStyles.popUpShadow2
+  },
+  failedContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.error, // Set a background color for info
+    padding: 12,
+    borderRadius: 8,
+    marginHorizontal: 16,
+    marginVertical: 8,
+    ...shadowStyles.popUpShadow2
   },
 });
 

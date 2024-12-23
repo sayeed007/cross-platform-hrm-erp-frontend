@@ -20,6 +20,7 @@ import { useUser } from '../../context/UserContext';
 import { Avatar } from 'react-native-elements';
 import { BASE_URL } from '../../Server';
 import { EmptyItemsInPage } from '../common/EmptyItemsInPage';
+import EmployeeAvatar from '../common/EmployeeAvatar';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -120,21 +121,11 @@ const DirectorySection = () => {
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                         {allEmployeeOptions?.map((item) => (
                             <View key={item.employeeId} style={styles.avatarContainer}>
-                                {item?.profileShowImage ?
-                                    <Image
-                                        style={styles.avatar}
-                                        source={{ uri: `${BASE_URL?.baseApi}/${item?.profileShowImage}` }}
-                                        alt="loading"
-                                    />
-                                    :
-                                    <Avatar
-                                        size={60} // Size of the avatar
-                                        rounded   // Makes it circular
-                                        title={`${item.label.charAt(0)}`} // Fallback initials
-                                        overlayContainerStyle={{ backgroundColor: colors?.gray3 }} // Background color
-                                        titleStyle={{ color: colors?.white, fontWeight: 'bold' }} // Style for initials
-                                    />
-                                }
+                                <EmployeeAvatar
+                                    profileShowImage={item?.profileShowImage ?? ''}
+                                    label={`${item.label.charAt(0)}`}
+                                    size={60}
+                                />
 
                                 <Text style={styles.avatarName} numberOfLines={1}>
                                     {item.label}

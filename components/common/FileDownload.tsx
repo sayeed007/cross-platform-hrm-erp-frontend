@@ -1,15 +1,28 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Alert, Platform } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
 import { colors } from "../../utils/colors";
 import { getFileIcon } from "../../utils/fileTypeIcons";
 import { BASE_URL } from "../../Server";
+import { textStyle } from "../../utils/textStyle";
+import Toast from "react-native-toast-message";
+
 
 const downloadFile = async (attachmentPath: string, fileName: string) => {
+    if (Platform.OS === "web") {
+        // Use a web-specific download method
+        downloadFileForWeb(attachmentPath, fileName);
+    } else {
+        // Use expo-file-system for native platforms
+        await downloadFileForNative(attachmentPath, fileName);
+    }
+};
+
+const downloadFileForNative = async (attachmentPath: string, fileName: string) => {
     try {
-        // Define File URL
-        const fileUrl = `${BASE_URL}/${attachmentPath}`;
+        // Check if the attachmentPath already includes a scheme
+        const fileUrl = `${BASE_URL.baseApi}/${attachmentPath}`;
 
         // Define the local file path
         const fileUri = `${FileSystem.documentDirectory}${fileName}`;
@@ -17,7 +30,11 @@ const downloadFile = async (attachmentPath: string, fileName: string) => {
         // Check if the file already exists
         const fileInfo = await FileSystem.getInfoAsync(fileUri);
         if (fileInfo.exists) {
-            Alert.alert("File Downloaded", "File is already downloaded.");
+            Toast.show({
+                type: 'infoToast',
+                position: 'bottom',
+                text1: "File is already downloaded.",
+            });
             return;
         }
 
@@ -25,16 +42,41 @@ const downloadFile = async (attachmentPath: string, fileName: string) => {
         const downloadResumable = FileSystem.createDownloadResumable(fileUrl, fileUri);
         const result = await downloadResumable.downloadAsync();
 
-        if (result && result.uri) {
-            Alert.alert("Download Successful", `File downloaded to: ${result.uri}`);
+        if (result?.uri) {
+            Toast.show({
+                type: 'infoToast',
+                position: 'bottom',
+                text1: `Download Successful, File downloaded to: ${result.uri}`,
+            });
         } else {
-            Alert.alert("Download Failed", "File could not be downloaded.");
+            Toast.show({
+                type: 'failedToast',
+                position: 'bottom',
+                text1: `Download Failed, File could not be downloaded.`,
+            });
         }
     } catch (error) {
-        Alert.alert("Download Failed", "An error occurred while downloading the file.");
+        Toast.show({
+            type: 'failedToast',
+            position: 'bottom',
+            text1: `Download Failed, An error occurred while downloading the file.`,
+        });
         console.error("File download error:", error);
     }
 };
+
+const downloadFileForWeb = (attachmentPath: string, fileName: string) => {
+    const fileUrl = `${BASE_URL}/${attachmentPath}`;
+    const link = document.createElement("a");
+    link.href = fileUrl;
+    link.download = fileName;
+    link.target = "_blank"; // Open in a new tab if necessary
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+
+
 
 export const FileDownload = ({ attachmentPath }: { attachmentPath?: string }) => {
     return (
@@ -61,23 +103,22 @@ export const FileDownload = ({ attachmentPath }: { attachmentPath?: string }) =>
 
 const styles = StyleSheet.create({
     detailRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 10,
+        // flexDirection: "row",
+        // alignItems: "center",
+        marginBottom: 15,
     },
     detailLabel: {
-        fontSize: 14,
-        fontWeight: "600",
-        color: colors.black,
-        marginRight: 10,
+        ...textStyle.regular14,
+        color: colors.gray2,
+        flex: 1,
     },
     documentContainer: {
         flexDirection: "row",
         alignItems: "center",
     },
     documentText: {
-        marginLeft: 5,
-        fontSize: 14,
+        ...textStyle.regular14,
+        marginLeft: 10,
         color: colors.info,
         textDecorationLine: "underline",
     },

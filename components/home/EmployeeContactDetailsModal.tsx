@@ -8,12 +8,16 @@ import {
     TouchableWithoutFeedback,
     Linking,
     Platform,
+    Image,
 } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import Icon from 'react-native-vector-icons/Feather'; // Icons library
 import { DirectoryEmployeeOption } from '../../typeInterfaces/DirectoryEmployee';
 import { colors } from '../../utils/colors';
 import { textStyle } from '../../utils/textStyle';
+import Toast from 'react-native-toast-message';
+import { Avatar } from 'react-native-elements';
+import EmployeeAvatar from '../common/EmployeeAvatar';
 
 interface EmployeeContactDetailsModalProps {
     employee: DirectoryEmployeeOption | null;
@@ -32,11 +36,19 @@ const EmployeeContactDetailsModal: React.FC<EmployeeContactDetailsModalProps> = 
         if (Platform.OS === 'web' && navigator.clipboard) {
             // Use the native Clipboard API on Web
             await navigator.clipboard.writeText(text);
-            alert('Copied to clipboard!');
+            Toast.show({
+                type: 'infoToast',
+                position: 'bottom',
+                text1: 'Copied to clipboard!',
+            });
         } else {
             // Use expo-clipboard for Native
             await Clipboard.setStringAsync(text);
-            alert('Copied to clipboard!');
+            Toast.show({
+                type: 'infoToast',
+                position: 'bottom',
+                text1: 'Copied to clipboard!',
+            });
         }
 
         setCopiedField(field);
@@ -67,7 +79,12 @@ const EmployeeContactDetailsModal: React.FC<EmployeeContactDetailsModalProps> = 
                         <View style={styles.modalContent}>
                             {/* Employee Card */}
                             <View style={styles.employeeCard}>
-                                {employee?.profileShowImage}
+                                <EmployeeAvatar
+                                    profileShowImage={employee?.profileShowImage ?? ''}
+                                    label={`${employee.label.charAt(0)}`}
+                                    size={40}
+                                />
+
                                 <View style={styles.employeeInfo}>
                                     <Text style={styles.employeeName}>{employee.label}</Text>
                                     <Text style={styles.employeeRole}>{employee.designation}</Text>

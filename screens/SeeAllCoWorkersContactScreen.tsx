@@ -3,6 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from 'react';
 import {
+    Image,
     ScrollView,
     StyleSheet,
     Text,
@@ -17,6 +18,9 @@ import { RootStackParamList, SeeAllCoWorkersContactScreenProps } from '../typeIn
 import { setTabBarVisibility } from '../utils/navigationUtils';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
+import { Avatar } from 'react-native-elements';
+import { BASE_URL } from '../Server';
+import EmployeeAvatar from '../components/common/EmployeeAvatar';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeRoot'>;
 
@@ -59,48 +63,7 @@ const SeeAllCoWorkersContactScreen: React.FC<SeeAllCoWorkersContactScreenProps> 
     }
 
     return (
-        <View style={styles.container}>
-            {/* Gradient Header */}
-            <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.header}>
-                <View style={styles.navBar}>
-                    <TouchableOpacity onPress={() => navigation.navigate('HomeRoot')}>
-                        <Icon name="arrow-left" size={24} color={colors?.white} />
-                    </TouchableOpacity>
-                    <Text style={styles.navTitle}>Directory</Text>
-                    <Text></Text>
-                </View>
-
-                <Text style={styles.subHeaderText}>Co-Workers Contact Details</Text>
-
-            </LinearGradient>
-
-            {/* Search Input */}
-            <TextInput
-                style={styles.searchBar}
-                placeholder="Search here"
-                placeholderTextColor={colors?.gray2}
-                value={search}
-                onChangeText={setSearch}
-            />
-
-            {/* Employees List */}
-            <ScrollView>
-                {filteredEmployees.map((employee) => (
-                    <TouchableOpacity
-                        key={employee.employeeId}
-                        style={styles.employeeCard}
-                        onPress={() => handleCardPress(employee)}
-                    >
-                        {employee?.profileShowImage}
-                        <View style={styles.employeeInfo}>
-                            <Text style={styles.employeeName}>{employee.label}</Text>
-                            <Text style={styles.employeeRole}>{employee.designation}</Text>
-                        </View>
-                        <Text style={styles.department}>{employee.department}</Text>
-                    </TouchableOpacity>
-                ))}
-            </ScrollView>
-
+        <>
             {/* Employee Details Modal */}
             <EmployeeContactDetailsModal
                 employee={selectedEmployee}
@@ -108,7 +71,57 @@ const SeeAllCoWorkersContactScreen: React.FC<SeeAllCoWorkersContactScreenProps> 
                 onClose={() => setModalVisible(false)}
             />
 
-        </View>
+            <View style={styles.container}>
+                {/* Gradient Header */}
+                <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.header}>
+                    <View style={styles.navBar}>
+                        <TouchableOpacity onPress={() => navigation.navigate('HomeRoot')}>
+                            <Icon name="arrow-left" size={24} color={colors?.white} />
+                        </TouchableOpacity>
+                        <Text style={styles.navTitle}>Directory</Text>
+                        <Text></Text>
+                    </View>
+
+                    <Text style={styles.subHeaderText}>Co-Workers Contact Details</Text>
+
+                </LinearGradient>
+
+                {/* Search Input */}
+                <TextInput
+                    style={styles.searchBar}
+                    placeholder="Search here"
+                    placeholderTextColor={colors?.gray2}
+                    value={search}
+                    onChangeText={setSearch}
+                />
+
+                {/* Employees List */}
+                <ScrollView>
+                    {filteredEmployees.map((employee) => (
+                        <TouchableOpacity
+                            key={employee.employeeId}
+                            style={styles.employeeCard}
+                            onPress={() => handleCardPress(employee)}
+                        >
+                            <EmployeeAvatar
+                                profileShowImage={employee?.profileShowImage ?? ''}
+                                label={`${employee.label.charAt(0)}`}
+                                size={40}
+                            />
+
+                            <View style={styles.employeeInfo}>
+                                <Text style={styles.employeeName}>{employee.label}</Text>
+                                <Text style={styles.employeeRole}>{employee.designation}</Text>
+                            </View>
+                            <Text style={styles.department}>{employee.department}</Text>
+                        </TouchableOpacity>
+                    ))}
+                </ScrollView>
+
+
+
+            </View>
+        </>
     );
 };
 
@@ -178,7 +191,12 @@ const styles = StyleSheet.create({
         paddingVertical: 4,
         borderRadius: 4,
     },
-
+    avatar: {
+        width: 40,
+        height: 40,
+        borderRadius: 30,
+        marginBottom: 4,
+    },
 });
 
 export default SeeAllCoWorkersContactScreen;

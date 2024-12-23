@@ -22,6 +22,7 @@ import moment from "moment";
 import { getFileIcon } from "../../utils/fileTypeIcons";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { FileDownload } from "../common/FileDownload";
+import EmployeeAvatar from "../common/EmployeeAvatar";
 
 interface LeaveRequestDetailsProps {
     isVisible: boolean;
@@ -83,20 +84,11 @@ const LeaveRequestDetails: React.FC<LeaveRequestDetailsProps> = ({
 
                             {/* User Info */}
                             <View style={styles.userInfoContainer}>
-                                {senderImage ?
-                                    <Image
-                                        source={{ uri: `${BASE_URL?.baseApi}/${senderImage}` }}
-                                        style={styles.avatar}
-                                    />
-                                    :
-                                    <Avatar
-                                        size={100}
-                                        rounded
-                                        title={`${senderFirstName?.charAt(0)}${senderLastName?.charAt(0)}`}
-                                        overlayContainerStyle={{ backgroundColor: colors?.gray3 }}
-                                        titleStyle={{ color: colors?.white, ...textStyle?.bold24 }}
-                                    />
-                                }
+                                <EmployeeAvatar
+                                    profileShowImage={senderImage ?? ''}
+                                    label={`${senderFirstName?.charAt(0)}${senderLastName?.charAt(0)}`}
+                                    size={100}
+                                />
 
                                 <Text style={styles.userName}>
                                     {senderFirstName} {senderLastName} - {senderId}

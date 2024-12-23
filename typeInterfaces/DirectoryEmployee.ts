@@ -17,7 +17,7 @@ export interface DirectoryEmployeeOption {
     department?: string;
     phone?: string;
     email?: string;
-    profileShowImage?: JSX.Element;
+    profileShowImage?: string;
     customAbbreviation?: JSX.Element;
     isDisabled?: boolean;
 }

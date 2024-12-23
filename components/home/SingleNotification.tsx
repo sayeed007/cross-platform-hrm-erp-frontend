@@ -6,6 +6,7 @@ import moment from "moment";
 import { colors } from "../../utils/colors";
 import shadowStyles from "../../utils/shadowStyles";
 import { textStyle } from "../../utils/textStyle";
+import EmployeeAvatar from "../common/EmployeeAvatar";
 
 
 interface SingleNotificationProps {
@@ -29,24 +30,11 @@ export const SingleNotification: React.FC<SingleNotificationProps> = ({ item }) 
 
     return (
         <View style={[styles.notificationContainer, item.hasSeen && styles.hasSeen]}>
-
-            {item.senderImage ?
-                <Image
-                    source={{ uri: `${BASE_URL?.baseApi}/${item.senderImage}` }}
-                    style={styles.avatar}
-                />
-                :
-                <View style={styles.avatarContainer}>
-                    <Avatar
-                        size={40} // Size of the avatar
-                        rounded   // Makes it circular
-                        title={'HRM'} // Fallback initials
-                        overlayContainerStyle={{ backgroundColor: colors?.gray3 }} // Background color
-                        titleStyle={{ color: colors?.white, ...textStyle?.regular12 }} // Style for initials
-                    />
-                </View>
-            }
-
+            <EmployeeAvatar
+                profileShowImage={item.senderImage ?? ''}
+                label={'HRM'}
+                size={50}
+            />
 
             <View style={styles.messageContainer}>
                 <Text style={styles.message}>
@@ -81,6 +69,7 @@ const styles = StyleSheet.create({
     },
     messageContainer: {
         flex: 1,
+        marginLeft: 10,
     },
     message: {
         color: colors?.gray4,
