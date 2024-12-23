@@ -20,7 +20,11 @@ const EmployeeAvatar: React.FC<EmployeeAvatarProps> = ({
         <>
             {profileShowImage ? (
                 <Image
-                    style={[styles.avatar, { width: size, height: size }]}
+                    style={{
+                        width: size,
+                        height: size,
+                        borderRadius: size / 2, // Half the size for a circular shape
+                    }}
                     source={{ uri: `${BASE_URL.baseApi}/${profileShowImage}` }}
                     alt="Employee Avatar"
                 />
@@ -44,10 +48,7 @@ const EmployeeAvatar: React.FC<EmployeeAvatarProps> = ({
 };
 
 const styles = StyleSheet.create({
-    avatar: {
-        // borderRadius: 40 / 2, // Half of the default size for a circular image
-        borderRadius: '50%',
-    },
+
 });
 
 export default EmployeeAvatar;
