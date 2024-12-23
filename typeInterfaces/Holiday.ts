@@ -1,5 +1,15 @@
 import moment from 'moment';
 
+export interface Holiday {
+    id: number; // Unique identifier for the holiday.
+    holidayTitle: string; // Title of the holiday.
+    holidayStartDate: string; // Start date of the holiday in 'YYYY-MM-DD' format.
+    holidayEndDate: string; // End date of the holiday in 'YYYY-MM-DD' format.
+    holidayDuration: number; // Duration of the holiday in days.
+    holidayDescription: string; // Description of the holiday.
+    attachmentUrl: string | null; // URL for any attached document or file, can be null if not applicable.
+}
+
 export interface HolidayWithMonth {
     id: number; // Unique identifier for the holiday.
     holidayTitle: string; // Title of the holiday.

@@ -11,6 +11,7 @@ import HolidayScreen from '../screens/HolidayScreen';
 import NotificationScreen from '../screens/NotificationScreen';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
+import { LeaveApprovalScreen } from '../screens/LeaveApprovalScreen';
 
 // Define the stack with RootStackParamList
 const Stack = createStackNavigator<RootStackParamList>();
@@ -66,12 +67,25 @@ const HomeStack = () => {
             />
 
 
+            {/* Leave Approval Screen */}
+            <Stack.Screen
+                name="LeaveApproval"
+                component={LeaveApprovalScreen}
+                options={{ headerShown: false }} // Hide header for Home screen
+            />
+
+
+
+
             {/* Notification Screen */}
             <Stack.Screen
                 name="Notification"
                 component={NotificationScreen}
                 options={{ headerShown: false }} // Hide header for Home screen
             />
+
+
+
         </Stack.Navigator>
     );
 };

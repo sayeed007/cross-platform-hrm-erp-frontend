@@ -1,12 +1,28 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useUser } from '../../context/UserContext'
 import { colors } from '../../utils/colors';
 import { textStyle } from '../../utils/textStyle';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../typeInterfaces/navigationTypes';
+
+
+type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+
 
 const PendingLeaveAndAttendance = () => {
     const { user, setUser } = useUser();
+    const navigation = useNavigation<NavigationProp>();
 
+
+    const handleLeavePress = () => {
+        navigation.navigate('LeaveApproval');
+    };
+
+    const handleAttendancePress = () => {
+        navigation.navigate('AttendanceApproval');
+    };
 
     return (
         <>
@@ -15,15 +31,18 @@ const PendingLeaveAndAttendance = () => {
             </View>
 
             <View style={styles.pendingBlock} >
-                <View style={styles.pendingItem}>
+                {/* LEAVE */}
+                <TouchableOpacity onPress={handleLeavePress} style={styles.pendingItem}>
                     <Text style={[styles.pendingNumber, styles?.leaveBackground]}>04</Text>
                     <Text style={styles.pendingLabel}>Leave Requests</Text>
-                </View>
-                <View style={styles.pendingItem}>
+                </TouchableOpacity>
+
+                {/* ATTENDANCE */}
+                <TouchableOpacity onPress={handleAttendancePress} style={styles.pendingItem}>
                     <Text style={[styles.pendingNumber, styles?.attendanceBackground]}>01</Text>
                     <Text style={styles.pendingLabel}>Attendance Requests</Text>
-                </View>
-            </View>
+                </TouchableOpacity>
+            </View >
         </>
     )
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, Platform } from 'react-native'
 import { useUser } from '../../context/UserContext';
 import { getEmployeeAttendanceForClocking } from '../../apis/HomeScreen';
 import moment from 'moment';
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         flex: 1,
-        width: '100%',
+        width: Platform.OS === 'web' ? '92%' : '100%',
         top: -70,
         left: '4%',
     },

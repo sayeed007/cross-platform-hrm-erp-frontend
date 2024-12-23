@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Platform } from 'react-native';
 import { useUser } from '../../context/UserContext';
 import { getEmployeeAttendanceForClocking, modifyAttendanceClockInOut } from '../../apis/HomeScreen';
 import { UserAttendanceInformationForClocking } from '../../typeInterfaces/UserAttendanceInformationForClocking';
@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         flex: 1,
-        width: '100%',
+        width: Platform.OS === 'web' ? '92%' : '100%',
         top: -70,
         left: '4%',
     },
@@ -394,7 +394,7 @@ const styles = StyleSheet.create({
         ...shadowStyles?.greenishShadow,
     },
     checkOutButton: {
-        backgroundColor: colors?.deepOrange, // Orange background
+        backgroundColor: colors?.warning, // Orange background
         ...shadowStyles?.orangishShadow
     },
     buttonText: {

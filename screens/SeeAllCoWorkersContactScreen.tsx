@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
         padding: 20
     },
     subHeaderText: {
-        ...textStyle?.bold20,
+        ...textStyle?.semibold16,
         color: colors?.white,
         paddingVertical: 15,
         paddingHorizontal: 15,

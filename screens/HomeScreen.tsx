@@ -17,6 +17,7 @@ import { useUser } from '../context/UserContext';
 import { HomeScreenNavigationProp } from '../typeInterfaces/navigationTypes';
 import { colors } from '../utils/colors';
 import { setTabBarVisibility } from '../utils/navigationUtils';
+import Toast from 'react-native-toast-message';
 
 const HomeScreen = () => {
 
@@ -33,6 +34,27 @@ const HomeScreen = () => {
         setTabBarVisibility(navigation, true); // Ensure tab bar is visible on home
     }, [navigation]);
 
+    // Toast.show({
+    //     type: 'approvalSuccess',
+    //     text1: 'Request Rejected',
+    //     text2: 'Check Now',
+    //     visibilityTime: 1000000,
+    //     position: 'bottom',
+    //     props: {
+    //         onCheckPress: () => console.log('Navigate to details!'),
+    //     },
+    // });
+
+    // Toast.show({
+    //     type: 'approvalReject',
+    //     text1: 'Request Rejected',
+    //     text2: 'Check Now',
+    //     visibilityTime: 1000000,
+    //     position: 'bottom',
+    //     props: {
+    //         onCheckPress: () => console.log('Navigate to details!'),
+    //     },
+    // });
 
 
     return (
@@ -95,7 +117,7 @@ const styles = StyleSheet.create({
         width: '100%',
         padding: '4%',
         position: 'relative',
-        paddingBottom: 40,
+        paddingBottom: 20,
     },
 });
 
