@@ -21,7 +21,7 @@ export const colors = {
     "info": "#285FEC",
     "infoBG": "#E0F2FE",
     "success": "#349B67",
-    "successBG": "#B5D9C6",
+    "successBG": "rgba(55,156,105,0.1)",
     "warning": "#F29C4C",
     "warningBG": "#F8D7C5",
     "error": "#DA5850",
@@ -36,4 +36,14 @@ export const colors = {
     "deepGreen": "#318A60",
     "deepRed": "#BE514C",
 
-}
+
+    // attendance status cards - new
+    absent: '#DA5850',
+    absentBG: 'rgba(255, 185, 181, 0.1)',
+    late: '#DBA635',
+    lateBG: '#FCEED0',
+    leave: '#3746CF',
+    leaveBG: '#CCD1FF',
+
+
+};

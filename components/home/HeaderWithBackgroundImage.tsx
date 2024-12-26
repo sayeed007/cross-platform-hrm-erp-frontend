@@ -15,7 +15,15 @@ import { textStyle } from '../../utils/textStyle'
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 
-const HeaderWithBackgroundImage = () => {
+interface HeaderWithBackgroundImageProps {
+    showGreeting?: boolean; // Optional prop to control greeting visibility
+    navTitle: string; // Navigation title
+}
+
+const HeaderWithBackgroundImage: React.FC<HeaderWithBackgroundImageProps> = ({
+    showGreeting = true, // Default value is true
+    navTitle,
+}) => {
     const { user, setUser } = useUser();
     const { unreadCount } = useSubscription();
     const navigation = useNavigation<NavigationProp>();
@@ -23,7 +31,6 @@ const HeaderWithBackgroundImage = () => {
     const handleNotificationPress = () => {
         navigation.navigate('Notification');
     };
-
 
     return (
         <>
@@ -40,7 +47,9 @@ const HeaderWithBackgroundImage = () => {
                             }}
                             style={styles.userImage}
                         />
-                        <Text style={styles.routeName}>Home</Text>
+                        <Text style={styles.routeName}>
+                            {navTitle}
+                        </Text>
                     </View>
 
                     <View style={styles.userImageWithNav}>
@@ -58,14 +67,17 @@ const HeaderWithBackgroundImage = () => {
                 </View>
 
                 {/* Greeting Section */}
-                <View style={styles.greetingSection}>
-                    <Text style={styles.greetingText}>
-                        {getGreeting()}
-                    </Text>
-                    <Text style={styles.userName}>
-                        {user?.firstName} {user?.lastName}
-                    </Text>
-                </View>
+                {showGreeting &&
+                    <View style={styles.greetingSection}>
+                        <Text style={styles.greetingText}>
+                            {getGreeting()}
+                        </Text>
+                        <Text style={styles.userName}>
+                            {user?.firstName} {user?.lastName}
+                        </Text>
+                    </View>
+                }
+
             </ImageBackground>
         </>
 
@@ -75,7 +87,6 @@ const HeaderWithBackgroundImage = () => {
 const styles = StyleSheet.create({
     backgroundImage: {
         height: 250,
-        flex: 1,
         resizeMode: 'cover',
         padding: 16,
         paddingBottom: 90,

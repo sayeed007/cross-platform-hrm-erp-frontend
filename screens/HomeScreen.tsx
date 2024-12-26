@@ -69,7 +69,10 @@ const HomeScreen = () => {
                 nestedScrollEnabled={true}
             >
                 {/* HEADER - NOTIFICATION - GREETINGS */}
-                <HeaderWithBackgroundImage />
+                <HeaderWithBackgroundImage
+                    showGreeting={true}
+                    navTitle='Home'
+                />
 
 
                 <View style={styles?.container}>

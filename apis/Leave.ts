@@ -28,7 +28,7 @@ export const getAllAcceptedRejectedLeaveRequestForEmployee = (employeeId: number
 
 
 // ###################################################################
-//  GET API's
+//  PUT API's
 // ###################################################################
 
 export const approveSubordinateLeaveRequest = (employeeId: number, senderId: number, leaveRequestId: number) => {

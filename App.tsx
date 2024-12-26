@@ -1,8 +1,11 @@
+import Feather from '@expo/vector-icons/Feather';
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import * as Notifications from "expo-notifications";
 import React, { useEffect } from "react";
-import Toast, { BaseToast, ToastConfig } from 'react-native-toast-message';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Toast, { ToastConfig } from 'react-native-toast-message';
 import { TextEncoder } from "text-encoding";
 import FullPageLoader from "./components/common/FullPageLoader";
 import { ErrorModalProvider } from "./context/ErrorModalProvider";
@@ -10,13 +13,10 @@ import { SubscriptionProvider } from "./context/SubscriptionContext";
 import { SuccessModalProvider } from "./context/SuccessModalProvider";
 import { UserProvider } from "./context/UserContext";
 import RootNavigation from "./navigation/RootNavigation";
-global.TextEncoder = TextEncoder;
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Feather from '@expo/vector-icons/Feather';
 import { colors } from "./utils/colors";
-import { textStyle } from "./utils/textStyle";
-import { ShiftSpec } from "@react-navigation/bottom-tabs/lib/typescript/commonjs/src/TransitionConfigs/TransitionSpecs";
 import shadowStyles from "./utils/shadowStyles";
+import { textStyle } from "./utils/textStyle";
+global.TextEncoder = TextEncoder;
 
 
 export default function App() {
@@ -138,16 +138,22 @@ export default function App() {
   return (
     <ErrorModalProvider>
       <SuccessModalProvider>
-        <NavigationContainer>
-          <UserProvider>
-            <SubscriptionProvider>
 
-              <RootNavigation />
-              <Toast config={toastConfig} />
+        <GestureHandlerRootView style={{ flex: 1 }}>
 
-            </SubscriptionProvider>
-          </UserProvider>
-        </NavigationContainer>
+          <NavigationContainer>
+            <UserProvider>
+              <SubscriptionProvider>
+
+                <RootNavigation />
+                <Toast config={toastConfig} />
+
+              </SubscriptionProvider>
+            </UserProvider>
+          </NavigationContainer>
+
+        </GestureHandlerRootView>
+
       </SuccessModalProvider>
     </ErrorModalProvider>
   );

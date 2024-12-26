@@ -13,6 +13,8 @@ export interface Attendance {
     departmentName: string;
     inTime: string | null;
     outTime: string | null;
+    finalInTime?: string | null;
+    finalOutTime?: string | null;
     status: string;
     companyName: string;
     companyId: number;

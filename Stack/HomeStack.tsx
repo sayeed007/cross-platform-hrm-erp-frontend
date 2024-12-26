@@ -74,9 +74,6 @@ const HomeStack = () => {
                 options={{ headerShown: false }} // Hide header for Home screen
             />
 
-
-
-
             {/* Notification Screen */}
             <Stack.Screen
                 name="Notification"
