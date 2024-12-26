@@ -22,6 +22,17 @@ export const getMonthAndYearWiseAttendanceForEmployee = (employeeId: number, mon
         });
 };
 
+export const getDailyAttendanceForEmployee = (employeeId: number, date: string) => {
+
+    return axiosInstance.get(`/attendance/employee/${employeeId}?startdate=${date}&enddate=${date}`)
+        .then(response => {
+            return [response.data];
+        })
+        .catch(error => {
+            return resolveApiError(error);
+        });
+};
+
 
 
 
@@ -29,6 +40,18 @@ export const getMonthAndYearWiseAttendanceForEmployee = (employeeId: number, mon
 //  PUT API's
 // ###################################################################
 
+export const requestManualAttendanceForEmployee = (employeeId: number, requestBody: {}) => {
 
+    return axiosInstance.put(
+        `/attendance/employee/${employeeId}/request`,
+        requestBody
+    )
+        .then(response => {
+            return [response.data];
+        })
+        .catch(error => {
+            return resolveApiError(error);
+        });
+};
 
 

@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useMemo, useEffect, useRef, useState } from 'react';
+import { FlatList, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import moment from 'moment';
 import { colors } from '../../../utils/colors';
 import { textStyle } from '../../../utils/textStyle';
@@ -9,7 +9,13 @@ interface SelectTimeProps {
     onTimeChange: (time: string) => void; // Callback when a time is selected
 }
 
+const ROW_HEIGHT = 60; // Approximate height of each row
+
 const SelectTime: React.FC<SelectTimeProps> = ({ selectedTime, onTimeChange }) => {
+
+    const flatListRef = useRef<FlatList>(null);
+    // const [selectedIndex, setSelectedIndex] = useState(0);
+
     // Generate the list of times
     const timeOptions = useMemo(() => {
         const times = [];
@@ -25,44 +31,99 @@ const SelectTime: React.FC<SelectTimeProps> = ({ selectedTime, onTimeChange }) =
         return times;
     }, []);
 
-    console.log(selectedTime, timeOptions);
+
+    // Find the index of the selected time
+    const selectedIndex = useMemo(() => {
+        return timeOptions.findIndex((time) => time.value === selectedTime);
+    }, [timeOptions, selectedTime]);
+
+    // useEffect(() => {
+    //     setSelectedIndex(timeOptions.findIndex((time) => time.value === selectedTime));
+    // }, [timeOptions, selectedTime]);
+
+
+    // Scroll to the selected index when it changes
+    useEffect(() => {
+        if (flatListRef.current && selectedIndex >= 0) {
+            flatListRef.current.scrollToIndex({
+                index: selectedIndex - 5,
+                animated: true,
+            });
+        }
+    }, [selectedIndex]);
+
+    console.log(selectedIndex);
 
     return (
-        <FlatList
-            data={timeOptions}
-            keyExtractor={(item) => item.value}
-            renderItem={({ item }) => (
-                <Pressable
-                    onPress={() => onTimeChange(item.value)}
-                    style={[
-                        styles.modalOption,
-                        selectedTime === item.value && styles.activeOption,
-                    ]}
-                >
-                    <Text
+        <>
+
+            {/* SELECTED DETAILS  */}
+            <View style={styles?.headerContainer}>
+                <Text style={styles?.dateDetails}>
+                    {moment().format('ddd, MMMM YY')}
+                </Text>
+
+                <TouchableOpacity onPress={() => onTimeChange(selectedTime)}>
+                    <Text style={styles?.skip}>
+                        Skip
+                    </Text>
+                </TouchableOpacity>
+
+
+            </View>
+
+            <FlatList
+                ref={flatListRef}
+                data={timeOptions}
+                keyExtractor={(item) => item.value}
+                renderItem={({ item }) => (
+                    <Pressable
+                        onPress={() => onTimeChange(item.value)}
                         style={[
-                            styles.modalOptionText,
-                            selectedTime === item.value && styles.activeFilterText,
+                            styles.modalOption,
+                            selectedTime === item.value && styles.activeOption,
                         ]}
                     >
-                        {item.label}
-                    </Text>
-                </Pressable>
-            )}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.listContent}
-            initialNumToRender={12} // Render 12 items initially
-            getItemLayout={(data, index) => ({
-                length: 60, // Approximate height of each row
-                offset: 60 * index,
-                index,
-            })}
-            ItemSeparatorComponent={() => <View style={styles.separator} />} // Line separator
-        />
+                        <Text
+                            style={[
+                                styles.modalOptionText,
+                                selectedTime === item.value && styles.activeFilterText,
+                            ]}
+                        >
+                            {item.label}
+                        </Text>
+                    </Pressable>
+                )}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.listContent}
+                initialNumToRender={20} // Render 20 items initially
+                getItemLayout={(data, index) => ({
+                    length: ROW_HEIGHT,
+                    offset: ROW_HEIGHT * index,
+                    index,
+                })}
+                initialScrollIndex={selectedIndex}
+                ItemSeparatorComponent={() => <View style={styles.separator} />} // Line separator
+            />
+        </>
+
     );
 };
 
 const styles = StyleSheet.create({
+    headerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 15,
+    },
+    dateDetails: {
+        ...textStyle.semibold16,
+        color: colors.gray2
+    },
+    skip: {
+        ...textStyle.semibold16,
+        color: colors.info
+    },
     modalOption: {
         paddingVertical: 12,
         paddingHorizontal: 16,

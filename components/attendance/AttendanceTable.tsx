@@ -11,11 +11,13 @@ interface AttendanceTableProps {
     filteredSpecificMonthAttendance: Attendance[];
     // setSelectedAttendance: (status: string) => void;
     setSelectedAttendance: React.Dispatch<React.SetStateAction<Partial<Attendance>>>;
+    setDailyAttendanceActionModalVisible: (action: boolean) => void;
 }
 
 const AttendanceTable: React.FC<AttendanceTableProps> = ({
     filteredSpecificMonthAttendance,
-    setSelectedAttendance
+    setSelectedAttendance,
+    setDailyAttendanceActionModalVisible
 }) => {
 
 
@@ -31,7 +33,10 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({
 
         return (
             <TouchableOpacity style={{ ...styles.row }}
-                onPress={() => { setSelectedAttendance(item) }}
+                onPress={() => {
+                    setSelectedAttendance(item);
+                    setDailyAttendanceActionModalVisible(true);
+                }}
             >
                 <Text style={styles.cell}>{moment(item.date, 'YYYY-MM-DD').format('MMM DD')}</Text>
                 <Text style={styles.cell}>{formattedInTime}</Text>
