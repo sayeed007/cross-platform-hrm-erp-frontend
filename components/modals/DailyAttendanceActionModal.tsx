@@ -2,15 +2,14 @@ import moment from 'moment';
 import React from 'react';
 import {
     Modal,
-    Pressable,
     StyleSheet,
     Text,
     TouchableOpacity,
-    View,
+    View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { Attendance } from '../../typeInterfaces/Attendance';
-import { attendanceStatus, AttendanceStatusKey, AttendanceStatusStyle } from '../../utils/attendanceStatus';
+import { capitalizeFirstLetter, getStatusStyle } from '../../utils/attendanceStatus';
 import { colors } from '../../utils/colors';
 import shadowStyles from '../../utils/shadowStyles';
 import { textStyle } from '../../utils/textStyle';
@@ -43,11 +42,11 @@ const DailyAttendanceActionModal: React.FC<DailyAttendanceActionModalProps> = ({
             animationType="slide"
             onRequestClose={onClose}
         >
-            <Pressable
+            <TouchableOpacity
                 style={styles.modalOuterContainer}
-                onPress={onClose} // Close the modal when pressing outside
+                onPressOut={onClose} // Close the modal when pressing outside
             >
-                <View style={styles.modalContainer}>
+                <TouchableOpacity style={styles.modalContainer} activeOpacity={1}>
                     {/* Header */}
                     <View style={styles.header}>
                         <View>
@@ -61,29 +60,31 @@ const DailyAttendanceActionModal: React.FC<DailyAttendanceActionModalProps> = ({
                         </View>
 
                         <Text style={[styles.statusText, getStatusStyle(status ?? '')]}>
-                            {status}
+                            {capitalizeFirstLetter(status ?? '')}
                         </Text>
                     </View>
 
 
                     {/* Actions */}
-                    <TouchableOpacity style={styles.actionButton} onPress={onApplyAttendance}>
-                        <Icon name="calendar" size={20} color={colors.green} />
-                        <Text style={styles.actionText}>Apply Attendance</Text>
-                    </TouchableOpacity>
+                    {/* Attendance should/can be applied till today */}
+                    {!moment(date).isAfter(moment()) &&
+                        <TouchableOpacity style={styles.actionButton} onPress={onApplyAttendance}>
+                            <Icon name="calendar" size={20} color={colors.green} />
+                            <Text style={styles.actionText}>Apply Attendance</Text>
+                        </TouchableOpacity>
+                    }
+
                     <TouchableOpacity style={styles.actionButton} onPress={onApplyLeave}>
                         <Icon name="file-text" size={20} color={colors.orange} />
                         <Text style={styles.actionText}>Apply Leave</Text>
                     </TouchableOpacity>
-                </View>
-            </Pressable>
+                </TouchableOpacity>
+
+            </TouchableOpacity>
         </Modal>
     );
 };
 
-const getStatusStyle = (status: string): AttendanceStatusStyle => {
-    return attendanceStatus[status as AttendanceStatusKey] || attendanceStatus.default;
-};
 
 const styles = StyleSheet.create({
     modalOuterContainer: {

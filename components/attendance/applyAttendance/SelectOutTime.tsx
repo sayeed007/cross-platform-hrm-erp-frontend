@@ -11,7 +11,7 @@ interface SelectTimeProps {
 
 const ROW_HEIGHT = 60; // Approximate height of each row
 
-const SelectTime: React.FC<SelectTimeProps> = ({ selectedTime, onTimeChange }) => {
+const SelectOutTime: React.FC<SelectTimeProps> = ({ selectedTime, onTimeChange }) => {
 
     const flatListRef = useRef<FlatList>(null);
     // const [selectedIndex, setSelectedIndex] = useState(0);
@@ -27,7 +27,6 @@ const SelectTime: React.FC<SelectTimeProps> = ({ selectedTime, onTimeChange }) =
                 value: startOfDay.clone().add(i, 'minutes').format('HH:mm'), // Value: 24-hour time format (e.g., 00:00)
             });
         }
-
         return times;
     }, []);
 
@@ -37,22 +36,6 @@ const SelectTime: React.FC<SelectTimeProps> = ({ selectedTime, onTimeChange }) =
         return timeOptions.findIndex((time) => time.value === selectedTime);
     }, [timeOptions, selectedTime]);
 
-    // useEffect(() => {
-    //     setSelectedIndex(timeOptions.findIndex((time) => time.value === selectedTime));
-    // }, [timeOptions, selectedTime]);
-
-
-    // Scroll to the selected index when it changes
-    useEffect(() => {
-        if (flatListRef.current && selectedIndex >= 0) {
-            flatListRef.current.scrollToIndex({
-                index: selectedIndex - 5,
-                animated: true,
-            });
-        }
-    }, [selectedIndex]);
-
-    console.log(selectedIndex);
 
     return (
         <>
@@ -149,4 +132,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SelectTime;
+export default SelectOutTime;

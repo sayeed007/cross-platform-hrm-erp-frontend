@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { LoginScreenNavigationProp } from '../typeInterfaces/navigationTypes';
-import FullPageLoader from '../components/common/FullPageLoader';
+import FullPageLoader from '../components/modals/FullPageLoader';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { getUserAdditionalAccessibility, getUserInfo, userLogIn } from '../apis/LogIn';

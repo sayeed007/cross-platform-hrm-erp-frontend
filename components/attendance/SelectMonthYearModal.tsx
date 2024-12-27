@@ -48,11 +48,11 @@ const SelectMonthYearModal: React.FC<MonthYearModalProps> = ({
             animationType="slide"
             onRequestClose={onClose}
         >
-            <Pressable
+            <TouchableOpacity
                 style={styles.modalOuterContainer}
                 onPress={onClose} // Close the modal when pressed outside
             >
-                <View style={styles.modalContainer}>
+                <TouchableOpacity style={styles.modalContainer} activeOpacity={1}>
                     <View style={styles.modalContent}>
                         {/* Header */}
                         <View style={styles.modalHeader}>
@@ -95,8 +95,8 @@ const SelectMonthYearModal: React.FC<MonthYearModalProps> = ({
                             })}
                         />
                     </View>
-                </View>
-            </Pressable>
+                </TouchableOpacity>
+            </TouchableOpacity>
         </Modal>
     );
 };

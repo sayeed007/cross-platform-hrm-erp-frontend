@@ -63,12 +63,12 @@ const LeaveRequestDetails: React.FC<LeaveRequestDetailsProps> = ({
             animationType="slide"
             onRequestClose={onClose}
         >
-            <Pressable
+            <TouchableOpacity
                 style={styles.modalOuterContainer}
                 onPress={onClose} // Close the modal when pressed outside
             >
 
-                <View style={styles.modalContainer}>
+                <TouchableOpacity style={styles.modalContainer} activeOpacity={1}>
                     <View style={styles.modalContent}>
 
                         {/* Header */}
@@ -169,9 +169,9 @@ const LeaveRequestDetails: React.FC<LeaveRequestDetailsProps> = ({
 
 
                     </View>
-                </View>
+                </TouchableOpacity>
 
-            </Pressable>
+            </TouchableOpacity>
         </Modal>
     );
 };

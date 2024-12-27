@@ -41,7 +41,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     absent: {
         color: colors.absent,
@@ -49,7 +48,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     late: {
         color: colors.late,
@@ -57,7 +55,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     weekend: {
         color: colors.gray2,
@@ -65,7 +62,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     holiday: {
         color: "#0F75BC",
@@ -73,7 +69,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     AFL: {
         color: colors.red,
@@ -81,7 +76,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     annual: {
         color: "#E3B7A0",
@@ -89,7 +83,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     sick: {
         color: "#BA6BD9",
@@ -97,7 +90,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     casual: {
         color: "#F2994A",
@@ -105,7 +97,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     maternity: {
         color: "#BF286C",
@@ -113,7 +104,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     paternity: {
         color: "#557A46",
@@ -121,7 +111,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     marriage: {
         color: "#FE1E89",
@@ -129,7 +118,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     compassionate: {
         color: "#5C4B99",
@@ -137,7 +125,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     special: {
         color: "#086E7D",
@@ -145,7 +132,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     LWP: {
         color: "#1300F1",
@@ -153,7 +139,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     lfa: {
         color: "#03045E",
@@ -161,7 +146,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     AFA: {
         color: "#BF382B",
@@ -169,7 +153,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     "Shift Not Started": {
         color: "rgb(119, 11, 141)",
@@ -177,7 +160,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     },
     default: {
         color: "rgba(169, 169, 169, 1)",
@@ -185,7 +167,6 @@ export const attendanceStatus: Record<AttendanceStatusKey, AttendanceStatusStyle
         ...textStyle.medium12,
         borderRadius: 4,
         padding: 6,
-        textTransform: "capitalize"
     }
 };
 
@@ -280,4 +261,15 @@ export const attendanceDataPreparation = (attendance: Attendance[]) => {
         dummySummaryCards,
     };
 
+}
+
+export const getStatusStyle = (status: string): AttendanceStatusStyle => {
+    return attendanceStatus[status as AttendanceStatusKey] || attendanceStatus.default;
+};
+
+export const capitalizeFirstLetter = (string: string) => {
+    if (!string || typeof string !== 'string') {
+        return '';
+    }
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }

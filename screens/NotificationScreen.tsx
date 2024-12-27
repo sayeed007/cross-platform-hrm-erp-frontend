@@ -79,7 +79,7 @@ const NotificationScreen = () => {
             <View style={styles.container}>
                 {/* Header */}
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={() => navigation.navigate('HomeRoot')}>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
                         <Ionicons name="arrow-back" size={24} color={colors?.black} />
                     </TouchableOpacity>
                     <Text style={styles.headerTitle}>Notification</Text>

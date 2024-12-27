@@ -3,16 +3,18 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { getMonthAndYearWiseAttendanceForEmployee } from '../apis/Attendance';
+import ApplyAttendanceModal from '../components/attendance/applyAttendance/ApplyAttendanceModal';
 import AttendanceSummaryCard from '../components/attendance/AttendanceSummaryCard';
 import AttendanceTable from '../components/attendance/AttendanceTable';
+import SelectMonthYearModal from '../components/attendance/SelectMonthYearModal';
 import HeaderWithBackgroundImage from '../components/home/HeaderWithBackgroundImage';
+import DailyAttendanceActionModal from '../components/modals/DailyAttendanceActionModal';
+import SuccessModal from '../components/modals/SuccessModal';
 import { useUser } from '../context/UserContext';
 import { Attendance } from '../typeInterfaces/Attendance';
-import { colors } from '../utils/colors';
-import SelectMonthYearModal from '../components/attendance/SelectMonthYearModal';
-import DailyAttendanceActionModal from '../components/common/DailyAttendanceActionModal';
-import ApplyAttendanceModal from '../components/attendance/applyAttendance/ApplyAttendanceModal';
 import { attendanceDataPreparation, cards } from '../utils/attendanceStatus';
+import { colors } from '../utils/colors';
+import FullPageLoader from '../components/modals/FullPageLoader';
 
 const notLeaveAttendanceStatus = ["AFA", "AFL", "absent", "late", "present", "half day", "holiday", "weekend"];
 
@@ -21,7 +23,7 @@ const AttendanceScreen = () => {
 
     const { user } = useUser();
 
-
+    const [successModalVisible, setSuccessModalVisible] = useState<boolean>(false);
     const [monthYearSelectionModalVisible, setMonthYearSelectionModalVisible] = useState<boolean>(false);
 
     const [dailyAttendanceActionModalVisible, setDailyAttendanceActionModalVisible] = useState<boolean>(false);
@@ -33,7 +35,7 @@ const AttendanceScreen = () => {
     const [filteredSpecificMonthAttendance, setFilteredSpecificMonthAttendance] = useState<Attendance[]>([]);
     const [selectedAttendance, setSelectedAttendance] = useState<Partial<Attendance>>({});
     const [summaryCards, setSummaryCards] = useState(JSON.parse(JSON.stringify(cards)));
-
+    const [refetchData, setRefetchData] = useState<boolean>(false);
 
     useEffect(() => {
         if (user?.employeeId) {
@@ -53,8 +55,7 @@ const AttendanceScreen = () => {
             })
 
         }
-    }, [user?.employeeId, selectedMonthYear]);
-
+    }, [user?.employeeId, selectedMonthYear, refetchData]);
 
     useEffect(() => {
         let dummyFilteredAttendance = [];
@@ -82,15 +83,22 @@ const AttendanceScreen = () => {
                 break;
         }
 
-    }, [selectedAttendanceStatus])
+    }, [selectedAttendanceStatus]);
 
+    const handleContinue = () => {
+        setSuccessModalVisible(false);
 
-    console.log(selectedAttendance, '....Selected Attendance.........');
+        // Refetch data after modal closes
+        setTimeout(() => {
+            setRefetchData((prev) => !prev);
+        }, 500); // Optional delay if needed
+    };
 
     return (
         <>
             {/* <SafeAreaView style={styles.safeArea} > */}
 
+            {/* MODAL FOR SHOWING INDIVIDUAL MONTH'S ATTENDANCE  */}
             {monthYearSelectionModalVisible &&
                 <SelectMonthYearModal
                     isVisible={monthYearSelectionModalVisible}
@@ -103,6 +111,8 @@ const AttendanceScreen = () => {
                 />
             }
 
+            {/* MODAL FOR TAKING ACTION ON INDIVIDUAL ATTENDANCE */}
+            {/* SEND LEAVE OR SEND ATTENDANCE REQUEST */}
             {dailyAttendanceActionModalVisible &&
                 <DailyAttendanceActionModal
                     selectedAttendance={selectedAttendance}
@@ -119,6 +129,7 @@ const AttendanceScreen = () => {
                 />
             }
 
+            {/* MODAL FOR APPLYING MANUAL ATTENDANCE */}
             {showApplyAttendanceModalVisible &&
                 <ApplyAttendanceModal
                     selectedAttendance={selectedAttendance}
@@ -127,10 +138,23 @@ const AttendanceScreen = () => {
                         setShowApplyAttendanceModalVisible(false);
                         setSelectedAttendance({})
                     }}
+                    onSuccessAction={() => {
+                        setSuccessModalVisible(true);
+                    }}
                 />
-
             }
 
+            {/* ATTENDANCE REQUEST SUCCESS MODAL */}
+            {successModalVisible &&
+                <SuccessModal
+                    isVisible={successModalVisible}
+                    title="Attendance Request Sent Successfully"
+                    description="Your request is now pending for approval. Check Notification for approval status."
+                    onContinue={handleContinue}
+                />
+            }
+
+            {/* PAGE CONTENT */}
             <ScrollView
                 style={{ flex: 1 }}
                 contentContainerStyle={{ flexGrow: 1 }}
@@ -183,11 +207,3 @@ const styles = StyleSheet.create({
 });
 
 export default AttendanceScreen
-
-
-// const navigation = useNavigation();
-
-
-// useLayoutEffect(() => {
-//         setTabBarVisibility(navigation, true); // Ensure tab bar is visible on home
-// }, [navigation]);

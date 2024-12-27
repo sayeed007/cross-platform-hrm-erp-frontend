@@ -2,36 +2,36 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import {
     Modal,
-    Pressable,
     StyleSheet,
     Text,
     TouchableOpacity,
-    View,
+    View
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/Feather';
+import { getDailyAttendanceForEmployee, requestManualAttendanceForEmployee } from '../../../apis/Attendance';
+import { useUser } from '../../../context/UserContext';
+import { Attendance, defaultAttendance } from '../../../typeInterfaces/Attendance';
+import { attendanceDataPreparation } from '../../../utils/attendanceStatus';
 import { colors } from '../../../utils/colors';
 import { textStyle } from '../../../utils/textStyle';
-import SelectDate from './SelectDate';
-import ReasonList from './SelectReason';
-import SelectTime from './SelectTime';
 import RemarksModal from './RemarksModal';
-import { Attendance, defaultAttendance } from '../../../typeInterfaces/Attendance';
-import { useUser } from '../../../context/UserContext';
-import { getDailyAttendanceForEmployee, requestManualAttendanceForEmployee } from '../../../apis/Attendance';
-import { attendanceDataPreparation } from '../../../utils/attendanceStatus';
-import Toast from 'react-native-toast-message';
-import DefaultToast from '../../common/DefaultToast';
+import SelectDate from './SelectDate';
+import SelectInTime from './SelectInTime';
+import SelectOutTime from './SelectOutTime';
+import ReasonList from './SelectReason';
 
 interface ApplyAttendanceModalProps {
     selectedAttendance: Partial<Attendance>;
     isVisible: boolean;
     onClose: () => void;
+    onSuccessAction: () => void;
 }
 
 
 const SelectADate = 'Select Date';
-const SelectInTime = 'Select In Time';
-const SelectOutTime = 'Select Out Time';
+const Select_In_Time = 'Select In Time';
+const Select_Out_Time = 'Select Out Time';
 const SelectReason = 'Please Select Reason';
 const GiveRemark = 'Please Add Remark';
 // const Summary = 'Summary';
@@ -61,9 +61,9 @@ const ApplyAttendanceModal: React.FC<ApplyAttendanceModalProps> = ({
     selectedAttendance,
     isVisible,
     onClose,
+    onSuccessAction
 }) => {
     const { user } = useUser();
-
 
     const [currentState, setCurrentState] = useState<string>(SelectADate);
 
@@ -97,21 +97,19 @@ const ApplyAttendanceModal: React.FC<ApplyAttendanceModalProps> = ({
         }
     }, [selectedDate]);
 
-
-
     const handleOnClose = () => {
         switch (currentState) {
             case SelectADate:
                 onClose();
                 break;
-            case SelectInTime:
+            case Select_In_Time:
                 setCurrentState(SelectADate);
                 break;
-            case SelectOutTime:
-                setCurrentState(SelectInTime);
+            case Select_Out_Time:
+                setCurrentState(Select_In_Time);
                 break;
             case SelectReason:
-                setCurrentState(SelectOutTime);
+                setCurrentState(Select_Out_Time);
                 break;
             case GiveRemark:
                 break;
@@ -130,23 +128,23 @@ const ApplyAttendanceModal: React.FC<ApplyAttendanceModalProps> = ({
                         selectedDate={selectedDate}
                         onDateChange={(date) => {
                             setSelectedDate(date);
-                            setCurrentState(SelectInTime);
+                            setCurrentState(Select_In_Time);
                         }}
                     />
                 )
-            case SelectInTime:
+            case Select_In_Time:
                 return (
-                    <SelectTime
+                    <SelectInTime
                         selectedTime={selectedInTime}
                         onTimeChange={(time) => {
                             setSelectedInTime(time);
-                            setCurrentState(SelectOutTime);
+                            setCurrentState(Select_Out_Time);
                         }}
                     />
                 )
-            case SelectOutTime:
+            case Select_Out_Time:
                 return (
-                    <SelectTime
+                    <SelectOutTime
                         selectedTime={selectedOutTime}
                         onTimeChange={(time) => {
                             setSelectedOutTime(time);
@@ -174,7 +172,6 @@ const ApplyAttendanceModal: React.FC<ApplyAttendanceModalProps> = ({
         }
     };
 
-
     const requestForManualAttendance = (remarks: string) => {
 
         setCurrentState(SelectADate);
@@ -193,11 +190,7 @@ const ApplyAttendanceModal: React.FC<ApplyAttendanceModalProps> = ({
         if (user?.employeeId) {
             requestManualAttendanceForEmployee(user?.employeeId, requestBody).then((attendanceRequestResponse) => {
                 if (attendanceRequestResponse?.[0]) {
-                    Toast.show({
-                        type: 'successToast',
-                        position: 'bottom',
-                        text1: "Successfully requested for attendance",
-                    });
+                    onSuccessAction();
                 } else {
                     Toast.show({
                         type: 'failedToast',
@@ -214,11 +207,11 @@ const ApplyAttendanceModal: React.FC<ApplyAttendanceModalProps> = ({
             });
         }
 
-    }
-
+    };
 
     return (
         <>
+
             {currentState === GiveRemark ?
                 <>
                     <RemarksModal
@@ -242,26 +235,26 @@ const ApplyAttendanceModal: React.FC<ApplyAttendanceModalProps> = ({
                     animationType="slide"
                     onRequestClose={handleOnClose}
                 >
-                    {/* <Pressable
+                    <TouchableOpacity
                         style={styles.modalOuterContainer}
                         onPress={handleOnClose} // Close the modal when pressing outside
-                    > */}
-                    <View style={styles.modalContainer}>
-                        <View style={styles.modalContent}>
-                            {/* Header */}
-                            <View style={styles.modalHeader}>
-                                <TouchableOpacity onPress={handleOnClose}>
-                                    <Icon name="arrow-left" size={24} color={colors.gray1} />
-                                </TouchableOpacity>
-                                <Text style={styles.headerTitle}>{currentState}</Text>
-                                <View />
-                            </View>
+                    >
+                        <TouchableOpacity style={styles.modalContainer} activeOpacity={1}>
+                            <View style={styles.modalContent}>
+                                {/* Header */}
+                                <View style={styles.modalHeader}>
+                                    <TouchableOpacity onPress={handleOnClose}>
+                                        <Icon name="arrow-left" size={24} color={colors.gray1} />
+                                    </TouchableOpacity>
+                                    <Text style={styles.headerTitle}>{currentState}</Text>
+                                    <View />
+                                </View>
 
-                            {/* Content */}
-                            {showContentBasedOnCurrentState()}
-                        </View>
-                    </View>
-                    {/* </Pressable> */}
+                                {/* Content */}
+                                {showContentBasedOnCurrentState()}
+                            </View>
+                        </TouchableOpacity>
+                    </TouchableOpacity>
                 </Modal>
             }
         </>

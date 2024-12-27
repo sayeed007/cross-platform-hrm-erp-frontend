@@ -14,6 +14,7 @@ import { SingleNotification } from '../components/home/SingleNotification';
 import { defaultNotification } from '../typeInterfaces/Notification';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
+import AttendanceStack from '../Stack/AttendanceStack';
 const BottomBar = createBottomTabNavigator();
 
 // Extract the screenOptions logic
@@ -111,7 +112,7 @@ export const TabBar: React.FC = () => {
                 />
                 <BottomBar.Screen
                     name="Attendance"
-                    component={AttendanceScreen}
+                    component={AttendanceStack}
                 />
                 <BottomBar.Screen
                     name="Add"

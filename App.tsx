@@ -6,7 +6,7 @@ import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { TextEncoder } from "text-encoding";
 import DefaultToast from './components/common/DefaultToast';
-import FullPageLoader from "./components/common/FullPageLoader";
+import FullPageLoader from "./components/modals/FullPageLoader";
 import { ErrorModalProvider } from "./context/ErrorModalProvider";
 import { SubscriptionProvider } from "./context/SubscriptionContext";
 import { SuccessModalProvider } from "./context/SuccessModalProvider";

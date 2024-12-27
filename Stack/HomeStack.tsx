@@ -16,24 +16,6 @@ import { LeaveApprovalScreen } from '../screens/LeaveApprovalScreen';
 // Define the stack with RootStackParamList
 const Stack = createStackNavigator<RootStackParamList>();
 
-// Custom header with gradient and back button
-const GradientHeader = ({
-    title,
-    navigation,
-}: {
-    title: string;
-    navigation: StackNavigationProp<RootStackParamList>;
-}) => (
-    <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.headerGradient}>
-        {/* Navigation Section */}
-        <View style={styles.navBar}>
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-                <Icon name="arrow-left" size={24} color={colors?.white} />
-            </TouchableOpacity>
-            <Text style={styles.navTitle}>{title}</Text>
-        </View>
-    </LinearGradient>
-);
 
 const HomeStack = () => {
     return (

@@ -34,28 +34,6 @@ const HomeScreen = () => {
         setTabBarVisibility(navigation, true); // Ensure tab bar is visible on home
     }, [navigation]);
 
-    // Toast.show({
-    //     type: 'approvalSuccess',
-    //     text1: 'Request Rejected',
-    //     text2: 'Check Now',
-    //     visibilityTime: 1000000,
-    //     position: 'bottom',
-    //     props: {
-    //         onCheckPress: () => console.log('Navigate to details!'),
-    //     },
-    // });
-
-    // Toast.show({
-    //     type: 'approvalReject',
-    //     text1: 'Request Rejected',
-    //     text2: 'Check Now',
-    //     visibilityTime: 1000000,
-    //     position: 'bottom',
-    //     props: {
-    //         onCheckPress: () => console.log('Navigate to details!'),
-    //     },
-    // });
-
 
     return (
         <>
@@ -85,7 +63,7 @@ const HomeScreen = () => {
                     }
 
                     {/* Pending Requests Block */}
-                    <View style={{ marginTop: canClockAttendance ? 160 : 80 }}>
+                    <View style={{ marginTop: canClockAttendance ? 200 : 80 }}>
                         <PendingLeaveAndAttendance />
                     </View>
 

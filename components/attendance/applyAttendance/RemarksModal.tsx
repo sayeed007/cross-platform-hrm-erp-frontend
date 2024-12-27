@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
         color: colors.gray1,
     },
     remarks: {
-        flex: 1,
+        width: '100%',
     },
     remarksText: {
         ...textStyle.semibold16,

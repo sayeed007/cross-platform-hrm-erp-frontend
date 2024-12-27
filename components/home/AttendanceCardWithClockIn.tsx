@@ -5,7 +5,7 @@ import { getEmployeeAttendanceForClocking, modifyAttendanceClockInOut } from '..
 import { UserAttendanceInformationForClocking } from '../../typeInterfaces/UserAttendanceInformationForClocking';
 import { Attendance, defaultAttendance } from '../../typeInterfaces/Attendance';
 import moment from 'moment';
-import ModalLoader from '../common/ModalLoader';
+import ModalLoader from '../modals/ModalLoader';
 import Geolocation from 'react-native-geolocation-service';
 import { useSuccessModal } from '../../context/SuccessModalProvider';
 import { useErrorModal } from '../../context/ErrorModalProvider';
@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         flex: 1,
         width: Platform.OS === 'web' ? '92%' : '100%',
-        top: -70,
+        top: -100,
         left: '4%',
     },
     imageContainer: {

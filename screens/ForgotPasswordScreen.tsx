@@ -10,7 +10,7 @@ import { ForgotPasswordScreenNavigationProp } from '../typeInterfaces/navigation
 import { useSuccessModal } from '../context/SuccessModalProvider';
 import { requestToUpdatePassword } from '../apis/ForgetPassword';
 import { useErrorModal } from '../context/ErrorModalProvider';
-import FullPageLoader from '../components/common/FullPageLoader';
+import FullPageLoader from '../components/modals/FullPageLoader';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
 

@@ -2,7 +2,7 @@ import moment from 'moment';
 import React from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Attendance } from '../../typeInterfaces/Attendance';
-import { attendanceStatus, AttendanceStatusKey, AttendanceStatusStyle } from '../../utils/attendanceStatus';
+import { attendanceStatus, AttendanceStatusKey, AttendanceStatusStyle, capitalizeFirstLetter, getStatusStyle } from '../../utils/attendanceStatus';
 import { colors } from '../../utils/colors';
 import { textStyle } from '../../utils/textStyle';
 
@@ -42,14 +42,10 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({
                 <Text style={styles.cell}>{formattedInTime}</Text>
                 <Text style={styles.cell}>{formattedOutTime}</Text>
                 <Text style={[styles.cell, getStatusStyle(item.status)]}>
-                    {item.status}
+                    {capitalizeFirstLetter(item.status)}
                 </Text>
             </TouchableOpacity>
         );
-    };
-
-    const getStatusStyle = (status: string): AttendanceStatusStyle => {
-        return attendanceStatus[status as AttendanceStatusKey] || attendanceStatus.default;
     };
 
     return (
