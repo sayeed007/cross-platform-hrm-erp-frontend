@@ -1,152 +1,182 @@
 export const textStyle = {
-    "bold48": {
+    bold48: {
         fontSize: 48,
+        lineHeight: 60, // 1.25x
         fontWeight: "700" as "700",
-        fontFamily: "PoppinsBold"
+        fontFamily: "PoppinsBold",
     },
-    "bold36": {
+    bold36: {
         fontSize: 36,
+        lineHeight: 48, // 1.33x
         fontWeight: "700" as "700",
-        fontFamily: "PoppinsBold"
+        fontFamily: "PoppinsBold",
     },
-    "bold30": {
+    bold30: {
         fontSize: 30,
-        fontWeight: "700" as "700", // Explicitly cast as a valid React Native type
-        fontFamily: "PoppinsBold"
-    },
-    "bold24": {
-        fontSize: 24,
+        lineHeight: 40, // 1.33x
         fontWeight: "700" as "700",
-        fontFamily: "PoppinsBold"
+        fontFamily: "PoppinsBold",
     },
-    "semibold24": {
+    bold24: {
         fontSize: 24,
-        fontWeight: "600" as "600",
-        fontFamily: "PoppinsSemibold"
-    },
-    "regular24": {
-        fontSize: 24,
-        fontWeight: "400" as "400",
-        fontFamily: "PoppinsRegular"
-    },
-    "bold20": {
-        fontSize: 20,
+        lineHeight: 32, // 1.33x
         fontWeight: "700" as "700",
-        fontFamily: "PoppinsBold"
+        fontFamily: "PoppinsBold",
     },
-    "semibold20": {
-        fontSize: 20,
+    semibold24: {
+        fontSize: 24,
+        lineHeight: 32, // 1.33x
         fontWeight: "600" as "600",
-        fontFamily: "PoppinsSemibold"
+        fontFamily: "PoppinsSemibold",
     },
-    "regular20": {
-        fontSize: 20,
+    regular24: {
+        fontSize: 24,
+        lineHeight: 32, // 1.33x
         fontWeight: "400" as "400",
-        fontFamily: "PoppinsRegular"
+        fontFamily: "PoppinsRegular",
     },
-    "bold18": {
+    bold20: {
+        fontSize: 20,
+        lineHeight: 28, // 1.4x
+        fontWeight: "700" as "700",
+        fontFamily: "PoppinsBold",
+    },
+    semibold20: {
+        fontSize: 20,
+        lineHeight: 28, // 1.4x
+        fontWeight: "600" as "600",
+        fontFamily: "PoppinsSemibold",
+    },
+    regular20: {
+        fontSize: 20,
+        lineHeight: 28, // 1.4x
+        fontWeight: "400" as "400",
+        fontFamily: "PoppinsRegular",
+    },
+    bold18: {
         fontSize: 18,
+        lineHeight: 26, // 1.44x
         fontWeight: "700" as "700",
-        fontFamily: "PoppinsBold"
+        fontFamily: "PoppinsBold",
     },
-    "bold16": {
+    bold16: {
         fontSize: 16,
+        lineHeight: 24, // 1.5x
         fontWeight: "700" as "700",
-        fontFamily: "PoppinsBold"
+        fontFamily: "PoppinsBold",
     },
-    "semibold16": {
+    semibold16: {
         fontSize: 16,
+        lineHeight: 24, // 1.5x
         fontWeight: "600" as "600",
-        fontFamily: "PoppinsSemibold"
+        fontFamily: "PoppinsSemibold",
     },
-    "medium16": {
+    medium16: {
         fontSize: 16,
+        lineHeight: 24, // 1.5x
         fontWeight: "500" as "500",
-        fontFamily: "PoppinsMedium"
+        fontFamily: "PoppinsMedium",
     },
-    "regular16": {
+    regular16: {
         fontSize: 16,
+        lineHeight: 24, // 1.5x
         fontWeight: "400" as "400",
-        fontFamily: "PoppinsRegular"
+        fontFamily: "PoppinsRegular",
     },
-    "bold14": {
+    bold14: {
         fontSize: 14,
+        lineHeight: 20, // 1.43x
         fontWeight: "700" as "700",
-        fontFamily: "PoppinsBold"
+        fontFamily: "PoppinsBold",
     },
-    "semibold14": {
+    semibold14: {
         fontSize: 14,
+        lineHeight: 20, // 1.43x
         fontWeight: "600" as "600",
-        fontFamily: "PoppinsSemibold"
+        fontFamily: "PoppinsSemibold",
     },
-    "medium14": {
+    medium14: {
         fontSize: 14,
+        lineHeight: 20, // 1.43x
         fontWeight: "500" as "500",
-        fontFamily: "PoppinsMedium"
+        fontFamily: "PoppinsMedium",
     },
-    "regular14": {
+    regular14: {
         fontSize: 14,
+        lineHeight: 20, // 1.43x
         fontWeight: "400" as "400",
-        fontFamily: "PoppinsRegular"
+        fontFamily: "PoppinsRegular",
     },
-    "bold13": {
+    bold13: {
         fontSize: 13,
+        lineHeight: 18, // ~1.38x
         fontWeight: "700" as "700",
-        fontFamily: "PoppinsBold"
+        fontFamily: "PoppinsBold",
     },
-    "semibold13": {
+    semibold13: {
         fontSize: 13,
+        lineHeight: 18, // ~1.38x
         fontWeight: "600" as "600",
-        fontFamily: "PoppinsSemibold"
+        fontFamily: "PoppinsSemibold",
     },
-    "medium13": {
+    medium13: {
         fontSize: 13,
+        lineHeight: 18, // ~1.38x
         fontWeight: "500" as "500",
-        fontFamily: "PoppinsMedium"
+        fontFamily: "PoppinsMedium",
     },
-    "regular13": {
+    regular13: {
         fontSize: 13,
+        lineHeight: 18, // ~1.38x
         fontWeight: "400" as "400",
-        fontFamily: "PoppinsRegular"
+        fontFamily: "PoppinsRegular",
     },
-    "bold12": {
+    bold12: {
         fontSize: 12,
+        lineHeight: 16, // 1.33x
         fontWeight: "700" as "700",
-        fontFamily: "PoppinsBold"
+        fontFamily: "PoppinsBold",
     },
-    "semibold12": {
+    semibold12: {
         fontSize: 12,
+        lineHeight: 16, // 1.33x
         fontWeight: "600" as "600",
-        fontFamily: "PoppinsSemibold"
+        fontFamily: "PoppinsSemibold",
     },
-    "medium12": {
+    medium12: {
         fontSize: 12,
+        lineHeight: 16, // 1.33x
         fontWeight: "500" as "500",
-        fontFamily: "PoppinsMedium"
+        fontFamily: "PoppinsMedium",
     },
-    "regular12": {
+    regular12: {
         fontSize: 12,
+        lineHeight: 16, // 1.33x
         fontWeight: "400" as "400",
-        fontFamily: "PoppinsRegular"
+        fontFamily: "PoppinsRegular",
     },
-    "bold10": {
+    bold10: {
         fontSize: 10,
+        lineHeight: 14, // 1.4x
         fontWeight: "700" as "700",
-        fontFamily: "PoppinsBold"
+        fontFamily: "PoppinsBold",
     },
-    "semibold10": {
+    semibold10: {
         fontSize: 10,
+        lineHeight: 14, // 1.4x
         fontWeight: "600" as "600",
-        fontFamily: "PoppinsSemibold"
+        fontFamily: "PoppinsSemibold",
     },
-    "medium10": {
+    medium10: {
         fontSize: 10,
+        lineHeight: 14, // 1.4x
         fontWeight: "500" as "500",
-        fontFamily: "PoppinsMedium"
+        fontFamily: "PoppinsMedium",
     },
-    "regular10": {
+    regular10: {
         fontSize: 10,
+        lineHeight: 14, // 1.4x
         fontWeight: "400" as "400",
-        fontFamily: "PoppinsRegular"
+        fontFamily: "PoppinsRegular",
     },
 };

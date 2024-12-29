@@ -6,6 +6,7 @@ import NotificationScreen from '../screens/NotificationScreen';
 import { RootStackParamList } from '../typeInterfaces/navigationTypes';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
+import ProfileScreen from '../screens/ProfileScreen';
 
 // Define the stack with RootStackParamList
 const Stack = createStackNavigator<RootStackParamList>();
@@ -13,7 +14,9 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const AttendanceStack = () => {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            initialRouteName="Profile"
+        >
             {/* Home Screen */}
             <Stack.Screen
                 name="AttendanceRoot"
@@ -21,6 +24,12 @@ const AttendanceStack = () => {
                 options={{ headerShown: false }} // Hide header for Home screen
             />
 
+            {/* User Profile Screen */}
+            <Stack.Screen
+                name="Profile"
+                component={ProfileScreen}
+                options={{ headerShown: false }} // Hide header for Home screen
+            />
 
 
             {/* Notification Screen */}

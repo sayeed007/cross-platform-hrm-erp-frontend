@@ -1,3 +1,4 @@
+import moment from "moment";
 import { ModifyAttendanceClockInOutFormData } from "../typeInterfaces/ModifyAttendanceClockInOutFormData";
 import axiosInstance from "../utils/axiosInstance";
 import { resolveApiError } from "./ErrorHandler";
@@ -55,6 +56,21 @@ export const getAllNotificationsForEmployee = (employeeId: number) => {
         .catch(error => {
             return resolveApiError(error);
         });
+};
+
+// GET EMPLOYEE'S ALL HOLIDAYS  
+export const getEmployeeHolidaysByEmployeeId = (employeeId: number, selectedYear?: number) => {
+    if (!selectedYear) {
+        selectedYear = moment().year()
+    }
+    return axiosInstance.get(`/employee-holiday/${employeeId}?startDate=${selectedYear}-01-01&endDate=${selectedYear}-12-31`)
+        .then(response => {
+
+            return [response?.data];
+        })
+        .catch(error => {
+            return ([false, error?.response?.data?.message ? error?.response?.data?.message : error?.message])
+        })
 };
 
 

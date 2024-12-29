@@ -41,12 +41,15 @@ const HeaderWithBackgroundImage: React.FC<HeaderWithBackgroundImageProps> = ({
                 {/* Header Section */}
                 <View style={styles.header}>
                     <View style={styles.userImageWithNav}>
-                        <Image
-                            source={{
-                                uri: `${BASE_URL?.baseApi}/${user?.profilePicPath}`
-                            }}
-                            style={styles.userImage}
-                        />
+                        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+                            <Image
+                                source={{
+                                    uri: `${BASE_URL?.baseApi}/${user?.profilePicPath}`
+                                }}
+                                style={styles.userImage}
+                            />
+                        </TouchableOpacity>
+
                         <Text style={styles.routeName}>
                             {navTitle}
                         </Text>

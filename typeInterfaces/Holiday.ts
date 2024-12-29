@@ -21,6 +21,18 @@ export interface HolidayWithMonth {
     month: string;
 }
 
+export interface HolidayPolicy {
+    id: number;
+    holidayPolicyName: string;
+    year: number | null;
+    description: string;
+    attachments: any[]; // Replace `any` with the specific attachment type if available
+    companyId: number;
+    holidays: Holiday[];
+    employeeIds: number[];
+    employees: any[]; // Replace `any` with the specific employee type if available
+};
+
 // Default generator function
 export const generateDefaultHoliday = (): HolidayWithMonth => {
     const today = moment();

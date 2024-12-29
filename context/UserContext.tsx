@@ -5,45 +5,9 @@ import { useNavigation } from '@react-navigation/native'; // React Navigation fo
 import { useErrorModal } from './ErrorModalProvider';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../typeInterfaces/navigationTypes';
+import { User } from '../typeInterfaces/User';
 
-// Define the User type
-export interface User {
-    employeeVisibleId: string;
-    employeeId: number;
-    username: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    roles: string[];
-    profilePicPath: string;
-    thumbnails_path_01: string;
-    thumbnails_path_02: string;
-    employmentStatus: string;
-    joiningDate: string;
-    currentLoginTime: string;
-    previousLoginTime: string;
-    companyId: number;
-    companyLogoPath: string | null;
-    companyName: string;
-    departmentId: number;
-    departmentName: string;
-    designationId: number;
-    designationName: string;
-    grade: number;
-    gradeLabel: string;
-    featureGroups: any[];
-    isTeamLeader: boolean;
-    isHeadOfDepartment: boolean;
-    isLineManager: boolean;
-    isProjectManager: boolean | null;
-    accessToken: string;
-    tokenType: string;
-    [key: string]: any; // Extendable for additional fields
-    employeeInfo: {};
-    additionalAccessibility: {
-        canClockAttendance: boolean
-    };
-}
+
 
 interface UserContextType {
     user: User | null;

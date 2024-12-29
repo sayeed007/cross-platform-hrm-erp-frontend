@@ -23,7 +23,7 @@ import { EmptyItemsInPage } from '../common/EmptyItemsInPage';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
-const HOLIDAY_STORAGE_KEY = 'upcoming_holiday_data';
+export const HOLIDAY_STORAGE_KEY = 'upcoming_holiday_data';
 
 const UpcomingHoliday = () => {
     const { user } = useUser();
@@ -74,7 +74,7 @@ const UpcomingHoliday = () => {
             // Store data in AsyncStorage
             const storageValue = JSON.stringify({
                 accessToken: currentAccessToken,
-                data: sortedHolidayList,
+                data: holidayResponse?.[0],
             });
             await AsyncStorage.setItem(HOLIDAY_STORAGE_KEY, storageValue);
         } catch (error) {
@@ -94,7 +94,7 @@ const UpcomingHoliday = () => {
             if (storedData) {
                 const { accessToken, data } = JSON.parse(storedData);
                 if (accessToken === currentAccessToken) {
-                    setHolidayList(data);
+                    setHolidayList(data?.holidays);
 
                     // Find the next holiday from cached data
                     const currentDate = moment();
@@ -133,7 +133,7 @@ const UpcomingHoliday = () => {
             {/* Header Section */}
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>Upcoming Holiday</Text>
-                {holidayList.length > 0 && (
+                {holidayList?.length > 0 && (
                     <TouchableOpacity onPress={handleSeeAllPress} style={styles.seeAll}>
                         <Text style={styles.seeAllText}>See All</Text>
                         <Feather name="arrow-up-right" size={14} color={colors?.info} />
@@ -146,7 +146,7 @@ const UpcomingHoliday = () => {
                     <ActivityIndicator size="large" color={colors?.spinner} />
                     <Text style={styles.loadingText}>Loading...</Text>
                 </View>
-            ) : holidayList.length > 0 ? (
+            ) : holidayList?.length > 0 ? (
                 <HolidayCard
                     holidayTitle={latestHoliday?.holidayTitle}
                     startDate={latestHoliday?.holidayStartDate}

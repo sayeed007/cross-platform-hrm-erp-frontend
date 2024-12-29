@@ -12,6 +12,7 @@ import NotificationScreen from '../screens/NotificationScreen';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
 import { LeaveApprovalScreen } from '../screens/LeaveApprovalScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 
 // Define the stack with RootStackParamList
 const Stack = createStackNavigator<RootStackParamList>();
@@ -53,6 +54,13 @@ const HomeStack = () => {
             <Stack.Screen
                 name="LeaveApproval"
                 component={LeaveApprovalScreen}
+                options={{ headerShown: false }} // Hide header for Home screen
+            />
+
+            {/* User Profile Screen */}
+            <Stack.Screen
+                name="Profile"
+                component={ProfileScreen}
                 options={{ headerShown: false }} // Hide header for Home screen
             />
 
