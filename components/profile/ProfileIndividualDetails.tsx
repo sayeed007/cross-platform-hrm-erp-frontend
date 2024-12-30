@@ -14,7 +14,7 @@ import { colors } from '../../utils/colors';
 
 interface ProfileIndividualDetailsProps {
     title?: string;
-    value: string | number;
+    value: string | number | boolean | null;
     index: string
 }
 

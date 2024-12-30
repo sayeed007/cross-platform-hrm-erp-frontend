@@ -24,8 +24,8 @@ const UserDocuments = () => {
         {
             title: "Documents",
             items: [
-                { id: 1, name: "NID", url: user?.employeeInfo?.cvPath ? `${BASE_URL.baseApi}/${user?.employeeInfo?.cvPath}` : 'null' },
-                { id: 2, name: "CV", url: user?.employeeInfo?.nidPassPath ? `${BASE_URL.baseApi}/${user?.employeeInfo?.nidPassPath}` : 'null' },
+                { id: 1, name: "NID", url: user?.employeeInfo?.nidPassPath ? `${BASE_URL.baseApi}/${user?.employeeInfo?.nidPassPath}` : 'null' },
+                { id: 2, name: "CV", url: user?.employeeInfo?.cvPath ? `${BASE_URL.baseApi}/${user?.employeeInfo?.cvPath}` : 'null' },
                 { id: 3, name: "Letter", url: user?.employeeInfo?.appointmentLetter ? `${BASE_URL.baseApi}/${user?.employeeInfo?.appointmentLetter}` : 'null' },
             ],
         },

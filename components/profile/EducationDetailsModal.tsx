@@ -2,6 +2,7 @@ import React from "react";
 import {
     FlatList,
     Modal,
+    ScrollView,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -31,7 +32,6 @@ const EducationDetailsModal: React.FC<EducationDetailsModalProps> = ({ isVisible
         { 'title': 'Duration', value: education?.duration ? education?.duration : 'N/A' },
     ];
 
-    console.log(educationDetailsData);
 
     return (
         <Modal
@@ -54,22 +54,31 @@ const EducationDetailsModal: React.FC<EducationDetailsModalProps> = ({ isVisible
 
                     <Text style={styles.institution}>{education.institute}</Text>
 
-                    {/* FlatList */}
-                    <FlatList
-                        scrollEnabled={false}
-                        key={'Education Details'}
-                        data={educationDetailsData}
-                        keyExtractor={(item, index) => `${item.title}-${index}`}
-                        renderItem={({ item, index }) => (
-                            <ProfileIndividualDetails
-                                title={item.title}
-                                value={item.value}
-                                index={`${item.title}-${index}`}
-                            />
-                        )}
-                        style={{ flex: 1 }}
-                        ItemSeparatorComponent={() => <View style={styles.separator} />}
-                    />
+                    {/* List */}
+                    <ScrollView
+                        // style={{ marginBottom: 70 }}
+                        contentContainerStyle={{ flexGrow: 1 }}
+                        scrollEnabled={true}
+                        nestedScrollEnabled={true}
+                    >
+                        {/* FLAT-LIST */}
+                        <FlatList
+                            nestedScrollEnabled={true}
+                            scrollEnabled={false}
+                            key={'Education Details'}
+                            data={educationDetailsData}
+                            keyExtractor={(item, index) => `${item.title}-${index}`}
+                            renderItem={({ item, index }) => (
+                                <ProfileIndividualDetails
+                                    title={item.title}
+                                    value={item.value}
+                                    index={`${item.title}-${index}`}
+                                />
+                            )}
+                            style={{ flex: 1 }}
+                            ItemSeparatorComponent={() => <View style={styles.separator} />}
+                        />
+                    </ScrollView>
                 </View>
             </View>
         </Modal>
@@ -126,3 +135,5 @@ const styles = StyleSheet.create({
 });
 
 export default EducationDetailsModal;
+
+

@@ -32,8 +32,6 @@ const ExperienceDetailsModal: React.FC<ExperienceDetailsModalProps> = ({ isVisib
         { 'title': 'Employment Type', value: experience?.employmentType ? capitalizeFirstLetter(experience?.employmentType) : 'N/A' },
     ];
 
-    console.log(experienceDetailsData);
-
     return (
         <Modal
             visible={isVisible}

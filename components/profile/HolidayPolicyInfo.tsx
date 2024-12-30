@@ -113,52 +113,57 @@ const HolidayPolicyInfo = () => {
                         <Text style={styles.loadingText}>Loading...</Text>
                     </View >
                 )
-                : holidayList.length > 0 ?
-                    (
-                        <View style={styles.container}>
-                            {/* List Title */}
-                            <Text style={styles.title}>
-                                Holiday Policy info
-                            </Text>
+                :
+                <View style={styles.container}>
+                    {/* List Title */}
+                    <Text style={styles.title}>
+                        Holiday Policy info
+                    </Text>
 
-                            <ProfileIndividualDetails
-                                title={'Policy Name'}
-                                value={holidayPolicyInfo?.holidayPolicyName ?? ''}
-                                index={'Policy Name'}
-                            />
+                    <ProfileIndividualDetails
+                        title={'Policy Name'}
+                        value={holidayPolicyInfo?.holidayPolicyName ?? ''}
+                        index={'Policy Name'}
+                    />
 
-                            <ProfileIndividualDetails
-                                title={'No of Holiday'}
-                                value={holidayPolicyInfo?.holidays?.length ?? ''}
-                                index={'No of Holiday'}
-                            />
+                    <ProfileIndividualDetails
+                        title={'No of Holiday'}
+                        value={holidayPolicyInfo?.holidays?.length ?? ''}
+                        index={'No of Holiday'}
+                    />
 
-                            {/* FlatList */}
-                            <FlatList
-                                nestedScrollEnabled={true}
-                                scrollEnabled={false}
-                                key={'Holiday Policy info'}
-                                data={holidayPolicyInfo?.holidays}
-                                keyExtractor={(item, index) => `${item.id}-${index}`}
-                                renderItem={({ item, index }) => (
-                                    <HolidayCard
-                                        key={item.id}
-                                        holidayTitle={item.holidayTitle}
-                                        startDate={item.holidayStartDate}
-                                        endDate={item.holidayEndDate}
-                                        duration={item.holidayDuration}
-                                    />
-                                )}
-                                style={{ flex: 1 }}
-                                ItemSeparatorComponent={() => <View style={styles.separator} />}
+                    {holidayList?.length > 0 ?
+                        (
+                            <>
+                                {/* FlatList */}
+                                <FlatList
+                                    nestedScrollEnabled={true}
+                                    scrollEnabled={false}
+                                    key={'Holiday Policy info'}
+                                    data={holidayPolicyInfo?.holidays}
+                                    keyExtractor={(item, index) => `${item.id}-${index}`}
+                                    renderItem={({ item, index }) => (
+                                        <HolidayCard
+                                            key={item.id}
+                                            holidayTitle={item.holidayTitle}
+                                            startDate={item.holidayStartDate}
+                                            endDate={item.holidayEndDate}
+                                            duration={item.holidayDuration}
+                                        />
+                                    )}
+                                    style={{ flex: 1 }}
+                                    ItemSeparatorComponent={() => <View style={styles.separator} />}
+                                />
+                            </>
+                        )
+                        :
+                        (
+                            <EmptyItemsInPage
+                                message="No holidays for the year."
                             />
-                        </View>
-                    )
-                    :
-                    (
-                        <EmptyItemsInPage
-                            message="No holidays for the year." />
-                    )
+                        )
+                    }
+                </View>
             }
         </>
     );

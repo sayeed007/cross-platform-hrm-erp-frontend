@@ -8,6 +8,7 @@ import { colors } from "../../utils/colors";
 import { capitalizeFirstLetter } from "../../utils/generateTabWiseEmployeeDetails";
 import { textStyle } from "../../utils/textStyle";
 import ExperienceDetailsModal from "./ExperienceDetailsModal";
+import { EmptyItemsInPage } from "../common/EmptyItemsInPage";
 
 const ExperienceList = () => {
 
@@ -24,44 +25,53 @@ const ExperienceList = () => {
 
     return (
         <>
-            {selectedExperience && (
+            {/* {selectedExperience && (
                 <ExperienceDetailsModal
                     isVisible={isModalVisible}
                     onClose={() => setModalVisible(false)}
                     experience={selectedExperience}
                 />
-            )}
+            )} */}
 
             <View style={styles.container}>
                 <Text style={styles.title}>Experience</Text>
 
                 {/* LIST OF Experience */}
-                <FlatList
-                    scrollEnabled={false}
-                    data={experienceData}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity
-                            style={styles.experienceItem}
-                            onPress={() => openModal(item)}
-                        >
-                            <View>
-                                <Text style={styles.institutionName}>
-                                    {item?.designation ? item?.designation : 'N/A'}
-                                </Text>
-                                <Text style={styles.degree}>
-                                    {item?.company ? item.company : 'N/A'} | {item?.employmentType ? capitalizeFirstLetter(item?.employmentType) : 'N/A'}
-                                </Text>
-                                <Text style={styles.duration}>
-                                    {moment(item.startDate, 'YYYY-MM-DD').format('MMM, YYYY')} - {moment(item.endDate, 'YYYY-MM-DD').format('MMM, YYYY')}
-                                </Text>
-                            </View>
-                            <Icon name="chevron-right" size={20} color={colors.info} />
-                        </TouchableOpacity>
-                    )}
-                    ItemSeparatorComponent={() => <View style={styles.separator} />}
-                />
-            </View>
+                {(experienceData || [])?.length > 0 ?
+                    <FlatList
+                        scrollEnabled={false}
+                        data={experienceData}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={({ item }) => (
+                            <>
+                                {/* <TouchableOpacity
+                                style={styles.experienceItem}
+                                onPress={() => openModal(item)}
+                            > */}
+                                <View>
+                                    <Text style={styles.institutionName}>
+                                        {item?.designation ? item?.designation : 'N/A'}
+                                    </Text>
+                                    <Text style={styles.degree}>
+                                        {item?.company ? item.company : 'N/A'} | {item?.employmentType ? capitalizeFirstLetter(item?.employmentType) : 'N/A'}
+                                    </Text>
+                                    <Text style={styles.duration}>
+                                        {moment(item.startDate, 'YYYY-MM-DD').format('MMM, YYYY')} - {moment(item.endDate, 'YYYY-MM-DD').format('MMM, YYYY')}
+                                    </Text>
+                                </View>
+                                {/* <Icon name="chevron-right" size={20} color={colors.info} /> */}
+                                {/* </TouchableOpacity> */}
+                            </>
+                        )}
+                        ItemSeparatorComponent={() => <View style={styles.separator} />}
+                    />
+                    :
+                    <EmptyItemsInPage
+                        message={'No experience has been added yet.'}
+                    />
+                }
+
+            </View >
         </>
     );
 };

@@ -85,7 +85,7 @@ export interface EmployeeInfo {
     headOfDepartmentName: string
     isHeadOfDepartment: boolean
     officialBenefit: OfficialBenefit
-    // attendanceRosterWeekends: []
+    attendanceRosterWeekends?: any
     attendanceRoaster: AttendanceRoaster
     leavePolicy: LeavePolicy
     bankDetails: BankDetails

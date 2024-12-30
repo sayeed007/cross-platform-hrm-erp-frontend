@@ -11,7 +11,7 @@ import { textStyle } from '../../utils/textStyle';
 
 export interface FlatListNormalData {
     title: string;
-    value: string | number; // Ensure value is always a string
+    value: string | number | boolean | null;
 };
 
 interface SingleFlatListProps {

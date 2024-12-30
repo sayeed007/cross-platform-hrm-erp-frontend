@@ -1,11 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native';
 import moment from 'moment';
+import React from 'react';
+import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { AttendanceRoaster, ShiftInfo } from '../../typeInterfaces/User';
 import { colors } from '../../utils/colors';
 import { textStyle } from '../../utils/textStyle';
-import SingleFlatList, { FlatListNormalData } from './SingleFlatList';
 import ProfileIndividualDetails from './ProfileIndividualDetails';
-import { RoasterInfo, ShiftInfo } from '../../typeInterfaces/User';
+import { FlatListNormalData } from './SingleFlatList';
 
 
 
@@ -23,11 +23,11 @@ import { RoasterInfo, ShiftInfo } from '../../typeInterfaces/User';
 
 // const ShiftComponent = ({ roasterInfo, flatListNormalData }) => {
 interface ShiftComponentProps {
-    roasterInfo: RoasterInfo; // Add a title prop for the list
+    attendanceRoaster: AttendanceRoaster; // Add a title prop for the list
     flatListNormalData: FlatListNormalData;
 }
 
-const ShiftComponent: React.FC<ShiftComponentProps> = ({ roasterInfo, flatListNormalData = [{ title: '', value: '' }] }) => {
+const ShiftComponent: React.FC<ShiftComponentProps> = ({ attendanceRoaster, flatListNormalData }) => {
 
     const backgroundArr = [
         '#FFE7C2', '#EDFFD0', '#E5D0FF', '#FFC2E5', '#D0FFE5',
@@ -47,7 +47,6 @@ const ShiftComponent: React.FC<ShiftComponentProps> = ({ roasterInfo, flatListNo
         return backgroundArr[colorIndex];
     };
 
-    console.log(flatListNormalData, 'flatListNormalData');
 
     return (
         <>
@@ -66,7 +65,7 @@ const ShiftComponent: React.FC<ShiftComponentProps> = ({ roasterInfo, flatListNo
                     <View style={styles.shapeRootDiv}>
 
                         <View style={styles.shapeDiv}>
-                            {roasterInfo?.shiftTimeInformations?.map((item, index) => (
+                            {attendanceRoaster?.shiftTimeInformations?.map((item, index) => (
                                 // <Tooltip content={generateContent(item)} key={`shifts-${index}`}>
                                 <View
                                     key={item?.shiftName}

@@ -2,141 +2,35 @@ import moment, { Duration } from "moment";
 import { Location, PresentAddress, User } from "../typeInterfaces/User";
 import { FlatListNormalData } from "../components/profile/SingleFlatList";
 
-export const generateTabWIseEmployeeDetails = (user: User) => {
-    const dummyTabWiseEmployeeDetails = {
-        'Company Details': [
-            { title: 'Employee ID', value: user?.employeeInfo?.employeeVisibleId ? user?.employeeInfo?.employeeVisibleId : 'N/A' },
-        ],
-        'Office Policy': [
-            // 'Attendance Roster Info':
-            [],
-            // 'Attendance Roster Info': - SCHEDULED DATA
-            [],
-            // 'Leave Policy info':
-            [],
-            // 'Holiday Policy info':
-            [],
-        ],
-        'Compensation': [
-            // 'Bank Info':
-            [
-                { title: 'Bank Name', value: user?.employeeInfo?.bankDetails?.bankName ? user?.employeeInfo?.bankDetails?.bankName : 'N/A' },
-                { title: 'Branch Name', value: user?.employeeInfo?.bankDetails?.branchName ? user?.employeeInfo?.bankDetails?.branchName : 'N/A' },
-                { title: 'Account No', value: user?.employeeInfo?.bankDetails?.accountNo ? user?.employeeInfo?.bankDetails?.accountNo : 'N/A' },
-            ],
-            // 'Benefit Info':
-            [
-                { title: 'Is Transport User', value: user?.employeeInfo?.officialBenefit?.isTransportUser ? 'YES' : 'NO' },
-                user?.employeeInfo?.officialBenefit?.isTransportUser && {
-                    title: 'Transport Route',
-                    value: 'N/A'
-                    //     allRouteAndPickupPoint?.find(
-                    //     route => route.id === user?.employeeInfo?.officialBenefit?.transportRouteId
-                    // )?.routeName || 'N/A',
-                },
-                user?.employeeInfo?.officialBenefit?.isTransportUser && {
-                    title: 'Transport Pickup Point',
-                    value: 'N/A'
-                    //     allPickupPoint?.find(
-                    //     pickupPoint => pickupPoint?.id === user?.employeeInfo?.officialBenefit?.transportPickupPointId
-                    // )?.pickupPointName || 'N/A',
-                },
-                user?.employeeInfo?.officialBenefit?.isTransportUser && {
-                    title: 'Transport Deduction Amount',
-                    value: user?.employeeInfo?.officialBenefit?.transportDeductionAmount || 0,
-                },
-                user?.employeeInfo?.officialBenefit?.isTransportUser && {
-                    title: 'Transport Using Start Date',
-                    value: user?.employeeInfo?.officialBenefit?.transportUsingStartDate
-                        ? moment(user?.employeeInfo?.officialBenefit?.transportUsingStartDate).format('Do MMMM YYYY')
-                        : 'N/A',
-                },
-                { title: 'Is Tax Applicable', value: user?.employeeInfo?.officialBenefit?.isTaxApplicable ? 'YES' : 'NO' },
-                { title: 'Advance Income Tax', value: user?.employeeInfo?.officialBenefit?.advanceIncomeTax || 'N/A' },
-                { title: 'Has Investment', value: user?.employeeInfo?.officialBenefit?.hasInvestment ? 'YES' : 'NO' },
-                { title: 'Has Provident Fund', value: user?.employeeInfo?.officialBenefit?.hasProvidentFund ? 'YES' : 'NO' },
-                { title: 'Has LFA', value: user?.employeeInfo?.officialBenefit?.hasLFA ? 'YES' : 'NO' },
-                user?.employeeInfo?.officialBenefit?.hasLFA && {
-                    title: 'LFA Eligibility Date',
-                    value: user?.employeeInfo?.officialBenefit?.lfaEligibilityDate
-                        ? moment(user?.employeeInfo?.officialBenefit?.lfaEligibilityDate).format('Do MMMM YYYY')
-                        : 'N/A',
-                },
-                { title: 'Has Gratuity', value: user?.employeeInfo?.officialBenefit?.hasGratuity ? 'YES' : 'NO' },
-                { title: 'Has Dormitory', value: user?.employeeInfo?.officialBenefit?.hasDormitory ? 'YES' : 'NO' },
-                { title: 'Has Bonus', value: user?.employeeInfo?.officialBenefit?.hasBonus ? 'YES' : 'NO' },
-                user?.employeeInfo?.officialBenefit?.hasBonus && {
-                    title: 'Bonus Percentage',
-                    value: user?.employeeInfo?.officialBenefit?.bonusPercentage || 'N/A',
-                },
-                { title: 'Has Life Insurance', value: user?.employeeInfo?.officialBenefit?.hasLifeInsurance ? 'YES' : 'NO' },
-                { title: 'Has Lunch Allowance', value: user?.employeeInfo?.officialBenefit?.hasLunchAllowance ? 'YES' : 'NO' },
-                user?.employeeInfo?.officialBenefit?.hasLunchAllowance && {
-                    title: 'Lunch Allowance Amount',
-                    value: user?.employeeInfo?.officialBenefit?.lunchAllowanceAmount || 'N/A',
-                },
-                { title: 'Has Medical Insurance', value: user?.employeeInfo?.officialBenefit?.hasMedicalInsurance ? 'YES' : 'NO' },
-                { title: 'Has Mobile Allowance', value: user?.employeeInfo?.officialBenefit?.hasMobileAllowance ? 'YES' : 'NO' },
-                user?.employeeInfo?.officialBenefit?.hasMobileAllowance && {
-                    title: 'Mobile No',
-                    value: user?.employeeInfo?.officialBenefit?.mobileNumber || 'N/A',
-                },
-                user?.employeeInfo?.officialBenefit?.hasMobileAllowance && {
-                    title: 'Mobile Balance Limit',
-                    value: user?.employeeInfo?.officialBenefit?.mobileBalanceLimit || 'N/A',
-                },
-                user?.employeeInfo?.officialBenefit?.hasMobileAllowance && {
-                    title: 'Mobile Allowance Effective Date',
-                    value: user?.employeeInfo?.officialBenefit?.mobileAllowanceEffectiveDate
-                        ? moment(user?.employeeInfo?.officialBenefit?.mobileAllowanceEffectiveDate).format('MMMM DD, YYYY')
-                        : 'N/A',
-                },
-            ]
-        ],
-        'Nominee': [],
-        'Personal Details': [
-            { title: 'Father Name', value: user?.employeeInfo?.fatherName ? capitalizeFirstLetter(user?.employeeInfo?.fatherName) : 'N/A' },
-            { title: 'Mother Name', value: user?.employeeInfo?.motherName ? capitalizeFirstLetter(user?.employeeInfo?.motherName) : 'N/A' },
-            { title: 'Gender', value: user?.employeeInfo?.gender ? capitalizeFirstLetter(user?.employeeInfo?.gender) : 'N/A' },
-            { title: 'Date of Birth', value: user?.employeeInfo?.birthDate ? moment(user?.employeeInfo?.birthDate).format("MMM DD, yyyy") : 'N/A' },
-            { title: 'Original Date of Birth', value: user?.employeeInfo?.actualBirthDate ? moment(user?.employeeInfo?.actualBirthDate).format("Do MMMM") : 'N/A' },
-            { title: 'Personal Email', value: user?.employeeInfo?.personalEmail ? user?.employeeInfo?.personalEmail : 'N/A' },
-            { title: 'Nationality', value: user?.employeeInfo?.nationality ? capitalizeFirstLetter(user?.employeeInfo?.nationality) : 'N/A' },
-            { title: 'NID Number', value: user?.employeeInfo?.nidNumber ? user?.employeeInfo?.nidNumber : 'N/A' },
-            { title: 'TIN Number', value: user?.employeeInfo?.tinNumber ? user?.employeeInfo?.tinNumber : 'N/A' },
-            { title: 'Religion', value: user?.employeeInfo?.religion ? capitalizeFirstLetter(user?.employeeInfo?.religion) : 'N/A' },
-            { title: 'Blood Group', value: user?.employeeInfo?.bloodGroup ? user?.employeeInfo?.bloodGroup : 'N/A' },
-            { title: 'Martial Status', value: user?.employeeInfo?.maritalStatus ? capitalizeFirstLetter(user?.employeeInfo?.maritalStatus) : 'N/A' },
-            { title: 'Present Address', value: getAddress(user?.employeeInfo?.presentAddress) },
-            { title: 'Permanent Address', value: getAddress(user?.employeeInfo?.permanentAddress) },
-        ],
+
+type TabWiseEmployeeDetails = {
+    [key: string]: FlatListNormalData[] | FlatListNormalData[][];
+};
+
+
+export const generateTabWIseEmployeeDetails = (user: User): TabWiseEmployeeDetails => {
+    const dummyTabWiseEmployeeDetails: TabWiseEmployeeDetails = {
+        'Company Details': generateCompanyDetails(user),
+        'Office Policy': generateOfficePolicy(user),
+        'Compensation': generateCompensation(user),
+        'Nominee': generateNominee(user),
+        'Personal Details': generatePersonalDetails(user),
         'Education & Experience': [],
-        'Emergency Info': [
-            { title: 'Name', value: user?.employeeInfo?.econtact?.name ? capitalizeFirstLetter(user?.employeeInfo?.econtact?.name) : 'N/A' },
-            { title: 'Relation', value: user?.employeeInfo?.econtact?.relation ? capitalizeFirstLetter(user?.employeeInfo?.econtact?.relation) : 'N/A' },
-            { title: 'Mobile', value: user?.employeeInfo?.econtact?.mobile ? user?.employeeInfo?.econtact?.mobile : 'N/A' },
-            { title: 'Email', value: user?.employeeInfo?.econtact?.email ? user?.employeeInfo?.econtact?.email : 'N/A' },
-            {
-                title: 'Address', value: getAddress({
-                    id: user?.employeeInfo?.econtact?.id,
-                    villageName: user?.employeeInfo?.econtact?.villageName,
-                    buildingNo: user?.employeeInfo?.econtact?.buildingNo,
-                    street: user?.employeeInfo?.econtact?.street,
-                    state: user?.employeeInfo?.econtact?.state,
-                    postalCode: user?.employeeInfo?.econtact?.postalCode,
-                    city: user?.employeeInfo?.econtact?.city,
-                    country: user?.employeeInfo?.econtact?.country,
-                })
-            },
-        ],
+        'Emergency Info': generateEmergencyInfo(user),
         'Documents': [],
     };
 
+    return dummyTabWiseEmployeeDetails;
+};
 
-    // ###################################################################
-    // Company Details
+
+const generateCompanyDetails = (user: User) => {
+
+    const dummyCompanyDetails = [
+        { title: 'Employee ID', value: user?.employeeInfo?.employeeVisibleId ? user?.employeeInfo?.employeeVisibleId : 'N/A' },
+    ];
+
     // SETTING ORGANIZATION HIERARCHY OF AN EMPLOYEE
-    // ###################################################################
     user?.employeeInfo?.employeeOrganization?.organizationHierarchy?.hierarchy?.sort((a, b) => {
         // First, sort by positionInHierarchy
         if (a.positionInHierarchy !== b.positionInHierarchy) {
@@ -146,13 +40,13 @@ export const generateTabWIseEmployeeDetails = (user: User) => {
         return a.organizationElementType.id - b.organizationElementType.id;
     })?.map((organizationElement) => {
         if (organizationElement?.organizationElementType?.label === 'location') {
-            dummyTabWiseEmployeeDetails['Company Details'].push({
+            dummyCompanyDetails.push({
                 title: 'Location', value: user?.employeeInfo?.location?.[0]?.alias ? generateLocation(user?.employeeInfo?.location?.[0]) : 'N/A'
             })
 
         } else {
-            dummyTabWiseEmployeeDetails['Company Details'].push({
-                title: organizationElement?.organizationElementType?.label,
+            dummyCompanyDetails.push({
+                title: capitalizeFirstLetter(organizationElement?.organizationElementType?.label),
                 value: (user?.employeeInfo?.employeeOrganization?.organizationElements?.filter((element) => element?.organizationElementType?.label === organizationElement?.organizationElementType?.label)?.[0]?.name)
                     ?
                     (user?.employeeInfo?.employeeOrganization?.organizationElements?.filter((element) => element?.organizationElementType?.label === organizationElement?.organizationElementType?.label)?.[0]?.name)
@@ -162,8 +56,7 @@ export const generateTabWIseEmployeeDetails = (user: User) => {
         }
     });
 
-    dummyTabWiseEmployeeDetails['Company Details'] = [
-        ...dummyTabWiseEmployeeDetails['Company Details'],
+    const dummyCompanyDetailsExtended = [
         { title: 'Joining Date', value: user?.employeeInfo?.joiningDate ? user?.employeeInfo?.joiningDate : 'N/A' },
         { title: 'Probation Date', value: user?.employeeInfo?.probationStartDate ? moment(user?.employeeInfo?.probationStartDate).format("MMM DD, yyyy") : 'N/A' },
         { title: 'Confirmation Date', value: user?.employeeInfo?.confirmationDate ? moment(user?.employeeInfo?.confirmationDate).format("MMM DD, yyyy") : 'N/A' },
@@ -180,11 +73,19 @@ export const generateTabWIseEmployeeDetails = (user: User) => {
         { title: 'Employment Type', value: user?.employeeInfo?.employmentType?.employmentType ? user?.employeeInfo?.employmentType?.employmentType : 'N/A' },
     ];
 
+    return ([...dummyCompanyDetails, ...dummyCompanyDetailsExtended]);
 
-    // ###################################################################
-    // Office Policy
-    // ###################################################################
-    // GENERATING OFFICE POLICY - ATTENDANCE ROSTER DATA
+
+};
+
+const generateOfficePolicy = (user: User) => {
+    const dummyOfficePolicy: FlatListNormalData[][] = [
+        // Attendance Roster
+        [],
+        // Schedular Attendance Roster
+        []
+    ];
+
     const roasterInfo = {
         ...user?.employeeInfo?.attendanceRoaster,
         employeeId: user?.employeeInfo?.employeeId,
@@ -292,7 +193,8 @@ export const generateTabWIseEmployeeDetails = (user: User) => {
         ];
         attendanceRosterData.push(...halfDayDetails);
     };
-    dummyTabWiseEmployeeDetails['Office Policy'][0] = [...attendanceRosterData];
+
+    dummyOfficePolicy[0] = [...attendanceRosterData];
 
 
     // IF ROSTER HAS SCHEDULER ROSTER ASSIGN
@@ -321,19 +223,95 @@ export const generateTabWIseEmployeeDetails = (user: User) => {
             scheduledAttendanceRosterInfo.push(...scheduledAttendanceRosterInfoWithScheduledConditionWeekendDetails);
         };
     };
-    dummyTabWiseEmployeeDetails['Office Policy'][1] = [...scheduledAttendanceRosterInfo];
+    dummyOfficePolicy[1] = [...scheduledAttendanceRosterInfo];
 
+    return dummyOfficePolicy;
+};
 
-    // ###################################################################
-    // Compensation
-    // ###################################################################
+const generateCompensation = (user: User): FlatListNormalData[][] => {
+    const dummyCompensationData: FlatListNormalData[][] = [
+        // 'Bank Info'
+        [
+            { title: "Bank Name", value: user?.employeeInfo?.bankDetails?.bankName || "N/A" },
+            { title: "Branch Name", value: user?.employeeInfo?.bankDetails?.branchName || "N/A" },
+            { title: "Account No", value: user?.employeeInfo?.bankDetails?.accountNo || "N/A" },
+        ],
+        // 'Benefit Info'
+        [
+            { title: "Is Transport User", value: user?.employeeInfo?.officialBenefit?.isTransportUser ? "YES" : "NO" },
+            ...(user?.employeeInfo?.officialBenefit?.isTransportUser
+                ? [
+                    { title: "Transport Route", value: "N/A" }, // Replace "N/A" with actual value if needed
+                    { title: "Transport Pickup Point", value: "N/A" },
+                    {
+                        title: "Transport Deduction Amount",
+                        value: user?.employeeInfo?.officialBenefit?.transportDeductionAmount || 0,
+                    },
+                    {
+                        title: "Transport Using Start Date",
+                        value: user?.employeeInfo?.officialBenefit?.transportUsingStartDate
+                            ? moment(user?.employeeInfo?.officialBenefit?.transportUsingStartDate).format("Do MMMM YYYY")
+                            : "N/A",
+                    },
+                ]
+                : []),
+            { title: "Is Tax Applicable", value: user?.employeeInfo?.officialBenefit?.isTaxApplicable ? "YES" : "NO" },
+            { title: "Advance Income Tax", value: user?.employeeInfo?.officialBenefit?.advanceIncomeTax || "N/A" },
+            { title: "Has Investment", value: user?.employeeInfo?.officialBenefit?.hasInvestment ? "YES" : "NO" },
+            { title: "Has Provident Fund", value: user?.employeeInfo?.officialBenefit?.hasProvidentFund ? "YES" : "NO" },
+            { title: "Has LFA", value: user?.employeeInfo?.officialBenefit?.hasLFA ? "YES" : "NO" },
+            ...(user?.employeeInfo?.officialBenefit?.hasLFA
+                ? [
+                    {
+                        title: "LFA Eligibility Date",
+                        value: user?.employeeInfo?.officialBenefit?.lfaEligibilityDate
+                            ? moment(user?.employeeInfo?.officialBenefit?.lfaEligibilityDate).format("Do MMMM YYYY")
+                            : "N/A",
+                    },
+                ]
+                : []),
+            { title: "Has Gratuity", value: user?.employeeInfo?.officialBenefit?.hasGratuity ? "YES" : "NO" },
+            { title: "Has Dormitory", value: user?.employeeInfo?.officialBenefit?.hasDormitory ? "YES" : "NO" },
+            { title: "Has Bonus", value: user?.employeeInfo?.officialBenefit?.hasBonus ? "YES" : "NO" },
+            ...(user?.employeeInfo?.officialBenefit?.hasBonus
+                ? [
+                    {
+                        title: "Bonus Percentage",
+                        value: user?.employeeInfo?.officialBenefit?.bonusPercentage || "N/A",
+                    },
+                ]
+                : []),
+            { title: "Has Life Insurance", value: user?.employeeInfo?.officialBenefit?.hasLifeInsurance ? "YES" : "NO" },
+            { title: "Has Lunch Allowance", value: user?.employeeInfo?.officialBenefit?.hasLunchAllowance ? "YES" : "NO" },
+            ...(user?.employeeInfo?.officialBenefit?.hasLunchAllowance
+                ? [
+                    {
+                        title: "Lunch Allowance Amount",
+                        value: user?.employeeInfo?.officialBenefit?.lunchAllowanceAmount || "N/A",
+                    },
+                ]
+                : []),
+            { title: "Has Medical Insurance", value: user?.employeeInfo?.officialBenefit?.hasMedicalInsurance ? "YES" : "NO" },
+            { title: "Has Mobile Allowance", value: user?.employeeInfo?.officialBenefit?.hasMobileAllowance ? "YES" : "NO" },
+            ...(user?.employeeInfo?.officialBenefit?.hasMobileAllowance
+                ? [
+                    { title: "Mobile No", value: user?.employeeInfo?.officialBenefit?.mobileNumber || "N/A" },
+                    { title: "Mobile Balance Limit", value: user?.employeeInfo?.officialBenefit?.mobileBalanceLimit || "N/A" },
+                    {
+                        title: "Mobile Allowance Effective Date",
+                        value: user?.employeeInfo?.officialBenefit?.mobileAllowanceEffectiveDate
+                            ? moment(user?.employeeInfo?.officialBenefit?.mobileAllowanceEffectiveDate).format("MMMM DD, YYYY")
+                            : "N/A",
+                    },
+                ]
+                : []),
+        ].filter(Boolean) as FlatListNormalData[],
+    ];
 
+    return dummyCompensationData;
+};
 
-
-    // ###################################################################
-    // NOMINEE
-    // GENERATING NOMINEE DATA
-    // ###################################################################
+const generateNominee = (user: User) => {
     const nominees: FlatListNormalData[][] = [];
     user?.employeeInfo?.nominee?.forEach((nominee) => {
         nominees.push(
@@ -358,10 +336,52 @@ export const generateTabWIseEmployeeDetails = (user: User) => {
             ]
         )
     });
-    dummyTabWiseEmployeeDetails['Nominee'] = [...nominees];
 
+    return nominees;
+};
 
-    return dummyTabWiseEmployeeDetails;
+const generatePersonalDetails = (user: User) => {
+    const personalDetails = [
+        { title: 'Father Name', value: user?.employeeInfo?.fatherName ? capitalizeFirstLetter(user?.employeeInfo?.fatherName) : 'N/A' },
+        { title: 'Mother Name', value: user?.employeeInfo?.motherName ? capitalizeFirstLetter(user?.employeeInfo?.motherName) : 'N/A' },
+        { title: 'Gender', value: user?.employeeInfo?.gender ? capitalizeFirstLetter(user?.employeeInfo?.gender) : 'N/A' },
+        { title: 'Date of Birth', value: user?.employeeInfo?.birthDate ? moment(user?.employeeInfo?.birthDate).format("MMM DD, yyyy") : 'N/A' },
+        { title: 'Original Date of Birth', value: user?.employeeInfo?.actualBirthDate ? moment(user?.employeeInfo?.actualBirthDate).format("Do MMMM") : 'N/A' },
+        { title: 'Personal Email', value: user?.employeeInfo?.personalEmail ? user?.employeeInfo?.personalEmail : 'N/A' },
+        { title: 'Nationality', value: user?.employeeInfo?.nationality ? capitalizeFirstLetter(user?.employeeInfo?.nationality) : 'N/A' },
+        { title: 'NID Number', value: user?.employeeInfo?.nidNumber ? user?.employeeInfo?.nidNumber : 'N/A' },
+        { title: 'TIN Number', value: user?.employeeInfo?.tinNumber ? user?.employeeInfo?.tinNumber : 'N/A' },
+        { title: 'Religion', value: user?.employeeInfo?.religion ? capitalizeFirstLetter(user?.employeeInfo?.religion) : 'N/A' },
+        { title: 'Blood Group', value: user?.employeeInfo?.bloodGroup ? user?.employeeInfo?.bloodGroup : 'N/A' },
+        { title: 'Martial Status', value: user?.employeeInfo?.maritalStatus ? capitalizeFirstLetter(user?.employeeInfo?.maritalStatus) : 'N/A' },
+        { title: 'Present Address', value: getAddress(user?.employeeInfo?.presentAddress) },
+        { title: 'Permanent Address', value: getAddress(user?.employeeInfo?.permanentAddress) },
+    ];
+
+    return personalDetails;
+};
+
+const generateEmergencyInfo = (user: User) => {
+    const emergencyInfo = [
+        { title: 'Name', value: user?.employeeInfo?.econtact?.name ? capitalizeFirstLetter(user?.employeeInfo?.econtact?.name) : 'N/A' },
+        { title: 'Relation', value: user?.employeeInfo?.econtact?.relation ? capitalizeFirstLetter(user?.employeeInfo?.econtact?.relation) : 'N/A' },
+        { title: 'Mobile', value: user?.employeeInfo?.econtact?.mobile ? user?.employeeInfo?.econtact?.mobile : 'N/A' },
+        { title: 'Email', value: user?.employeeInfo?.econtact?.email ? user?.employeeInfo?.econtact?.email : 'N/A' },
+        {
+            title: 'Address', value: getAddress({
+                id: user?.employeeInfo?.econtact?.id,
+                villageName: user?.employeeInfo?.econtact?.villageName,
+                buildingNo: user?.employeeInfo?.econtact?.buildingNo,
+                street: user?.employeeInfo?.econtact?.street,
+                state: user?.employeeInfo?.econtact?.state,
+                postalCode: user?.employeeInfo?.econtact?.postalCode,
+                city: user?.employeeInfo?.econtact?.city,
+                country: user?.employeeInfo?.econtact?.country,
+            })
+        },
+    ];
+
+    return emergencyInfo;
 };
 
 
@@ -384,7 +404,7 @@ export const generateLocation = (location: Location) => {
     return nonEmptyFields.join(", ");
 };
 
-export const CalculateLengthOfService = (user: User | null | undefined): string => {
+export const CalculateLengthOfService = (user?: User): string => {
     const joiningDate = user?.employeeInfo?.joiningDate;
 
     if (joiningDate) {
@@ -435,4 +455,4 @@ export const getAddress = (address: PresentAddress): string => {
 
 export const weekJoinByComma = (list: string[]) => {
     return list?.length > 0 ? list?.join(", ") : 'N/A';
-}
+};

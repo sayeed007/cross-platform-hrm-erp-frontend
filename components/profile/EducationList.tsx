@@ -6,6 +6,7 @@ import { Education } from "../../typeInterfaces/User";
 import { colors } from "../../utils/colors";
 import { textStyle } from "../../utils/textStyle";
 import EducationDetailsModal from "./EducationDetailsModal";
+import { EmptyItemsInPage } from "../common/EmptyItemsInPage";
 
 const EducationList = () => {
 
@@ -34,36 +35,42 @@ const EducationList = () => {
                 <Text style={styles.title}>Education</Text>
 
                 {/* LIST OF EDUCATION */}
-                <FlatList
-                    scrollEnabled={false}
-                    data={educationData}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity
-                            style={styles.educationItem}
-                            onPress={() => openModal(item)}
-                        >
-                            <View>
-                                <Text style={styles.institutionName}>
-                                    {item?.institute ? item?.institute : 'N/A'}
-                                </Text>
-                                <Text style={styles.degree}>
-                                    {item?.degree ? item.degree : 'N/A'}-{item?.major ? item?.major : 'N/A'}
-                                </Text>
-                                <Text style={styles.duration}>
-                                    {item.passingYear
-                                        ? item.passingYear
-                                        : item?.expectedYearOfPassing
-                                            ? item?.expectedYearOfPassing
-                                            : 'N/A'
-                                    }
-                                </Text>
-                            </View>
-                            <Icon name="chevron-right" size={20} color={colors.info} />
-                        </TouchableOpacity>
-                    )}
-                    ItemSeparatorComponent={() => <View style={styles.separator} />}
-                />
+                {(educationData || [])?.length > 0 ?
+                    <FlatList
+                        scrollEnabled={false}
+                        data={educationData}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity
+                                style={styles.educationItem}
+                                onPress={() => openModal(item)}
+                            >
+                                <View>
+                                    <Text style={styles.institutionName}>
+                                        {item?.institute ? item?.institute : 'N/A'}
+                                    </Text>
+                                    <Text style={styles.degree}>
+                                        {item?.degree ? item.degree : 'N/A'}-{item?.major ? item?.major : 'N/A'}
+                                    </Text>
+                                    <Text style={styles.duration}>
+                                        {item.passingYear
+                                            ? item.passingYear
+                                            : item?.expectedYearOfPassing
+                                                ? item?.expectedYearOfPassing
+                                                : 'N/A'
+                                        }
+                                    </Text>
+                                </View>
+                                <Icon name="chevron-right" size={20} color={colors.info} />
+                            </TouchableOpacity>
+                        )}
+                        ItemSeparatorComponent={() => <View style={styles.separator} />}
+                    />
+                    :
+                    <EmptyItemsInPage
+                        message={'No experience has been added yet.'}
+                    />
+                }
             </View>
         </>
     );

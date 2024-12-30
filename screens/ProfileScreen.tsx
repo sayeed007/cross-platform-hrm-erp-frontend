@@ -28,7 +28,7 @@ import SingleFlatList, { FlatListNormalData } from '../components/profile/Single
 import UserDocuments from '../components/profile/UserDocuments';
 import { useUser } from '../context/UserContext';
 import { RootStackParamList } from '../typeInterfaces/navigationTypes';
-import { defaultUser, PickupPoint, RoasterInfo, TransportRoute } from '../typeInterfaces/User';
+import { defaultUser, PickupPoint, TransportRoute } from '../typeInterfaces/User';
 import { colors } from '../utils/colors';
 import { generateTabWIseEmployeeDetails } from '../utils/generateTabWiseEmployeeDetails';
 import { textStyle } from '../utils/textStyle';
@@ -57,12 +57,13 @@ const ProfileScreen = () => {
 
     // Use keyof for type safety
     const [selectedTab, setSelectedTab] = useState<keyof typeof tabWiseEmployeeDetails>('Company Details');
+    const [loading, setLoading] = useState(true);
+    const [allRouteAndPickupPoint, setAllRouteAndPickupPoint] = useState<TransportRoute[]>([]);
+    const [allPickupPoint, setAllPickupPoint] = useState<PickupPoint[]>([]);
+
     const [profileImage, setProfileImage] = useState(null);
     const [name, setName] = useState('Ferdous Islam');
     const [isEditingName, setIsEditingName] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [allRouteAndPickupPoint, setAllRouteAndPickupPoint] = useState<TransportRoute[]>();
-    const [allPickupPoint, setAllPickupPoint] = useState<PickupPoint[]>();
 
 
     const fetchAndStoreHolidays = async (currentAccessToken: string) => {
@@ -149,7 +150,11 @@ const ProfileScreen = () => {
         setIsEditingName(false);
     };
 
-    const updateTransportDetails = (allRouteAndPickupPoint: TransportRoute[], allPickupPoint: PickupPoint[], benefitsData: any) => {
+    const updateTransportDetails = (
+        allRouteAndPickupPoint: TransportRoute[],
+        allPickupPoint: PickupPoint[],
+        benefitsData: any
+    ) => {
 
         return benefitsData.map((item: any) => {
             if (item.title === 'Transport Route') {
@@ -170,27 +175,20 @@ const ProfileScreen = () => {
             }
             return item;
         });
-    }
-
-    const roasterInfo: RoasterInfo = {
-        ...user?.employeeInfo?.attendanceRoaster,
-        employeeId: user?.employeeInfo?.employeeId ?? 0,
-        attendanceRoasterEffectiveDateForConditionalWeekend: user?.employeeInfo?.attendanceRoasterEffectiveDateForConditionalWeekend,
-        joiningDate: user?.employeeInfo?.joiningDate ?? '',
-        attendanceRoasterAssignmentDate: user?.employeeInfo?.attendanceRoasterAssignmentDate ?? '',
-        startingShiftId: user?.employeeInfo?.startingShiftId,
-        scheduledAttendanceRosterInfo: user?.employeeInfo?.scheduledAttendanceRosterInfo,
     };
+
 
     const renderData = () => {
 
         const data: FlatListNormalData[] = [];
+        const selectedTabData = tabWiseEmployeeDetails[selectedTab];
 
         switch (selectedTab) {
             case 'Company Details':
             case 'Personal Details':
             case 'Emergency Info':
-                const flatListNormalData: FlatListNormalData[] = tabWiseEmployeeDetails[selectedTab];
+                const flatListNormalData = selectedTabData as FlatListNormalData[];
+
                 return (
                     <SingleFlatList
                         flatListNormalData={flatListNormalData}
@@ -198,24 +196,26 @@ const ProfileScreen = () => {
                 );
             // Custom Design
             case 'Office Policy':
-                const flatListNormalDataForOfficePolicy: FlatListNormalData[][] = tabWiseEmployeeDetails[selectedTab];
+                const flatListNormalDataForOfficePolicy = (selectedTabData as FlatListNormalData[][]);
 
                 return (
                     <>
 
                         {/* Attendance Roster Info */}
                         {/* IF REGULAR ROSTER */}
-                        {flatListNormalDataForOfficePolicy[0]?.[0]?.title === 'Shift Name' ?
+                        {flatListNormalDataForOfficePolicy?.[0]?.[0]?.title === 'Shift Name' ?
                             <SingleFlatList
                                 key={`Attendance Roster Info`}
                                 flatListNormalData={flatListNormalDataForOfficePolicy[0]}
                                 listTitle={`Attendance Roster Info`}
                             />
                             :
-                            <ShiftComponent
-                                roasterInfo={roasterInfo}
-                                flatListNormalData={flatListNormalDataForOfficePolicy[0]}
-                            />
+                            <>
+                                {/* <ShiftComponent
+                                    attendanceRoaster={user?.employeeInfo?.attendanceRoaster}
+                                    flatListNormalData={flatListNormalDataForOfficePolicy[0]}
+                                /> */}
+                            </>
                         }
 
                         {/* SCHEDULER ROSTER ASSIGN */}
@@ -238,7 +238,7 @@ const ProfileScreen = () => {
 
             // MULTIPLE FLAT-LIST
             case 'Compensation':
-                const flatListNormalDataForCompensation: FlatListNormalData[][] = tabWiseEmployeeDetails[selectedTab];
+                const flatListNormalDataForCompensation = (selectedTabData as FlatListNormalData[][]);
 
                 // flatListNormalDataForCompensation[1]?.filter(Boolean) => remove all falsy value
                 const updatedBenefitsData = updateTransportDetails(allRouteAndPickupPoint, allPickupPoint, flatListNormalDataForCompensation[1]?.filter(Boolean));
@@ -267,7 +267,7 @@ const ProfileScreen = () => {
                 break;
 
             case 'Nominee':
-                const flatListNormalDataForNominee: FlatListNormalData[][] = tabWiseEmployeeDetails[selectedTab];
+                const flatListNormalDataForNominee = (selectedTabData as FlatListNormalData[][]);
 
                 return (
                     <>
@@ -292,7 +292,6 @@ const ProfileScreen = () => {
 
                         {/* EXPERIENCE */}
                         <ExperienceList />
-
                     </>
                 )
 
@@ -302,7 +301,6 @@ const ProfileScreen = () => {
                     <>
                         {/* Documents */}
                         <UserDocuments />
-
                     </>
                 )
 

@@ -48,7 +48,7 @@ const SalaryStatusCard: React.FC<SalaryStatusCardProps> = ({ salaryInfo }) => {
                 <View style={styles.detailItem}>
                     <ProfileIndividualDetails
                         title={'Increment'}
-                        value={`${incrementAmount.toLocaleString()} (${percentage}%)`}
+                        value={`${incrementAmount.toLocaleString()} (${percentage.toFixed(3)}%)`}
                         index={'Increment'}
                     />
                 </View>
