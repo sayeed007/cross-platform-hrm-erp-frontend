@@ -27,23 +27,24 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Load user data from storage on app initialization
     useEffect(() => {
-        const loadUser = async () => {
-            try {
-                const storedUser = await AsyncStorage.getItem('user');
-                if (storedUser) {
-                    const parsedUser = JSON.parse(storedUser);
-                    if (validateToken(parsedUser.accessToken)) {
-                        setUser(parsedUser);
-                    } else {
-                        handleInvalidToken(); // Automatically handle expired token
-                    }
-                }
-            } catch (error) {
-                console.error('Error loading user from storage:', error);
-            }
-        };
         loadUser();
     }, []);
+
+    const loadUser = async () => {
+        try {
+            const storedUser = await AsyncStorage.getItem('user');
+            if (storedUser) {
+                const parsedUser = JSON.parse(storedUser);
+                if (validateToken(parsedUser.accessToken)) {
+                    setUser(parsedUser);
+                } else {
+                    handleInvalidToken(); // Automatically handle expired token
+                }
+            }
+        } catch (error) {
+            console.error('Error loading user from storage:', error);
+        }
+    };
 
     // Save or clear user data in AsyncStorage
     const saveUserToStorage = async (user: User | null) => {
@@ -59,9 +60,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     // Logout the user and reset the navigation stack
-    const logout = () => {
+    const logout = async () => {
         setUser(null);
-        saveUserToStorage(null);
+        await saveUserToStorage(null);
         navigation.reset({
             index: 0,
             routes: [{ name: 'Login' }],
@@ -91,9 +92,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     // Update user state and save to storage
-    const setUserAndStore = (user: User | null) => {
-        setUser(user);
-        saveUserToStorage(user);
+    const setUserAndStore = async (user: User | null) => {
+        await saveUserToStorage(user); // Save to AsyncStorage
+        loadUser(); // Update state
     };
 
     return (

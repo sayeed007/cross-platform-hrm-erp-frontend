@@ -98,7 +98,7 @@ const UpcomingHoliday = () => {
 
                     // Find the next holiday from cached data
                     const currentDate = moment();
-                    const nextHoliday = data.find((holiday: HolidayWithMonth) =>
+                    const nextHoliday = data?.holidays?.find((holiday: HolidayWithMonth) =>
                         moment(holiday.holidayStartDate, 'MMM DD, YYYY').isAfter(currentDate)
                     );
 

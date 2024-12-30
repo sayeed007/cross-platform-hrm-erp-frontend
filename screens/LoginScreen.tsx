@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
-import Checkbox from 'expo-checkbox';
-import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { LoginScreenNavigationProp } from '../typeInterfaces/navigationTypes';
-import FullPageLoader from '../components/modals/FullPageLoader';
+import Checkbox from 'expo-checkbox';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useFormik } from 'formik';
+import React, { useState } from 'react';
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import * as Yup from 'yup';
 import { getUserAdditionalAccessibility, getUserInfo, userLogIn } from '../apis/LogIn';
-import { useSuccessModal } from '../context/SuccessModalProvider';
+import FullPageLoader from '../components/modals/FullPageLoader';
 import { useErrorModal } from '../context/ErrorModalProvider';
-import { User, useUser } from '../context/UserContext';
+import { useSuccessModal } from '../context/SuccessModalProvider';
+import { useUser } from '../context/UserContext';
+import { LoginScreenNavigationProp } from '../typeInterfaces/navigationTypes';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
+import { User } from '../typeInterfaces/User';
 
 const LoginScreen: React.FC = () => {
     const navigation = useNavigation<LoginScreenNavigationProp>();

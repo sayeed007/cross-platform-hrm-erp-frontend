@@ -1,6 +1,8 @@
 import moment from "moment";
 import axiosInstance from "../utils/axiosInstance";
 import { resolveApiError } from "./ErrorHandler";
+import { BASE_URL } from "../Server";
+import axios from "axios";
 
 
 // ###################################################################
@@ -73,6 +75,40 @@ export const getAllSalaryInfoForEmployee = (employeeId: number) => {
 //  PUT API's
 // ###################################################################
 
+export const updateProfilePicture = (employeeId: number, formData: any) => {
+    return (
+        axiosInstance.put(
+            `/employee/${employeeId}/profile_picture/update`,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            },
+        )
+            .then((response) => {
+                return [response?.data];
+            })
+            .catch((error) => {
+                return resolveApiError(error);
+            })
+    )
+};
 
+export const updateEmployeeName = (employeeId: number, formData: any) => {
+    return (
+        axiosInstance.put(
+            `/employee/${employeeId}/personal`,
+            formData,
+            {},
+        )
+            .then((response) => {
+                return [response?.data];
+            })
+            .catch((error) => {
+                return resolveApiError(error);
+            })
+    )
+};
 
 

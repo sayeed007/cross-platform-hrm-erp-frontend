@@ -14,10 +14,14 @@ const axiosInstance = axios.create({
 // Add a request interceptor
 axiosInstance.interceptors.request.use(
     async (config) => {
-        const { isValid, user } = await isAuth();
-        if (isValid && user) {
-            // Add Authorization header
-            config.headers.Authorization = `Bearer ${user.accessToken}`;
+        try {
+            const { isValid, user } = await isAuth();
+            if (isValid && user?.accessToken) {
+                // Add Authorization header
+                config.headers.Authorization = `Bearer ${user.accessToken}`;
+            }
+        } catch (error) {
+            console.error('Error in request interceptor:', error);
         }
         return config;
     },
@@ -31,11 +35,10 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
-
-        if (error?.status === 401) {
+        if (error.response?.status === 401) {
+            console.warn('Unauthorized - Clearing storage');
             await AsyncStorage.clear();
         }
-
         return Promise.reject(error);
     }
 );

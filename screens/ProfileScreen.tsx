@@ -6,6 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from 'react';
 import {
     FlatList,
+    Image,
     ScrollView,
     StyleSheet,
     Text,
@@ -14,7 +15,8 @@ import {
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { AllTransportRoute } from '../apis/Profile';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { AllTransportRoute, updateEmployeeName, updateProfilePicture } from '../apis/Profile';
 import EmployeeAvatar from '../components/common/EmployeeAvatar';
 import EducationList from '../components/profile/EducationList';
 import ExperienceList from '../components/profile/ExperienceList';
@@ -32,15 +34,31 @@ import { defaultUser, PickupPoint, TransportRoute } from '../typeInterfaces/User
 import { colors } from '../utils/colors';
 import { generateTabWIseEmployeeDetails } from '../utils/generateTabWiseEmployeeDetails';
 import { textStyle } from '../utils/textStyle';
+import ProfileImageModal from '../components/profile/ProfileImageModal';
+import Toast from 'react-native-toast-message';
+import EditNameModal from '../components/profile/EditNameModal';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeRoot'>;
+interface ImagePickerAsset {
+    uri: string;
+    width?: number;
+    height?: number;
+    fileName?: string;
+    fileSize?: number;
+    type?: string; // e.g., 'image/jpeg'
+};
+
+interface ImagePickerResult {
+    canceled: boolean;
+    assets?: ImagePickerAsset[];
+};
 
 export const TransportRouteAndPickupPoints_STORAGE_KEY = 'transport_route_and_pickup_point';
 
 
 const ProfileScreen = () => {
     const navigation = useNavigation<NavigationProp>();
-    const { user } = useUser();
+    const { user, setUser } = useUser();
     const tabWiseEmployeeDetails = generateTabWIseEmployeeDetails(user || { ...defaultUser });
 
     // Tabs data
@@ -61,9 +79,12 @@ const ProfileScreen = () => {
     const [allRouteAndPickupPoint, setAllRouteAndPickupPoint] = useState<TransportRoute[]>([]);
     const [allPickupPoint, setAllPickupPoint] = useState<PickupPoint[]>([]);
 
-    const [profileImage, setProfileImage] = useState(null);
-    const [name, setName] = useState('Ferdous Islam');
-    const [isEditingName, setIsEditingName] = useState(false);
+
+    const [profileChangeModalVisible, setProfileChangeModalModalVisible] = useState(false);
+    const [profileImage, setProfileImage] = useState<string | null>(null);
+    const [editingNameModal, setEditingNameModal] = useState(false);
+    const [firstName, setFirstName] = useState(user?.firstName);
+    const [lastName, setLastName] = useState(user?.lastName);
 
 
     const fetchAndStoreHolidays = async (currentAccessToken: string) => {
@@ -133,21 +154,153 @@ const ProfileScreen = () => {
 
 
     const handleImagePicker = async () => {
-        const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [1, 1],
-            quality: 1,
-        });
-
-        // if (!result?.cancelled) {
-        //     setProfileImage(result.uri);
-        // }
+        setProfileChangeModalModalVisible(true);
     };
 
-    const handleNameChange = (newName: string) => {
-        setName(newName);
-        setIsEditingName(false);
+    const handleTakePicture = async () => {
+        // Request camera permissions
+        const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+        if (!permissionResult.granted) {
+            Toast.show({
+                type: 'infoToast',
+                position: 'bottom',
+                text1: 'Camera access is required to take a picture.',
+            });
+            return;
+        }
+
+        // Open the camera
+        const result = await ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            aspect: [1, 1], // Square aspect ratio
+            quality: 1, // High-quality image
+        });
+
+        if (!result.canceled) {
+            // Handle the image result
+            const uri: string = result.assets[0].uri;
+            // Set the image URI in state or upload it
+            setProfileImage(uri);
+            uploadImage(result.assets[0]);
+        };
+    };
+
+    const handleChooseFromGallery = async () => {
+        // Request media library permissions
+        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (!permissionResult.granted) {
+            Toast.show({
+                type: 'infoToast',
+                position: 'bottom',
+                text1: 'Camera access is required to take a picture.',
+            });
+            return;
+        }
+
+        // Open the gallery
+        const result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            aspect: [1, 1], // Square aspect ratio
+            quality: 1, // High-quality image
+        });
+
+        if (!result.canceled) {
+            // Handle the image result
+            const uri: string = result.assets[0].uri;
+            // Set the image URI in state or upload it
+            setProfileImage(uri);
+            uploadImage(result.assets[0]);
+        }
+    };
+
+    const uploadImage = async (file: any) => {
+        if (user?.employeeId) {
+            const formData = new FormData();
+            formData.append('file', file.file)
+
+            updateProfilePicture(user?.employeeId, formData).then((uploadImageResponse) => {
+                if (uploadImageResponse?.[0]) {
+                    setProfileChangeModalModalVisible(false);
+
+                    const updatedUser = {
+                        ...user, // Existing user data
+                        profilePicPath: uploadImageResponse?.[0]?.profilePicPath,
+                        thumbnails_path_01: uploadImageResponse?.[0]?.thumbnails_path_01,
+                        thumbnails_path_02: uploadImageResponse?.[0]?.thumbnails_path_02,
+                        employeeInfo: {
+                            ...uploadImageResponse?.[0]
+                        }
+                    };
+                    setUser({ ...updatedUser });
+                    Toast.show({
+                        type: 'successToast',
+                        position: 'bottom',
+                        text1: 'Profile picture is successfully updated.',
+                    });
+                } else {
+                    Toast.show({
+                        type: 'failedToast',
+                        position: 'bottom',
+                        text1: uploadImageResponse?.[1],
+                    });
+                }
+            })
+        }
+    };
+
+    const handleSave = (newFirstName: string, newLastName: string) => {
+        setFirstName(newFirstName);
+        setLastName(newLastName);
+
+        if (user?.employeeId) {
+            const payload = {
+                firstName: newFirstName,
+                lastName: newLastName,
+                fatherName: user?.employeeInfo?.fatherName,
+                motherName: user?.employeeInfo?.motherName,
+                birthDate: user?.employeeInfo?.birthDate,
+                gender: user?.employeeInfo?.gender,
+                nationality: user?.employeeInfo?.nationality,
+                personalEmail: user?.employeeInfo?.personalEmail,
+                nidNumber: user?.employeeInfo?.nidNumber,
+                tinNumber: user?.employeeInfo?.tinNumber,
+                religion: user?.employeeInfo?.religion,
+                bloodGroup: user?.employeeInfo?.bloodGroup,
+                maritalStatus: user?.employeeInfo?.maritalStatus,
+                actualBirthDate: user?.employeeInfo?.actualBirthDate,
+                presentAddress: user?.employeeInfo?.presentAddress,
+                permanentAddress: user?.employeeInfo?.permanentAddress,
+            };
+
+            updateEmployeeName(user?.employeeId, payload).then((uploadNameResponse) => {
+                if (uploadNameResponse?.[0]) {
+                    setEditingNameModal(false);
+
+                    const updatedUser = {
+                        ...user, // Existing user data
+                        firstName: newFirstName,
+                        lastName: newLastName,
+                        employeeInfo: {
+                            ...uploadNameResponse?.[0]
+                        }
+                    };
+                    setUser({ ...updatedUser });
+                    Toast.show({
+                        type: 'successToast',
+                        position: 'bottom',
+                        text1: 'Name is successfully updated.',
+                    });
+                } else {
+                    Toast.show({
+                        type: 'failedToast',
+                        position: 'bottom',
+                        text1: uploadNameResponse?.[1],
+                    });
+                }
+            })
+        }
     };
 
     const updateTransportDetails = (
@@ -325,91 +478,122 @@ const ProfileScreen = () => {
 
 
     return (
-        <View style={styles.container}>
-            {/* Gradient Header */}
-            <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.header}>
+        <>
+            {/* Profile Image Modal */}
+            {profileChangeModalVisible &&
+                <ProfileImageModal
+                    isVisible={profileChangeModalVisible}
+                    onClose={() => setProfileChangeModalModalVisible(false)}
+                    onTakePicture={handleTakePicture}
+                    onChooseFromGallery={handleChooseFromGallery}
+                />
+            }
 
-                <View style={styles.navBar}>
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <Icon name="arrow-left" size={24} color={colors?.white} />
-                    </TouchableOpacity>
-                    <Text style={styles.navTitle}>Profile</Text>
-                    <Text></Text>
-                </View>
+            {/* Profile Name Modal */}
+            {editingNameModal &&
+                <EditNameModal
+                    isVisible={editingNameModal}
+                    onClose={() => setEditingNameModal(false)}
+                    onSave={handleSave}
+                    currentFirstName={firstName ?? ''}
+                    currentLastName={lastName ?? ''}
+                />
+            }
 
-                {/*  */}
-                {/* Profile Image */}
-                <TouchableOpacity onPress={handleImagePicker}>
-                    <EmployeeAvatar
-                        profileShowImage={user?.profilePicPath ?? ''}
-                        label={`${user?.firstName.charAt(0)}${user?.lastName.charAt(0)}`}
-                        size={100}
-                    />
-                </TouchableOpacity>
 
-                {/* Name and Editable Field */}
-                <TouchableOpacity onPress={() => setIsEditingName(true)} style={styles.nameContainer}>
-                    {isEditingName ? (
-                        <TextInput
-                            style={styles.nameInput}
-                            value={name}
-                            onChangeText={handleNameChange}
-                            onBlur={() => setIsEditingName(false)}
-                            autoFocus
-                        />
-                    ) : (
+            <View style={styles.container}>
+                {/* Gradient Header */}
+                <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.header}>
+
+                    <View style={styles.navBar}>
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <Icon name="arrow-left" size={24} color={colors?.white} />
+                        </TouchableOpacity>
+                        <Text style={styles.navTitle}>Profile</Text>
+                        <Text></Text>
+                    </View>
+
+                    {/* Profile Image */}
+                    <View style={styles.avatarContainer}>
+                        {profileImage ?
+                            <Image
+                                source={{ uri: profileImage }}
+                                style={{ width: 100, height: 100, borderRadius: 50 }}
+                            />
+                            :
+                            <EmployeeAvatar
+                                profileShowImage={user?.profilePicPath ?? ''}
+                                label={`${user?.firstName.charAt(0)}${user?.lastName.charAt(0)}`}
+                                size={100}
+                            />
+                        }
+
+                        <TouchableOpacity onPress={handleImagePicker} style={styles?.profileImageEditor}>
+                            <Icon name="camera" size={15} color={colors?.white} />
+                        </TouchableOpacity>
+                    </View>
+
+                    {/* Name  */}
+                    <View style={styles.nameContainer}>
                         <Text style={styles.profileName}>
                             {user?.firstName} {user?.lastName}
                         </Text>
-                    )}
-                </TouchableOpacity>
 
-                <Text style={styles.profileSubText}>
-                    {user?.designationName} | {user?.departmentName}
-                </Text>
-            </LinearGradient>
-
-            {/* Vertical Scrollable Tabs */}
-            <View>
-                <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    style={styles.tabsContainer}
-                >
-                    {tabs.map((tab, index) => (
-                        <TouchableOpacity
-                            key={index}
-                            style={[
-                                styles.tab,
-                                selectedTab === tab && styles.activeTab,
-                            ]}
-                            onPress={() => setSelectedTab(tab)}
-                        >
-                            <Text
-                                style={[
-                                    styles.tabText,
-                                    selectedTab === tab && styles.activeTabText,
-                                ]}
-                            >
-                                {tab}
-                            </Text>
+                        {/* EDIT ICON */}
+                        <TouchableOpacity onPress={() => setEditingNameModal(true)} >
+                            <FontAwesome name="pencil" size={16} color={colors.white} />
                         </TouchableOpacity>
-                    ))}
+                    </View>
+
+                    <Text style={styles.profileSubText}>
+                        {user?.designationName} | {user?.departmentName}
+                    </Text>
+                </LinearGradient>
+
+                {/* Vertical Scrollable Tabs */}
+                <View>
+                    <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        style={styles.tabsContainer}
+                    >
+                        {tabs.map((tab, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                style={[
+                                    styles.tab,
+                                    selectedTab === tab && styles.activeTab,
+                                ]}
+                                onPress={() => setSelectedTab(tab)}
+                            >
+                                <Text
+                                    style={[
+                                        styles.tabText,
+                                        selectedTab === tab && styles.activeTabText,
+                                    ]}
+                                >
+                                    {tab}
+                                </Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                </View>
+
+
+                {/* Tab Content */}
+                <ScrollView
+                    // horizontal
+                    style={{ flex: 1, marginBottom: 70 }}
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    scrollEnabled={true}
+                    nestedScrollEnabled={true}
+                >
+                    {renderData()}
                 </ScrollView>
             </View>
 
+        </>
 
-            {/* Tab Content */}
-            <ScrollView
-                // horizontal
-                style={{ flex: 1, marginBottom: 70 }}
-                contentContainerStyle={{ flexGrow: 1 }}
-                scrollEnabled={true}
-                nestedScrollEnabled={true}
-            >
-                {renderData()}
-            </ScrollView>
-        </View>
     );
 };
 
@@ -443,12 +627,35 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         borderColor: colors?.white,
     },
+    profileImageEditor: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        backgroundColor: colors.gray3,
+        padding: 5,
+        borderRadius: 50,
+        borderWidth: 2,
+        borderColor: colors?.white,
+    },
+    avatarContainer: {
+        width: 110, // Slightly larger than the avatar size for the border
+        height: 110,
+        borderRadius: 55, // Make it fully rounded
+        borderWidth: 3,   // Border thickness
+        borderColor: colors.white, // Border color (customize as needed)
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
+    },
     nameContainer: {
+        flexDirection: 'row',
         marginTop: 10,
+        alignItems: 'center',
     },
     profileName: {
         ...textStyle?.bold20,
         color: colors?.white,
+        marginRight: 10,
     },
     nameInput: {
         ...textStyle?.bold20,

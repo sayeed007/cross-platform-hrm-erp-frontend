@@ -101,7 +101,6 @@ export const TabBar: React.FC = () => {
                 </Modal>
             )}
 
-
             <BottomBar.Navigator
                 initialRouteName="Attendance"
                 screenOptions={getScreenOptions}
