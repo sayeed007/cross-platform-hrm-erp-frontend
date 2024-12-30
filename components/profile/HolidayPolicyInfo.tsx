@@ -1,24 +1,22 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import {
+    ActivityIndicator,
     FlatList,
     StyleSheet,
-    View,
     Text,
-    ActivityIndicator,
+    View,
 } from 'react-native';
-import { colors } from '../../utils/colors';
-import ProfileIndividualDetails from './ProfileIndividualDetails';
-import { textStyle } from '../../utils/textStyle';
+import { getYearWiseAllHolidayForEmployee } from '../../apis/HomeScreen';
 import { useUser } from '../../context/UserContext';
-import moment from 'moment';
-import { capitalizeFirstLetter } from '../../utils/attendanceStatus';
-import { ActualLeavePolicy } from '../../typeInterfaces/User';
-import { getEmployeeHolidaysByEmployeeId, getYearWiseAllHolidayForEmployee } from '../../apis/HomeScreen';
 import { Holiday, HolidayPolicy, HolidayWithMonth } from '../../typeInterfaces/Holiday';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { HOLIDAY_STORAGE_KEY } from '../home/UpcomingHoliday';
-import HolidayCard from '../home/HolidayCard';
+import { colors } from '../../utils/colors';
+import { textStyle } from '../../utils/textStyle';
 import { EmptyItemsInPage } from '../common/EmptyItemsInPage';
+import HolidayCard from '../home/HolidayCard';
+import { HOLIDAY_STORAGE_KEY } from '../home/UpcomingHoliday';
+import ProfileIndividualDetails from './ProfileIndividualDetails';
 
 
 

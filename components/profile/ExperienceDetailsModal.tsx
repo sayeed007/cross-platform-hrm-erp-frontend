@@ -13,7 +13,7 @@ import { colors } from "../../utils/colors";
 import { textStyle } from "../../utils/textStyle";
 import ProfileIndividualDetails from "./ProfileIndividualDetails";
 import moment from "moment";
-import { capitalizeFirstLetter } from "../../utils/generateTabWiseEmployeeDetails";
+import { capitalizeFirstLetter } from "../../utils/capitalizeFirstLetter";
 
 type ExperienceDetailsModalProps = {
     isVisible: boolean; // Whether the modal is visible

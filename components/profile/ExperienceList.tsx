@@ -1,13 +1,11 @@
 import moment from "moment";
 import React, { useState } from "react";
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Icon from "react-native-vector-icons/Feather";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useUser } from "../../context/UserContext";
 import { Experience } from "../../typeInterfaces/User";
+import { capitalizeFirstLetter } from "../../utils/capitalizeFirstLetter";
 import { colors } from "../../utils/colors";
-import { capitalizeFirstLetter } from "../../utils/generateTabWiseEmployeeDetails";
 import { textStyle } from "../../utils/textStyle";
-import ExperienceDetailsModal from "./ExperienceDetailsModal";
 import { EmptyItemsInPage } from "../common/EmptyItemsInPage";
 
 const ExperienceList = () => {

@@ -2,9 +2,10 @@ import moment from 'moment';
 import React from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Attendance } from '../../typeInterfaces/Attendance';
-import { attendanceStatus, AttendanceStatusKey, AttendanceStatusStyle, capitalizeFirstLetter, getStatusStyle } from '../../utils/attendanceStatus';
+import { getStatusStyle } from '../../utils/attendanceStatus';
 import { colors } from '../../utils/colors';
 import { textStyle } from '../../utils/textStyle';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 
 
 interface AttendanceTableProps {

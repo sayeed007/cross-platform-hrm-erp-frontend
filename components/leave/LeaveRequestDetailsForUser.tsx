@@ -13,25 +13,25 @@ import {
 } from "react-native";
 import { LeaveApprovalRequest } from '../../typeInterfaces/LeaveApprovalRequest';
 import { colors } from "../../utils/colors";
-import { generateLeaveType } from "../../utils/leaveUtils";
+import { generateLeaveType, getLeaveStatusText, getStatusStyle } from "../../utils/leaveUtils";
 import { textStyle } from "../../utils/textStyle";
 import EmployeeAvatar from "../common/EmployeeAvatar";
 import { FileDownload } from "../common/FileDownload";
 
-interface LeaveRequestDetailsProps {
+interface LeaveRequestDetailsForUserProps {
     isVisible: boolean;
     leaveRequestDetails: Partial<LeaveApprovalRequest>;
     onClose: () => void;
-    onApprove: () => void;
-    onReject: () => void;
+    onEdit: () => void;
+    onCancel: () => void;
 }
 
-const LeaveRequestDetails: React.FC<LeaveRequestDetailsProps> = ({
+const LeaveRequestDetailsForUser: React.FC<LeaveRequestDetailsForUserProps> = ({
     isVisible,
     leaveRequestDetails,
     onClose,
-    onApprove,
-    onReject,
+    onEdit,
+    onCancel,
 }) => {
 
     const {
@@ -46,9 +46,19 @@ const LeaveRequestDetails: React.FC<LeaveRequestDetailsProps> = ({
         duration,
         sendingDate,
         message,
-        attachmentPath
+        attachmentPath,
+        isAccepted: status,
+        isAcceptedByLineManager,
+        actionDateByLineManager,
+        isAcceptedByTeamLeader,
+        actionDateByTeamLeader,
+        isAcceptedByHeadOfDept,
+        actionDateByHeadOfDept,
+        isAcceptedByAdmin
     } = leaveRequestDetails;
     const senderImage = null;
+
+    const canTakeAction = (isAcceptedByLineManager === 0 && status !== 1 && isAcceptedByAdmin == 0);
 
     return (
         <Modal
@@ -70,7 +80,7 @@ const LeaveRequestDetails: React.FC<LeaveRequestDetailsProps> = ({
                             <TouchableOpacity onPress={onClose}>
                                 <Feather name="arrow-left" size={24} color="white" />
                             </TouchableOpacity>
-                            <Text style={styles.headerText}>Leave Request Approval</Text>
+                            <Text style={styles.headerText}>Sent Leave Details</Text>
                             <Text></Text>
                         </LinearGradient>
 
@@ -90,30 +100,40 @@ const LeaveRequestDetails: React.FC<LeaveRequestDetailsProps> = ({
                                 <Text style={styles.userDesignation}>
                                     {departmentName} | {designationName}
                                 </Text>
+
+                                <Text style={getStatusStyle(status ?? 0)}>{getLeaveStatusText(status ?? 0)}</Text>
                             </View>
 
                             {/* Details */}
-                            <ScrollView style={styles.detailsContainer}>
+                            <ScrollView
+                                contentContainerStyle={{ flexGrow: 1 }}
+                                scrollEnabled={true}
+                                nestedScrollEnabled={true}
+                                style={[
+                                    styles.detailsContainer,
+                                    { maxHeight: canTakeAction ? '65%' : '75%' }
+                                ]}
+                            >
                                 <View style={styles.detailRow}>
-                                    <Text style={styles.detailLabel}>Leave Type:</Text>
+                                    <Text style={styles.detailLabel}>Leave Type</Text>
                                     <Text style={styles.detailValue}>
                                         {generateLeaveType(leaveType ?? '')}
                                     </Text>
                                 </View>
                                 <View style={styles.detailRow}>
-                                    <Text style={styles.detailLabel}>Timeline:</Text>
+                                    <Text style={styles.detailLabel}>Timeline</Text>
                                     <Text style={styles.detailValue}>
                                         {`${moment(startDate).format('ddd, Do MMM')} - ${moment(endDate).format('ddd, Do MMM')}`} ({duration} Days)
                                     </Text>
                                 </View>
                                 <View style={styles.detailRow}>
-                                    <Text style={styles.detailLabel}>Applied on:</Text>
+                                    <Text style={styles.detailLabel}>Applied on</Text>
                                     <Text style={styles.detailValue}>
                                         {moment(sendingDate, 'YYYY-MM-DD').format('MMM DD, YYYY')}
                                     </Text>
                                 </View>
                                 <View style={styles.detailRow}>
-                                    <Text style={styles.detailLabel}>Description:</Text>
+                                    <Text style={styles.detailLabel}>Description</Text>
                                     <Text style={styles.detailValue}>
                                         {message}
                                     </Text>
@@ -123,43 +143,62 @@ const LeaveRequestDetails: React.FC<LeaveRequestDetailsProps> = ({
                                 <FileDownload
                                     attachmentPath={attachmentPath ?? ''}
                                 />
-                                {/* <View style={styles.detailRow}>
-                                    <Text style={styles.detailLabel}>Documents:</Text>
-                                    {attachmentPath ?
-                                        <TouchableOpacity style={styles.documentContainer}>
-                                            <FontAwesome name={getFileIcon(attachmentPath)} size={16} color={colors.info} />
-                                            <Text style={styles.documentText}>
-                                                {attachmentPath}
-                                            </Text>
-                                        </TouchableOpacity>
-                                        :
+
+                                {/* ACTIONS */}
+                                <View style={styles.actionContainer}>
+                                    <Text style={styles.detailLabel}>Action By</Text>
+
+                                    <View style={styles.actionList}>
+                                        <Text style={styles.detailLabel}>Line Manager : </Text>
                                         <Text style={styles.detailValue}>
-                                            No uploaded document
+                                            {getLeaveStatusText(isAcceptedByLineManager ?? 0)}
+                                            {isAcceptedByLineManager !== 0 && ` (${moment(actionDateByLineManager).format('MMM DD, YYYY')})`}
                                         </Text>
-                                    }
-                                </View> */}
+                                    </View>
+
+                                    <View style={styles.actionList}>
+                                        <Text style={styles.detailLabel}>Dotted Manager 1 : </Text>
+                                        <Text style={styles.detailValue}>
+                                            {getLeaveStatusText(isAcceptedByTeamLeader ?? 0)}
+                                            {isAcceptedByTeamLeader !== 0 && ` (${moment(actionDateByTeamLeader).format('MMM DD, YYYY')})`}
+                                        </Text>
+                                    </View>
+
+                                    <View style={styles.actionList}>
+                                        <Text style={styles.detailLabel}>Dotted Manager 2 : </Text>
+                                        <Text style={styles.detailValue}>
+                                            {getLeaveStatusText(isAcceptedByHeadOfDept ?? 0)}
+                                            {isAcceptedByHeadOfDept !== 0 && ` (${moment(actionDateByHeadOfDept).format('MMM DD, YYYY')})`}
+                                        </Text>
+                                    </View>
+                                </View>
+
                             </ScrollView>
 
                             {/* Action Buttons */}
-                            <View style={styles.buttonContainer}>
-                                <TouchableOpacity
-                                    style={[styles.button, styles.rejectButton]}
-                                    onPress={onReject}
-                                >
-                                    <Ionicons name="close" size={24} color={colors.error} />
-                                    <Text style={styles.rejectButtonText}>Reject</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={[styles.button, styles.approveButton]}
-                                    onPress={onApprove}
-                                >
-                                    <Ionicons name="checkmark" size={24} color={colors.white} />
-                                    <Text style={styles.approveButtonText}>Approve</Text>
-                                </TouchableOpacity>
-                            </View>
+                            {canTakeAction &&
+                                <View style={styles.buttonContainer}>
+                                    {/* Edit */}
+                                    <TouchableOpacity
+                                        style={[styles.button, styles.editButton]}
+                                        onPress={onEdit}
+                                    >
+                                        <Ionicons name="create-outline" size={24} color={colors.warning} />
+                                        <Text style={styles.editButtonText}>Edit</Text>
+                                    </TouchableOpacity>
+
+                                    {/* Cancel */}
+                                    <TouchableOpacity
+                                        style={[styles.button, styles.cancelButton]}
+                                        onPress={onCancel}
+                                    >
+                                        <Ionicons name="close" size={24} color={colors.white} />
+                                        <Text style={styles.cancelButtonText}>Cancel</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            }
 
                         </View>
-
 
                     </View>
                 </TouchableOpacity>
@@ -183,6 +222,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
+        maxHeight: '90%',
     },
     gradientHeader: {
         borderTopLeftRadius: 30,
@@ -191,7 +231,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 15,
         paddingTop: 15,
-        paddingBottom: 70,
+        paddingBottom: 50,
     },
     headerText: {
         ...textStyle.regular16,
@@ -224,9 +264,10 @@ const styles = StyleSheet.create({
     userDesignation: {
         ...textStyle.regular13,
         color: colors.gray2,
+        marginBottom: 10,
     },
     detailsContainer: {
-        marginTop: 120,
+        marginTop: 150,
         borderTopWidth: 1,
         borderTopColor: colors.offWhite5,
         paddingTop: 15,
@@ -237,12 +278,10 @@ const styles = StyleSheet.create({
     detailLabel: {
         ...textStyle.regular14,
         color: colors.gray2,
-        flex: 1,
     },
     detailValue: {
         ...textStyle.bold14,
         color: colors.black,
-        flex: 2,
     },
     documentContainer: {
         flexDirection: "row",
@@ -268,25 +307,34 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
     },
-    rejectButton: {
+    editButton: {
         borderWidth: 1,
-        borderColor: colors.error,
+        borderColor: colors.warning,
+        backgroundColor: colors.warningBG,
     },
-    approveButton: {
-        backgroundColor: colors.success,
+    cancelButton: {
+        backgroundColor: colors.error,
     },
-    rejectButtonText: {
+    editButtonText: {
         ...textStyle.semibold14,
-        color: colors.error,
+        color: colors.warning,
         marginLeft: 10
     },
-    approveButtonText: {
+    cancelButtonText: {
         ...textStyle.semibold14,
         color: colors.white,
         marginLeft: 10
     },
+    actionContainer: {
+        borderTopWidth: 1,
+        borderTopColor: colors.offWhite5,
+        paddingTop: 15,
+    },
+    actionList: {
+        flexDirection: 'row'
+    }
 });
 
-export default LeaveRequestDetails;
+export default LeaveRequestDetailsForUser;
 
 

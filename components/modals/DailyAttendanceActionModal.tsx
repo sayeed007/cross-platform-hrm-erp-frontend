@@ -9,10 +9,11 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { Attendance } from '../../typeInterfaces/Attendance';
-import { capitalizeFirstLetter, getStatusStyle } from '../../utils/attendanceStatus';
+import { getStatusStyle } from '../../utils/attendanceStatus';
 import { colors } from '../../utils/colors';
 import shadowStyles from '../../utils/shadowStyles';
 import { textStyle } from '../../utils/textStyle';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 
 interface DailyAttendanceActionModalProps {
     selectedAttendance: Partial<Attendance>;

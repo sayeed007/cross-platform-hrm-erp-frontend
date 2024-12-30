@@ -1,6 +1,7 @@
 import moment, { Duration } from "moment";
 import { Location, PresentAddress, User } from "../typeInterfaces/User";
 import { FlatListNormalData } from "../components/profile/SingleFlatList";
+import { capitalizeFirstLetter } from "./capitalizeFirstLetter";
 
 
 type TabWiseEmployeeDetails = {
@@ -423,13 +424,6 @@ export const CalculateLengthOfService = (user?: User): string => {
     return 'N/A';
 };
 
-export const capitalizeFirstLetter = (str: string): string => {
-    if (!str) {
-        return ''; // Handle empty string case
-    }
-    const [first, ...rest] = str;
-    return [first.toUpperCase(), ...rest].join('');
-};
 
 export const getAddress = (address: PresentAddress): string => {
     const { villageName, buildingNo, street, state, postalCode, city, country } = address;

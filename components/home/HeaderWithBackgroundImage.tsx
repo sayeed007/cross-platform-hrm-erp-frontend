@@ -11,6 +11,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useSubscription } from '../../context/SubscriptionContext'
 import { colors } from '../../utils/colors'
 import { textStyle } from '../../utils/textStyle'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -57,7 +58,11 @@ const HeaderWithBackgroundImage: React.FC<HeaderWithBackgroundImageProps> = ({
 
                     <View style={styles.userImageWithNav}>
 
-                        <TouchableOpacity onPress={() => setUser(null)}>
+                        <TouchableOpacity onPress={() => {
+                            AsyncStorage.clear();
+                            setUser(null);
+                            navigation.navigate('Login')
+                        }}>
                             <Text>Log Out</Text>
                         </TouchableOpacity>
 

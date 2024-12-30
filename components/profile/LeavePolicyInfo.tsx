@@ -1,17 +1,16 @@
+import moment from 'moment';
 import React from 'react';
 import {
     FlatList,
     StyleSheet,
-    View,
     Text,
+    View,
 } from 'react-native';
-import { colors } from '../../utils/colors';
-import ProfileIndividualDetails from './ProfileIndividualDetails';
-import { textStyle } from '../../utils/textStyle';
 import { useUser } from '../../context/UserContext';
-import moment from 'moment';
-import { capitalizeFirstLetter } from '../../utils/attendanceStatus';
-import { ActualLeavePolicy } from '../../typeInterfaces/User';
+import { colors } from '../../utils/colors';
+import { textStyle } from '../../utils/textStyle';
+import ProfileIndividualDetails from './ProfileIndividualDetails';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 
 
 

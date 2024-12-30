@@ -22,6 +22,9 @@ export type RootStackParamList = {
     // Attendance
     Attendance: undefined;
     AttendanceRoot: undefined;
+    // 
+    Leave: undefined;
+    LeaveRoot: undefined;
 };
 
 // Define the bottom tab's parameter list

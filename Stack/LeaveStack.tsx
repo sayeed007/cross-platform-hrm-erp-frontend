@@ -7,20 +7,21 @@ import { RootStackParamList } from '../typeInterfaces/navigationTypes';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
 import ProfileScreen from '../screens/ProfileScreen';
+import LeaveScreen from '../screens/LeaveScreen';
 
 // Define the stack with RootStackParamList
 const Stack = createStackNavigator<RootStackParamList>();
 
 
-const AttendanceStack = () => {
+const LeaveStack = () => {
     return (
         <Stack.Navigator
-            initialRouteName="AttendanceRoot"
+            initialRouteName="LeaveRoot"
         >
             {/* Home Screen */}
             <Stack.Screen
-                name="AttendanceRoot"
-                component={AttendanceScreen}
+                name="LeaveRoot"
+                component={LeaveScreen}
                 options={{ headerShown: false }} // Hide header for Home screen
             />
 
@@ -63,4 +64,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AttendanceStack;
+export default LeaveStack;

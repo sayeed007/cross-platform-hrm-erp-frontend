@@ -64,7 +64,7 @@ const NotificationScreen = () => {
 
     const clearAll = () => {
         setDropdownVisible(false);
-        // console.log('Cleared all notifications');
+        // console.info('Cleared all notifications');
     };
 
 

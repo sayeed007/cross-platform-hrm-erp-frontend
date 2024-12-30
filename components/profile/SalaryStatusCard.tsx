@@ -1,11 +1,11 @@
 import moment from "moment";
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { capitalizeFirstLetter } from "../../utils/attendanceStatus";
 import { colors } from "../../utils/colors";
 import shadowStyles from "../../utils/shadowStyles";
 import ProfileIndividualDetails from "./ProfileIndividualDetails";
 import { SalaryInfo } from "../../typeInterfaces/User";
+import { capitalizeFirstLetter } from "../../utils/capitalizeFirstLetter";
 
 type SalaryStatusCardProps = {
     salaryInfo: SalaryInfo; // Props for the SalaryStatusCard

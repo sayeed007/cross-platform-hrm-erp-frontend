@@ -15,6 +15,7 @@ import { defaultNotification } from '../typeInterfaces/Notification';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
 import AttendanceStack from '../Stack/AttendanceStack';
+import LeaveStack from '../Stack/LeaveStack';
 const BottomBar = createBottomTabNavigator();
 
 // Extract the screenOptions logic
@@ -102,7 +103,7 @@ export const TabBar: React.FC = () => {
             )}
 
             <BottomBar.Navigator
-                initialRouteName="Attendance"
+                initialRouteName="Leave"
                 screenOptions={getScreenOptions}
             >
                 <BottomBar.Screen
@@ -126,7 +127,7 @@ export const TabBar: React.FC = () => {
                 />
                 <BottomBar.Screen
                     name="Leave"
-                    component={LeaveScreen}
+                    component={LeaveStack}
                 />
                 <BottomBar.Screen
                     name="Menu"

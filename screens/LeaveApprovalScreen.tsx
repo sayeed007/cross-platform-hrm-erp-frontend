@@ -205,13 +205,16 @@ export const LeaveApprovalScreen = () => {
             }
 
             {/* Reusable Leave Filter Modal */}
-            <LeaveFilterModal
-                isVisible={leaveFilterModalVisible}
-                onClose={() => setLeaveFilterModalVisible(false)}
-                leaveStatus={leaveStatus}
-                selectedFilter={selectedFilter}
-                onFilterChange={handleFilterChange}
-            />
+            {leaveFilterModalVisible &&
+                <LeaveFilterModal
+                    isVisible={leaveFilterModalVisible}
+                    onClose={() => setLeaveFilterModalVisible(false)}
+                    leaveStatus={leaveStatus}
+                    selectedFilter={selectedFilter}
+                    onFilterChange={handleFilterChange}
+                />
+            }
+
 
 
             {/* LEAVE REQUEST DETAILS */}

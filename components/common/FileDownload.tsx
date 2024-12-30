@@ -1,12 +1,12 @@
-import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Alert, Platform } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
+import React from "react";
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Toast from "react-native-toast-message";
+import { BASE_URL } from "../../Server";
 import { colors } from "../../utils/colors";
 import { getFileIcon } from "../../utils/fileTypeIcons";
-import { BASE_URL } from "../../Server";
 import { textStyle } from "../../utils/textStyle";
-import Toast from "react-native-toast-message";
 
 
 const downloadFile = async (attachmentPath: string, fileName: string) => {
