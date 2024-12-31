@@ -62,6 +62,8 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({
 
             {/* Data Rows */}
             <FlatList
+                nestedScrollEnabled={true}
+                scrollEnabled={false}
                 data={filteredSpecificMonthAttendance}
                 renderItem={renderRow}
                 keyExtractor={(item) => item.id.toString()}

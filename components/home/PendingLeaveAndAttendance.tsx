@@ -1,18 +1,16 @@
-import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { useUser } from '../../context/UserContext'
-import { colors } from '../../utils/colors';
-import { textStyle } from '../../utils/textStyle';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RootStackParamList } from '../../typeInterfaces/navigationTypes';
+import { colors } from '../../utils/colors';
+import { textStyle } from '../../utils/textStyle';
 
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 
 const PendingLeaveAndAttendance = () => {
-    const { user, setUser } = useUser();
     const navigation = useNavigation<NavigationProp>();
 
 

@@ -40,12 +40,13 @@ export default function RootNavigation() {
     if (loading) {
         // Show a splash screen while loading
         return <SplashScreen setLoading={setLoading} />;
-    }
+    };
 
     if (!hasSeenWelcome) {
         // Show the welcome screen if it hasn't been seen yet
         return <WelcomeScreen setHasSeenWelcome={setHasSeenWelcome} />;
-    }
+    };
+
 
     return (
         <SafeAreaView style={styles.container}>

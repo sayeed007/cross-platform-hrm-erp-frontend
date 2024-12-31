@@ -29,11 +29,11 @@ const LoginScreen: React.FC = () => {
     const { handleSubmit, handleChange, values, touched, errors, handleBlur } = useFormik({
         initialValues: {
             // PRODUCTION
-            username: "sayeed.bappy@neural-semiconductor.com",
-            password: "SHB987654321.",
+            // username: "sayeed.bappy@neural-semiconductor.com",
+            // password: "SHB987654321.",
             // DEMO
-            // username: "200003",
-            // password: "123456",
+            username: "200024",
+            password: "123456",
         },
         validationSchema: Yup.object({
             username: Yup.string().required("Username is required"),

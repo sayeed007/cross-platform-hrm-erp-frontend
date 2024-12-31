@@ -16,6 +16,8 @@ import { TabBarAdvancedButton } from '../components/tab/TabBarAdvancedButton';
 import QuickActionRootModal from '../components/quickAction/QuickActionRootModal';
 import ApplyAttendanceModal from '../components/attendance/applyAttendance/ApplyAttendanceModal';
 import SuccessModal from '../components/modals/SuccessModal';
+import MenuStack from '../Stack/MenuStack';
+import ApplyLeaveModal from '../components/leave/applyLeave/ApplyLeaveModal';
 const BottomBar = createBottomTabNavigator();
 
 // Extract the screenOptions logic
@@ -50,11 +52,12 @@ export const TabBar: React.FC = () => {
     const { message, visible, setVisible } = useSubscription();
 
     const [successModalVisible, setSuccessModalVisible] = useState<boolean>(false);
-    const [isModalVisible, setModalVisible] = useState(false);
+    const [isQuickActionModalVisible, setQuickActionModalVisible] = useState(false);
     const [showApplyAttendanceModalVisible, setShowApplyAttendanceModalVisible] = useState<boolean>(false);
+    const [showApplyLeaveModalVisible, setShowApplyLeaveModalVisible] = useState<boolean>(true);
 
     const toggleModal = () => {
-        setModalVisible(!isModalVisible);
+        setQuickActionModalVisible(!isQuickActionModalVisible);
     };
 
     useEffect(() => {
@@ -99,9 +102,9 @@ export const TabBar: React.FC = () => {
 
 
             {/* Modal */}
-            {isModalVisible && (
+            {isQuickActionModalVisible && (
                 <QuickActionRootModal
-                    isVisible={isModalVisible}
+                    isVisible={isQuickActionModalVisible}
                     onClose={() => toggleModal()}
                     onApplyAttendance={() => {
                         toggleModal();
@@ -109,7 +112,6 @@ export const TabBar: React.FC = () => {
                     }}
                     onApplyLeave={() => {
                         toggleModal();
-
                     }}
                 />
             )}
@@ -122,6 +124,20 @@ export const TabBar: React.FC = () => {
                     isVisible={showApplyAttendanceModalVisible}
                     onClose={() => {
                         setShowApplyAttendanceModalVisible(false);
+                    }}
+                    onSuccessAction={() => {
+                        setSuccessModalVisible(true);
+                    }}
+                />
+            }
+
+            {/* MODAL FOR APPLYING Leave Request */}
+            {showApplyLeaveModalVisible &&
+                <ApplyLeaveModal
+                    selectedAttendance={{}}
+                    isVisible={showApplyLeaveModalVisible}
+                    onClose={() => {
+                        setShowApplyLeaveModalVisible(false);
                     }}
                     onSuccessAction={() => {
                         setSuccessModalVisible(true);
@@ -171,7 +187,6 @@ export const TabBar: React.FC = () => {
                 />
                 <BottomBar.Screen
                     name="Add"
-                    component={() => null}
                     options={{
                         tabBarButton: (props) => (
                             <TabBarAdvancedButton
@@ -180,14 +195,16 @@ export const TabBar: React.FC = () => {
                             />
                         ),
                     }}
-                />
+                >
+                    {() => null}
+                </BottomBar.Screen>
                 <BottomBar.Screen
                     name="Leave"
                     component={LeaveStack}
                 />
                 <BottomBar.Screen
                     name="Menu"
-                    component={MenuScreen}
+                    component={MenuStack}
                 />
             </BottomBar.Navigator>
         </>

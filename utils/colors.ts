@@ -1,5 +1,6 @@
 export const colors = {
     // core
+    "brand": 'rgba(8, 97, 158, 1)',
     "black": "#212B36",
     "white": "#FFFFFF",
     "blue": "#08619E",

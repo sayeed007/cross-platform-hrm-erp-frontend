@@ -237,8 +237,14 @@ const AttendanceCardWithClockIn: React.FC = () => {
                                 <View style={styles.timerContainer}>
                                     {getTodaysTotalTime().split(':').map((timeSegment, index) => (
                                         <React.Fragment key={index}>
-                                            <Text style={styles.timerText}>{timeSegment}</Text>
-                                            {index < 2 && <Text style={styles.colon}>:</Text>}
+                                            <View style={styles.timerContainerElement}>
+                                                <Text style={styles.timerText}>{timeSegment}</Text>
+                                            </View>
+                                            {index < 2 &&
+                                                <View>
+                                                    <Text style={styles.colon}>:</Text>
+                                                </View>
+                                            }
                                         </React.Fragment>
                                     ))}
                                 </View>
@@ -353,17 +359,19 @@ const styles = StyleSheet.create({
     },
     timerContainer: {
         flexDirection: 'row',
+        justifyContent: 'center',
         alignItems: 'center',
+    },
+    timerContainerElement: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: colors.offWhite1,
+        height: 62,
+        width: 62,
     },
     timerText: {
         ...textStyle?.bold36,
         color: colors.gray3,
-        backgroundColor: colors.offWhite1,
-        height: 62,
-        width: 62,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
     },
     colon: {
         ...textStyle?.bold36,
@@ -385,7 +393,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 8,
-        width: '70%',
+        flex: 1,
         marginHorizontal: 'auto',
         marginVertical: 20,
     },

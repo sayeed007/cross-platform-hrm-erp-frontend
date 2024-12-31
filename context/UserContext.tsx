@@ -7,46 +7,43 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../typeInterfaces/navigationTypes';
 import { User } from '../typeInterfaces/User';
 
-
-
 interface UserContextType {
     user: User | null;
-    setUser: (user: User | null) => void;
-    logout: () => void;
+    setUser: (user: User | null) => Promise<void>;
+    logout: () => Promise<void>;
     validateToken: () => boolean; // Returns true if token is valid
 }
 
 type RootNavigationProp = StackNavigationProp<RootStackParamList>;
-
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
-    const { showError } = useErrorModal();
     const navigation = useNavigation<RootNavigationProp>();
+    const { showError } = useErrorModal();
 
-    // Load user data from storage on app initialization
+    // Load user data from AsyncStorage when the component mounts
     useEffect(() => {
-        loadUser();
+        const initializeUser = async () => {
+            try {
+                const storedUser = await AsyncStorage.getItem('user');
+                if (storedUser) {
+                    const parsedUser: User = JSON.parse(storedUser);
+                    if (validateToken(parsedUser.accessToken)) {
+                        setUser(parsedUser);
+                    } else {
+                        handleInvalidToken();
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading user:', error);
+            }
+        };
+
+        initializeUser();
     }, []);
 
-    const loadUser = async () => {
-        try {
-            const storedUser = await AsyncStorage.getItem('user');
-            if (storedUser) {
-                const parsedUser = JSON.parse(storedUser);
-                if (validateToken(parsedUser.accessToken)) {
-                    setUser(parsedUser);
-                } else {
-                    handleInvalidToken(); // Automatically handle expired token
-                }
-            }
-        } catch (error) {
-            console.error('Error loading user from storage:', error);
-        }
-    };
-
-    // Save or clear user data in AsyncStorage
+    // Save user data to AsyncStorage
     const saveUserToStorage = async (user: User | null) => {
         try {
             if (user) {
@@ -59,42 +56,44 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
-    // Logout the user and reset the navigation stack
-    const logout = async () => {
-        setUser(null);
-        await saveUserToStorage(null);
-        navigation.reset({
-            index: 0,
-            routes: [{ name: 'Login' }],
-        });
-    };
-
-    // Handle invalid or expired token
-    const handleInvalidToken = () => {
-        showError('Session expired. Please log in again.', () => {
-            logout();
-        });
-    };
-
-    // Validate the user's token
+    // Validate the user's JWT token
     const validateToken = (token?: string): boolean => {
-        if (!token && user) token = user.accessToken; // Use user's token if not provided
+        if (!token && user) token = user.accessToken;
         if (!token) return false;
 
         try {
             const decoded: JwtPayload & { exp: number } = jwtDecode(token);
-            const exp = decoded.exp * 1000; // Convert expiration time to milliseconds
-            return Date.now() < exp; // Check if the token is still valid
+            const expirationTime = decoded.exp * 1000; // Convert to milliseconds
+            return Date.now() < expirationTime;
         } catch (error) {
-            console.error('Error decoding token:', error);
-            return false; // Invalid token
+            console.error('Invalid token:', error);
+            return false;
         }
     };
 
-    // Update user state and save to storage
+    // Handle logout
+    const logout = async () => {
+        try {
+            setUser(null);
+            await AsyncStorage.clear();
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }], // Ensure 'Login' is the correct route name
+            });
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
+    };
+
+    // Handle invalid or expired token
+    const handleInvalidToken = () => {
+        showError('Session expired. Please log in again.', () => logout());
+    };
+
+    // Set user and store in AsyncStorage
     const setUserAndStore = async (user: User | null) => {
-        await saveUserToStorage(user); // Save to AsyncStorage
-        loadUser(); // Update state
+        setUser(user);
+        await saveUserToStorage(user);
     };
 
     return (

@@ -62,7 +62,7 @@ const HomeScreen = () => {
                     }
 
                     {/* Pending Requests Block */}
-                    <View style={{ marginTop: canClockAttendance ? 200 : 80 }}>
+                    <View style={{ marginTop: canClockAttendance ? 140 : 80 }}>
                         <PendingLeaveAndAttendance />
                     </View>
 

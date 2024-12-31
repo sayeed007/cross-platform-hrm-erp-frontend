@@ -1,17 +1,15 @@
-import React from 'react'
-import { Image, Platform, TouchableOpacity } from 'react-native'
-import { Text, View, StyleSheet, ImageBackground } from 'react-native'
-import { BASE_URL } from '../../Server'
-import { useUser } from '../../context/UserContext'
-import { Ionicons } from '@expo/vector-icons';
-import { getGreeting } from '../../utils/getGreeting'
-import { StackNavigationProp } from '@react-navigation/stack'
-import { RootStackParamList } from '../../typeInterfaces/navigationTypes'
+import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import React from 'react'
+import { Image, ImageBackground, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { BASE_URL } from '../../Server'
 import { useSubscription } from '../../context/SubscriptionContext'
+import { useUser } from '../../context/UserContext'
+import { RootStackParamList } from '../../typeInterfaces/navigationTypes'
 import { colors } from '../../utils/colors'
+import { getGreeting } from '../../utils/getGreeting'
 import { textStyle } from '../../utils/textStyle'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -25,7 +23,7 @@ const HeaderWithBackgroundImage: React.FC<HeaderWithBackgroundImageProps> = ({
     showGreeting = true, // Default value is true
     navTitle,
 }) => {
-    const { user, setUser } = useUser();
+    const { user } = useUser();
     const { unreadCount } = useSubscription();
     const navigation = useNavigation<NavigationProp>();
 
@@ -57,15 +55,6 @@ const HeaderWithBackgroundImage: React.FC<HeaderWithBackgroundImageProps> = ({
                     </View>
 
                     <View style={styles.userImageWithNav}>
-
-                        <TouchableOpacity onPress={() => {
-                            AsyncStorage.clear();
-                            setUser(null);
-                            navigation.navigate('Login')
-                        }}>
-                            <Text>Log Out</Text>
-                        </TouchableOpacity>
-
                         <TouchableOpacity style={styles.notificationIcon} onPress={handleNotificationPress}>
                             <Ionicons name="notifications-outline" size={28} color={colors?.white} />
                             {(unreadCount > 0) && <View style={styles.redDot} />}

@@ -23,9 +23,12 @@ export type RootStackParamList = {
     // Attendance
     Attendance: undefined;
     AttendanceRoot: undefined;
-    // 
+    // Leave
     Leave: undefined;
     LeaveRoot: undefined;
+    // Menu
+    Menu: undefined;
+    MenuRoot: undefined;
 };
 
 // Define the bottom tab's parameter list
@@ -35,6 +38,13 @@ export type MainTabsParamList = {
     Leave: undefined;
     Menu: undefined;
     Add: undefined;
+    AttendanceRequestApproval: undefined;
+    LeaveApproval: undefined;
+    SeeAllCoWorkersContact: undefined;
+    Holiday: undefined;
+    Notice: undefined;
+    Profile: undefined;
+    Login: undefined;
 };
 
 export type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;

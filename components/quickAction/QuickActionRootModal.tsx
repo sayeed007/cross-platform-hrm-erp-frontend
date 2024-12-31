@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         position: 'absolute',
-        bottom: 25,
+        bottom: 28,
         width: '80%',
         alignItems: 'center',
     },

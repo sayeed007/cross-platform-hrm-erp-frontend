@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         flex: 1,
-        marginBottom: 30,
+        marginBottom: 50,
     },
 });
 
