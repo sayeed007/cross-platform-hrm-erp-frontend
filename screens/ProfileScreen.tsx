@@ -37,6 +37,7 @@ import { textStyle } from '../utils/textStyle';
 import ProfileImageModal from '../components/profile/ProfileImageModal';
 import Toast from 'react-native-toast-message';
 import EditNameModal from '../components/profile/EditNameModal';
+import { setTabBarVisibility } from '../utils/navigationUtils';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeRoot'>;
 interface ImagePickerAsset {
@@ -475,6 +476,14 @@ const ProfileScreen = () => {
                 );
         }
     };
+
+    useEffect(() => {
+        setTabBarVisibility(navigation, false);
+
+        return () => {
+            setTabBarVisibility(navigation, true);
+        };
+    }, [navigation]);
 
 
     return (

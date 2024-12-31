@@ -11,22 +11,31 @@ import { textStyle } from '../../utils/textStyle';
 type Props = BottomTabBarButtonProps;
 
 export const TabBarAdvancedButton: React.FC<Props> = ({ ...props }) => (
-    <View
-        style={[styles.container, { pointerEvents: "box-none" }]}
-    >
-        <TabBg
-            style={styles.background}
-        />
-        <TouchableOpacity
-            style={styles.button}
-            onPress={props.onPress}
+    <View style={styles.rootContainer}>
+        <View
+            style={[styles.container, { pointerEvents: "box-none" }]}
         >
-            <Feather name="plus" size={24} color="white" />
-        </TouchableOpacity>
+            <TabBg
+                style={styles.background}
+            />
+            <TouchableOpacity
+                style={styles.button}
+                onPress={props.onPress}
+            >
+                <Feather name="plus" size={24} color="white" />
+            </TouchableOpacity>
+        </View>
+
     </View>
+
 );
 
 const styles = StyleSheet.create({
+    rootContainer: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
     container: {
         position: 'relative',
         width: 75,

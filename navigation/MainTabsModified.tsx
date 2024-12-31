@@ -1,12 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as Notifications from "expo-notifications";
-import React, { useEffect } from 'react';
-import { Modal, Platform, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Modal, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SingleNotification } from '../components/home/SingleNotification';
-import { TabBarAdvancedButton } from '../components/tab/TabBarAdvancedButton';
 import { useSubscription } from '../context/SubscriptionContext';
-import { EmptyScreen } from '../screens/EmptyScreen';
 import MenuScreen from '../screens/MenuScreen';
 import AttendanceStack from '../Stack/AttendanceStack';
 import HomeStack from '../Stack/HomeStack';
@@ -14,6 +12,10 @@ import LeaveStack from '../Stack/LeaveStack';
 import { defaultNotification } from '../typeInterfaces/Notification';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
+import { TabBarAdvancedButton } from '../components/tab/TabBarAdvancedButton';
+import QuickActionRootModal from '../components/quickAction/QuickActionRootModal';
+import ApplyAttendanceModal from '../components/attendance/applyAttendance/ApplyAttendanceModal';
+import SuccessModal from '../components/modals/SuccessModal';
 const BottomBar = createBottomTabNavigator();
 
 // Extract the screenOptions logic
@@ -46,6 +48,14 @@ const getScreenOptions = ({ route }: { route: any }) => ({
 export const TabBar: React.FC = () => {
 
     const { message, visible, setVisible } = useSubscription();
+
+    const [successModalVisible, setSuccessModalVisible] = useState<boolean>(false);
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [showApplyAttendanceModalVisible, setShowApplyAttendanceModalVisible] = useState<boolean>(false);
+
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
 
     useEffect(() => {
         if (visible) {
@@ -80,8 +90,55 @@ export const TabBar: React.FC = () => {
         }, 5000); // Dismiss notification after 5 seconds
     };
 
+    const handleContinue = () => {
+        setSuccessModalVisible(false);
+    };
+
     return (
         <>
+
+
+            {/* Modal */}
+            {isModalVisible && (
+                <QuickActionRootModal
+                    isVisible={isModalVisible}
+                    onClose={() => toggleModal()}
+                    onApplyAttendance={() => {
+                        toggleModal();
+                        setShowApplyAttendanceModalVisible(true);
+                    }}
+                    onApplyLeave={() => {
+                        toggleModal();
+
+                    }}
+                />
+            )}
+
+
+            {/* MODAL FOR APPLYING MANUAL ATTENDANCE */}
+            {showApplyAttendanceModalVisible &&
+                <ApplyAttendanceModal
+                    selectedAttendance={{}}
+                    isVisible={showApplyAttendanceModalVisible}
+                    onClose={() => {
+                        setShowApplyAttendanceModalVisible(false);
+                    }}
+                    onSuccessAction={() => {
+                        setSuccessModalVisible(true);
+                    }}
+                />
+            }
+
+            {/* ATTENDANCE REQUEST SUCCESS MODAL */}
+            {successModalVisible &&
+                <SuccessModal
+                    isVisible={successModalVisible}
+                    title="Attendance Request Sent Successfully"
+                    description="Your request is now pending for approval. Check Notification for approval status."
+                    onContinue={handleContinue}
+                />
+            }
+
             {Platform.OS === "web" && visible && (
                 <Modal
                     animationType="slide"
@@ -114,11 +171,12 @@ export const TabBar: React.FC = () => {
                 />
                 <BottomBar.Screen
                     name="Add"
-                    component={EmptyScreen}
+                    component={() => null}
                     options={{
                         tabBarButton: (props) => (
                             <TabBarAdvancedButton
                                 {...props}
+                                onPress={toggleModal}
                             />
                         ),
                     }}
@@ -138,7 +196,7 @@ export const TabBar: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
+    modalContainer: {
         flex: 1,
     },
     tabBarStyle: {
@@ -146,17 +204,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors?.white,
         height: 60,
         borderColor: colors?.offWhite1,
-        borderTopWidth: 0, // Remove the border
-        shadowColor: 'transparent', // Remove shadow for iOS
-        elevation: 0, // Remove shadow for Android
+        borderTopWidth: 0,
+        shadowColor: 'transparent',
+        elevation: 0,
     },
-    modalContainer: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: colors?.modalBG,
-        paddingHorizontal: 20,
-        paddingVertical: 40,
-    },
-
 });

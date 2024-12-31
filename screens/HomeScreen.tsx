@@ -17,7 +17,6 @@ import { useUser } from '../context/UserContext';
 import { HomeScreenNavigationProp } from '../typeInterfaces/navigationTypes';
 import { colors } from '../utils/colors';
 import { setTabBarVisibility } from '../utils/navigationUtils';
-import Toast from 'react-native-toast-message';
 
 const HomeScreen = () => {
 

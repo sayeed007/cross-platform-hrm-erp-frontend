@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { getMonthAndYearWiseAttendanceForEmployee } from '../apis/Attendance';
@@ -15,13 +15,16 @@ import { Attendance } from '../typeInterfaces/Attendance';
 import { attendanceDataPreparation, cards } from '../utils/attendanceStatus';
 import { colors } from '../utils/colors';
 import FullPageLoader from '../components/modals/FullPageLoader';
+import { setTabBarVisibility } from '../utils/navigationUtils';
+import { useNavigation } from '@react-navigation/native';
+import { HomeScreenNavigationProp } from '../typeInterfaces/navigationTypes';
 
 const notLeaveAttendanceStatus = ["AFA", "AFL", "absent", "late", "present", "half day", "holiday", "weekend"];
 
 const AttendanceScreen = () => {
 
-
     const { user } = useUser();
+    const navigation = useNavigation<HomeScreenNavigationProp>();
 
     const [successModalVisible, setSuccessModalVisible] = useState<boolean>(false);
     const [monthYearSelectionModalVisible, setMonthYearSelectionModalVisible] = useState<boolean>(false);
@@ -93,6 +96,10 @@ const AttendanceScreen = () => {
             setRefetchData((prev) => !prev);
         }, 500); // Optional delay if needed
     };
+
+    useLayoutEffect(() => {
+        setTabBarVisibility(navigation, true); // Ensure tab bar is visible on home
+    }, [navigation]);
 
     return (
         <>

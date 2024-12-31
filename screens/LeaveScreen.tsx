@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import HeaderWithBackgroundImage from '../components/home/HeaderWithBackgroundImage';
@@ -18,7 +18,9 @@ import LeaveRequestDetailsForUser from '../components/leave/LeaveRequestDetailsF
 import CancelModal from '../components/modals/CancelModal';
 import Toast from 'react-native-toast-message';
 import RequestStatusFIlterModal from '../components/modals/RequestStatusFIlterModal';
-
+import { setTabBarVisibility } from '../utils/navigationUtils';
+import { useNavigation } from '@react-navigation/native';
+import { HomeScreenNavigationProp } from '../typeInterfaces/navigationTypes';
 
 
 const leaveStatus = [
@@ -48,6 +50,7 @@ const LeaveScreen = () => {
 
 
     const { user } = useUser();
+    const navigation = useNavigation<HomeScreenNavigationProp>();
 
     const [loading, setLoading] = useState(true);
     const [reload, setReload] = useState(false);
@@ -133,6 +136,10 @@ const LeaveScreen = () => {
                 }
             })
     };
+
+    useLayoutEffect(() => {
+        setTabBarVisibility(navigation, true); // Ensure tab bar is visible on home
+    }, [navigation]);
 
     return (
         <>
