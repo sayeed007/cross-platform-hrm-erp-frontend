@@ -16,6 +16,7 @@ export type RootStackParamList = {
     Notice: { noticeList: NoticeWithMonth[] };
     Holiday: { holidayList: HolidayWithMonth[] };
     LeaveApproval: undefined;
+    AttendanceRequestApproval: undefined;
     AttendanceApproval: undefined;
     Profile: undefined;
     Notification: undefined;

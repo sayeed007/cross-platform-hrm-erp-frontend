@@ -16,11 +16,11 @@ interface RejectAttendanceModalProps {
     isVisible: boolean;
     title: string;
     description: string;
-    reason: string; // Managed by parent
+    reason?: string; // Managed by parent
     isReasonNeeded?: boolean;
     onClose: () => void;
     onReject: (reason: string) => void; // Pass reason back to parent
-    setReason: (value: string) => void; // Update reason in parent
+    setReason?: (value: string) => void; // Update reason in parent
 }
 
 const RejectAttendanceModal: React.FC<RejectAttendanceModalProps> = ({
@@ -35,7 +35,7 @@ const RejectAttendanceModal: React.FC<RejectAttendanceModalProps> = ({
 }) => {
 
     const { handleChange, handleSubmit, values, errors, touched, } = useFormik({
-        initialValues: { reason: reason },
+        initialValues: { reason: reason ?? '' },
         enableReinitialize: true,
         validationSchema: Yup.object().shape({
             reason: isReasonNeeded
@@ -43,7 +43,7 @@ const RejectAttendanceModal: React.FC<RejectAttendanceModalProps> = ({
                 : Yup.string(),
         }),
         onSubmit: (value) => {
-            onReject(values.reason);
+            onReject(values?.reason);
         },
     });
 
@@ -80,7 +80,7 @@ const RejectAttendanceModal: React.FC<RejectAttendanceModalProps> = ({
                                 value={values.reason}
                                 onChangeText={(text) => {
                                     handleChange('reason')(text);
-                                    setReason(text);
+                                    setReason && setReason(text);
                                 }}
                                 multiline
                             />

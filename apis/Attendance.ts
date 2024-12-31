@@ -33,6 +33,16 @@ export const getDailyAttendanceForEmployee = (employeeId: number, date: string) 
         });
 };
 
+export const getAllPendingAttendanceRequestForEmployee = (employeeId: number) => {
+    return axiosInstance.get(`/acceptor/${employeeId}/edit_attendance_request/all`)
+        .then(response => {
+            return [response.data];
+        })
+        .catch(error => {
+            return resolveApiError(error);
+        });
+};
+
 
 
 
@@ -54,4 +64,29 @@ export const requestManualAttendanceForEmployee = (employeeId: number, requestBo
         });
 };
 
+type AttendanceRequestRequestBody = {
+    date: string,
+    inTime: string,
+    outTime: string,
+};
+
+export const rejectSubordinateAttendanceRequest = (attendanceRequestId: number, senderId: number, employeeId: number, requestBody: AttendanceRequestRequestBody) => {
+    return axiosInstance.put(`/attendance/${attendanceRequestId}/employee/${senderId}/lm/${employeeId}/reject`, requestBody)
+        .then(response => {
+            return [response.data];
+        })
+        .catch(error => {
+            return resolveApiError(error);
+        });
+};
+
+export const acceptSubordinateAttendanceRequest = (attendanceRequestId: number, senderId: number, employeeId: number, requestBody: AttendanceRequestRequestBody) => {
+    return axiosInstance.put(`/attendance/${attendanceRequestId}/employee/${senderId}/lm/${employeeId}/accept`, requestBody)
+        .then(response => {
+            return [response.data];
+        })
+        .catch(error => {
+            return resolveApiError(error);
+        });
+};
 

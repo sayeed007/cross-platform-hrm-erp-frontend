@@ -1,21 +1,19 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import * as Notifications from "expo-notifications";
 import React, { useEffect } from 'react';
 import { Modal, Platform, StyleSheet, Text, View } from 'react-native';
-import { TabBarAdvancedButton } from '../components/tab/TabBarAdvancedButton';
-import AttendanceScreen from '../screens/AttendanceScreen';
-import { EmptyScreen } from '../screens/EmptyScreen';
-import LeaveScreen from '../screens/LeaveScreen';
-import MenuScreen from '../screens/MenuScreen';
-import HomeStack from '../Stack/HomeStack';
-import { useSubscription } from '../context/SubscriptionContext';
-import * as Notifications from "expo-notifications";
 import { SingleNotification } from '../components/home/SingleNotification';
+import { TabBarAdvancedButton } from '../components/tab/TabBarAdvancedButton';
+import { useSubscription } from '../context/SubscriptionContext';
+import { EmptyScreen } from '../screens/EmptyScreen';
+import MenuScreen from '../screens/MenuScreen';
+import AttendanceStack from '../Stack/AttendanceStack';
+import HomeStack from '../Stack/HomeStack';
+import LeaveStack from '../Stack/LeaveStack';
 import { defaultNotification } from '../typeInterfaces/Notification';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
-import AttendanceStack from '../Stack/AttendanceStack';
-import LeaveStack from '../Stack/LeaveStack';
 const BottomBar = createBottomTabNavigator();
 
 // Extract the screenOptions logic
@@ -103,7 +101,7 @@ export const TabBar: React.FC = () => {
             )}
 
             <BottomBar.Navigator
-                initialRouteName="Leave"
+                initialRouteName="Home"
                 screenOptions={getScreenOptions}
             >
                 <BottomBar.Screen

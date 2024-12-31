@@ -11,23 +11,23 @@ import Icon from 'react-native-vector-icons/Feather';
 import { colors } from '../../utils/colors';
 import { textStyle } from '../../utils/textStyle';
 
-type LeaveFilter = {
+type RequestFilter = {
     key: string;
     label: string;
 };
 
-interface LeaveFilterModalProps {
+interface RequestStatusFIlterModalProps {
     isVisible: boolean;
     onClose: () => void;
-    leaveStatus: LeaveFilter[];
+    requestStatus: RequestFilter[];
     selectedFilter: string;
     onFilterChange: (filter: string) => void;
 }
 
-const LeaveFilterModal: React.FC<LeaveFilterModalProps> = ({
+const RequestStatusFIlterModal: React.FC<RequestStatusFIlterModalProps> = ({
     isVisible,
     onClose,
-    leaveStatus,
+    requestStatus,
     selectedFilter,
     onFilterChange,
 }) => {
@@ -53,13 +53,13 @@ const LeaveFilterModal: React.FC<LeaveFilterModalProps> = ({
                             <View />
                         </View>
 
-                        {leaveStatus?.map((leave, index) => (
+                        {requestStatus?.map((leave, index) => (
                             <Pressable
                                 key={leave?.key}
                                 onPress={() => onFilterChange(leave?.key)}
                                 style={[
                                     styles.modalOption,
-                                    index === leaveStatus.length - 1 && styles.lastOption, // Apply conditional styling
+                                    index === requestStatus.length - 1 && styles.lastOption, // Apply conditional styling
                                 ]}
                             >
                                 <Text
@@ -125,4 +125,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default LeaveFilterModal;
+export default RequestStatusFIlterModal;

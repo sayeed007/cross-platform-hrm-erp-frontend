@@ -21,7 +21,7 @@ const PendingLeaveAndAttendance = () => {
     };
 
     const handleAttendancePress = () => {
-        navigation.navigate('AttendanceApproval');
+        navigation.navigate('AttendanceRequestApproval');
     };
 
     return (

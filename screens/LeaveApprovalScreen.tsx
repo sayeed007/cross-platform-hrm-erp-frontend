@@ -22,13 +22,13 @@ import { approveSubordinateLeaveRequest, getAllAcceptedRejectedLeaveRequestForEm
 import { useUser } from '../context/UserContext';
 import moment from 'moment';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import LeaveFilterModal from '../components/modals/LeaveFIlterModal';
 import FullPageLoader from '../components/modals/FullPageLoader';
 import RejectModal from '../components/modals/RejectModal';
 import ApproveModal from '../components/modals/ApproveModal';
 import Toast from 'react-native-toast-message';
 import LeaveRequestDetails from '../components/leave/LeaveRequestDetails';
 import { EmptyItems } from '../components/common/EmptyItems';
+import RequestStatusFIlterModal from '../components/modals/RequestStatusFIlterModal';
 
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeRoot'>;
@@ -206,10 +206,10 @@ export const LeaveApprovalScreen = () => {
 
             {/* Reusable Leave Filter Modal */}
             {leaveFilterModalVisible &&
-                <LeaveFilterModal
+                <RequestStatusFIlterModal
                     isVisible={leaveFilterModalVisible}
                     onClose={() => setLeaveFilterModalVisible(false)}
-                    leaveStatus={leaveStatus}
+                    requestStatus={leaveStatus}
                     selectedFilter={selectedFilter}
                     onFilterChange={handleFilterChange}
                 />
@@ -316,7 +316,6 @@ export const LeaveApprovalScreen = () => {
                                 onViewDetails={() => {
                                     setSelectedLeaveData(request);
                                     setLeaveRequestDetailsModalVisible(true);
-                                    // navigation.navigate('LeaveDetails', { leaveRequest: request }); // Navigate to the details screen
                                 }}
                             />
                         ))

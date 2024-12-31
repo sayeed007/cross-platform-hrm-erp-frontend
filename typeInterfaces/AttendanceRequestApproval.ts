@@ -1,0 +1,36 @@
+export interface AttendanceRecord {
+    id: number;
+    date: string;
+    employeeVisibleId: string;
+    employeeId: number;
+    firstName: string;
+    lastName: string;
+    designationName: string;
+    departmentName: string;
+    inTime: string;
+    outTime: string;
+    status: string;
+    companyName: string;
+    companyId: number;
+    locationAlias: string;
+    locationId: number;
+    isEdited: boolean;
+    isInTimeEdited: boolean;
+    isOutTimeEdited: boolean;
+    employmentStatus: string;
+    updatedInTime: string;
+    updatedOutTime: string;
+    sendEditRequest: boolean;
+    editReason: string;
+    updatedStatus: string;
+    isAcceptedByLM: boolean;
+    isRejectedByLM: boolean;
+    lateTimeDiff: string;
+    sendingDate: string;
+    acceptedDate: string | null;
+    rejectedDate: string | null;
+    attendanceRoasterLateTime: string;
+    attendanceRoasterStartTime: string;
+    attendanceAdditionalInfo: any | null;
+    compensationLeaveApplicable: boolean;
+}

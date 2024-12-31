@@ -10,7 +10,6 @@ import SelectMonthYearModal from '../components/attendance/SelectMonthYearModal'
 import YearSelectorModal from '../components/leave/YearSelectorModal';
 import { textStyle } from '../utils/textStyle';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import LeaveFilterModal from '../components/modals/LeaveFIlterModal';
 import { deleteIndividualLeaveRequest, getAllLeaveRequestOfAnEmployee } from '../apis/Leave';
 import { EmptyItems } from '../components/common/EmptyItems';
 import { LeaveApprovalRequest } from '../typeInterfaces/LeaveApprovalRequest';
@@ -18,6 +17,7 @@ import LeaveRequestCard from '../components/leave/LeaveRequestCard';
 import LeaveRequestDetailsForUser from '../components/leave/LeaveRequestDetailsForUser';
 import CancelModal from '../components/modals/CancelModal';
 import Toast from 'react-native-toast-message';
+import RequestStatusFIlterModal from '../components/modals/RequestStatusFIlterModal';
 
 
 
@@ -150,10 +150,10 @@ const LeaveScreen = () => {
 
             {/* Reusable Leave Filter Modal */}
             {leaveFilterModalVisible &&
-                <LeaveFilterModal
+                <RequestStatusFIlterModal
                     isVisible={leaveFilterModalVisible}
                     onClose={() => setLeaveFilterModalVisible(false)}
-                    leaveStatus={leaveStatus}
+                    requestStatus={leaveStatus}
                     selectedFilter={selectedFilter}
                     onFilterChange={handleFilterChange}
                 />

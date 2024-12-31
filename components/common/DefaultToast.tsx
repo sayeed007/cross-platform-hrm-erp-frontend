@@ -101,22 +101,6 @@ const DefaultToast = () => {
 
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#f4f4f4',
-    },
-    button: {
-        backgroundColor: '#007bff',
-        padding: 10,
-        marginBottom: 10,
-        borderRadius: 5,
-    },
-    buttonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-    },
     toastContainer: {
         width: '90%',
         borderRadius: 8,
@@ -149,10 +133,9 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     checkText: {
-        color: '#fff',
+        color: colors.white,
         fontWeight: 'bold',
     },
-
     // APPROVAL & REJECT
     approvalContainer: {
         width: '90%',

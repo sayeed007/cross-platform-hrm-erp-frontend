@@ -1,18 +1,17 @@
+import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import HolidayScreen from '../screens/HolidayScreen';
 import HomeScreen from '../screens/HomeScreen';
+import { LeaveApprovalScreen } from '../screens/LeaveApprovalScreen';
+import NoticeScreen from '../screens/NoticeScreen';
+import NotificationScreen from '../screens/NotificationScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 import SeeAllCoWorkersContactScreen from '../screens/SeeAllCoWorkersContactScreen';
 import { RootStackParamList } from '../typeInterfaces/navigationTypes';
-import { LinearGradient } from 'expo-linear-gradient'; // Use expo-linear-gradient for Expo projects
-import Icon from 'react-native-vector-icons/Feather';
-import NoticeScreen from '../screens/NoticeScreen';
-import HolidayScreen from '../screens/HolidayScreen';
-import NotificationScreen from '../screens/NotificationScreen';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
-import { LeaveApprovalScreen } from '../screens/LeaveApprovalScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import AttendanceRequestApprovalScreen from '../screens/AttendanceRequestApprovalScreen';
 
 // Define the stack with RootStackParamList
 const Stack = createStackNavigator<RootStackParamList>();
@@ -20,7 +19,9 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const HomeStack = () => {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            initialRouteName="HomeRoot"
+        >
             {/* Home Screen */}
             <Stack.Screen
                 name="HomeRoot"
@@ -54,6 +55,14 @@ const HomeStack = () => {
             <Stack.Screen
                 name="LeaveApproval"
                 component={LeaveApprovalScreen}
+                options={{ headerShown: false }} // Hide header for Home screen
+            />
+
+
+            {/* Attendance Request Approval Screen */}
+            <Stack.Screen
+                name="AttendanceRequestApproval"
+                component={AttendanceRequestApprovalScreen}
                 options={{ headerShown: false }} // Hide header for Home screen
             />
 

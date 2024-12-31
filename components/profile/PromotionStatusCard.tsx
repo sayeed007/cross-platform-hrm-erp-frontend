@@ -70,10 +70,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
     },
-    effectiveLabel: {
-        color: "#6B7280", // Gray-600
-        fontSize: 14,
-    },
     effectiveDate: {
         color: "#111827", // Gray-900
         fontSize: 16,

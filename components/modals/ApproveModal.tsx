@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         borderRadius: 12,
         padding: 20,
-        alignItems: 'center', // Center-align content
     },
     modalTitle: {
         ...textStyle.bold20,
