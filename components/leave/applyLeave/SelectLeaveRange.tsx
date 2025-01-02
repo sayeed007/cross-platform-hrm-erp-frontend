@@ -1,139 +1,272 @@
-import React from "react";
-import {
-    StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
-    ScrollView,
-} from "react-native";
-import { CalendarList } from "react-native-calendars"; // Install using `npm install react-native-calendars`
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Modal, Pressable } from "react-native";
+import { CalendarList } from "react-native-calendars";
 import { colors } from "../../../utils/colors";
 import { textStyle } from "../../../utils/textStyle";
+import Entypo from '@expo/vector-icons/Entypo';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import moment from "moment";
+import { LinearGradient } from "expo-linear-gradient";
+import { getIsLFAEncashableOrNot, getLeaveDaysBasedOnSelectedCriteria } from "../../../apis/Leave";
+import { useUser } from "../../../context/UserContext";
+import { Ionicons } from "@expo/vector-icons";
+import { LeavePeriod } from "./ApplyLeaveModal";
+import LeaveSummary from "./LeaveSummary";
+
 
 interface SelectLeaveRangeProps {
-    startDate: string | null;
-    setStartDate: (date: string | null) => void;
-    endDate: string | null;
-    setEndDate: (date: string | null) => void;
+    selectedLeaveType: string;
+    startDate: string;
+    setStartDate: (date: string) => void;
+    endDate: string;
+    setEndDate: (date: string) => void;
+    leaveDays: number;
+    setLeaveDays: (days: number) => void;
+    leavePeriod: string;
+    setLeavePeriod: React.Dispatch<React.SetStateAction<LeavePeriod>>;
+    isLfaEncashment: boolean;
+    setLfaEncashment: (encashment: boolean) => void;
     onNext: () => void; // Callback for the Next button
 }
 
 const SelectLeaveRange: React.FC<SelectLeaveRangeProps> = ({
+    selectedLeaveType,
     startDate,
     setStartDate,
     endDate,
     setEndDate,
+    leaveDays,
+    setLeaveDays,
+    isLfaEncashment,
+    setLfaEncashment,
+    leavePeriod,
+    setLeavePeriod,
     onNext,
 }) => {
+    const { user } = useUser();
+    const configurableLeaves = [...(user?.employeeInfo?.leavePolicy?.configurableLeaves || [])];
+    const leaveConfig = configurableLeaves.find(
+        (leave) => leave.leaveType === selectedLeaveType
+    );
+
+    const leaveInfoText = leaveConfig?.leaveDeduction === "CALENDAR_DAYS"
+        ? "Government holiday and weekend will be counted as leave days."
+        : "Government holiday and weekend will not be counted as leave days.";
+
+    const leaveDurationText = leaveConfig?.leaveDeduction?.replace("_", " ") || "N/A";
+
+    // const [calenderDays, setCalenderDays] = useState<number>(0);
+    const [lfaEncashable, setLfaEncashable] = useState(false);
+    const [tooltipVisible, setTooltipVisible] = useState(false);
+
+    useEffect(() => {
+        if (selectedLeaveType && startDate && endDate && leavePeriod) {
+            fetchLeaveDays();
+        }
+    }, [user?.employeeId, selectedLeaveType, startDate, endDate, leavePeriod])
+
+    useEffect(() => {
+        if (selectedLeaveType === 'lfa' && leaveDays >= 5) {
+            fetchEncashment()
+        } else {
+            setLfaEncashable(false)
+        }
+    }, [leaveDays]);
+
+
     const handleDayPress = (day: { dateString: string }) => {
         const selectedDate = day.dateString;
 
-        if (!startDate || (startDate && endDate)) {
+        if (!startDate && !endDate) {
+            // Initialize both start and end with the selected date
             setStartDate(selectedDate);
-            setEndDate(null);
-        } else if (startDate && !endDate) {
+            setEndDate(selectedDate);
+            return;
+        }
+
+        if (startDate === endDate && startDate) {
+            // Ensure startDate is not null
             if (new Date(selectedDate) >= new Date(startDate)) {
+                // If the selected date is after or equal to the start date, set it as the end date
                 setEndDate(selectedDate);
             } else {
+                // Otherwise, reset the start and end dates
                 setStartDate(selectedDate);
-                setEndDate(null);
+                setEndDate(selectedDate);
             }
+            return;
+        }
+
+        // Reset the range with the selected date as both startDate and endDate
+        setStartDate(selectedDate);
+        setEndDate(selectedDate);
+    };
+
+    const getMarkedDates = () => {
+        const marked: Record<string, any> = {};
+
+        if (startDate && endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+
+            // Iterate through the range of dates
+            for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+                const dateString = d.toISOString().split("T")[0];
+
+                if (dateString === startDate && dateString === endDate) {
+                    // Both start and end date are the same
+                    marked[dateString] = {
+                        startingDay: true,
+                        endingDay: true,
+                        color: colors.info,
+                        textColor: colors.white,
+                    };
+                } else if (dateString === startDate) {
+                    // Start date styling
+                    marked[dateString] = {
+                        startingDay: true,
+                        color: colors.info,
+                        textColor: colors.white,
+                    };
+                } else if (dateString === endDate) {
+                    // End date styling
+                    marked[dateString] = {
+                        endingDay: true,
+                        color: colors.info,
+                        textColor: colors.white,
+                    };
+                } else {
+                    // Middle dates styling
+                    marked[dateString] = {
+                        color: colors.info,
+                        textColor: colors.white,
+                    };
+                }
+            }
+        }
+
+        return marked;
+    };
+
+
+
+    const fetchLeaveDays = () => {
+        if (user?.employeeId) {
+            getLeaveDaysBasedOnSelectedCriteria(user?.employeeId, startDate, endDate, selectedLeaveType, leavePeriod).then((leaveDaysResponse) => {
+                if (leaveDaysResponse?.[0]) {
+                    setLeaveDays(leaveDaysResponse?.[0]);
+                } else {
+                    setLeaveDays(0);
+                }
+            })
         }
     };
 
-    const calculateDays = () => {
-        if (startDate && endDate) {
-            const fromDate = new Date(startDate);
-            const untilDate = new Date(endDate);
-            const diff = Math.ceil(
-                (untilDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24)
-            );
-            return diff + 1; // Include both start and end dates
+    const fetchEncashment = async () => {
+        if (user?.employeeId && startDate) {
+            getIsLFAEncashableOrNot(user?.employeeId, startDate).then((encashableResponse) => {
+                if (encashableResponse?.[0]) {
+                    setLfaEncashable(encashableResponse?.[0])
+                } else {
+                    setLfaEncashable(false)
+                }
+            })
         }
-        return 0;
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            {/* Header */}
-            <View style={styles.header}>
-                <Text style={styles.title}>Leave Request</Text>
-            </View>
+        <>
+            <ScrollView contentContainerStyle={styles.container}>
+                {/* Calendar */}
+                <CalendarList
+                    pastScrollRange={2}
+                    futureScrollRange={1}
+                    scrollEnabled
+                    horizontal={false}
+                    markingType="period"
+                    onDayPress={handleDayPress}
+                    markedDates={getMarkedDates()}
+                    current={moment(startDate).format("YYYY-MM-DD") || moment().format("YYYY-MM-DD")}
+                    theme={{
+                        calendarBackground: colors.offWhite1,
+                        textDayFontFamily: "System",
+                        textMonthFontFamily: "System",
+                        textDayHeaderFontFamily: "System",
+                        todayTextColor: colors.info,
+                        dayTextColor: colors.black,
+                        monthTextColor: colors.black,
+                        selectedDayBackgroundColor: colors.info,
+                        arrowColor: colors.info,
+                    }}
+                    style={styles.calendar}
+                />
+            </ScrollView>
 
-            {/* Calendar */}
-            <CalendarList
-                pastScrollRange={0}
-                futureScrollRange={12}
-                scrollEnabled
-                showScrollIndicator={false}
-                horizontal
-                markingType={"period"}
-                onDayPress={handleDayPress}
-                markedDates={{
-                    ...(startDate && { [startDate]: { startingDay: true, color: colors.blue, textColor: colors.white } }),
-                    ...(endDate && { [endDate]: { endingDay: true, color: colors.blue, textColor: colors.white } }),
-                    ...(startDate &&
-                        endDate && {
-                        [startDate]: { startingDay: true, color: colors.blue, textColor: colors.white },
-                        [endDate]: { endingDay: true, color: colors.blue, textColor: colors.white },
-                    }),
-                }}
-                theme={{
-                    calendarBackground: colors.white,
-                    textDayFontFamily: "System",
-                    textMonthFontFamily: "System",
-                    textDayHeaderFontFamily: "System",
-                    todayTextColor: colors.blue,
-                    dayTextColor: colors.black,
-                    monthTextColor: colors.black,
-                    selectedDayBackgroundColor: colors.blue,
-                    arrowColor: colors.blue,
-                }}
-                style={styles.calendar}
+            {/* Use the new LeaveSummary component */}
+            <LeaveSummary
+                startDate={startDate}
+                endDate={endDate}
+                leaveDays={leaveDays}
+                leaveInfoText={leaveInfoText}
+                leaveDurationText={leaveDurationText}
             />
 
-            {/* Leave Summary */}
-            <View style={styles.summaryContainer}>
-                <View style={styles.dateRow}>
-                    <View style={styles.dateItem}>
-                        <Text style={styles.dateLabel}>From</Text>
-                        <Text style={styles.dateValue}>{startDate || "-"}</Text>
-                    </View>
-                    <Text style={styles.arrow}>→</Text>
-                    <View style={styles.dateItem}>
-                        <Text style={styles.dateLabel}>Until</Text>
-                        <Text style={styles.dateValue}>{endDate || "-"}</Text>
-                    </View>
-                </View>
 
-                <View style={styles.daysRow}>
-                    <Text style={styles.daysText}>Leave days: {calculateDays()}</Text>
-                    <Text style={styles.daysText}>
-                        Calendar days: {calculateDays()}
+            {/* Half Day Checkbox */}
+            {(leaveDays <= 1 && (leaveConfig?.halfDayAllowed)) &&
+                <TouchableOpacity
+                    style={styles.optionContainer}
+                    onPress={() => setLeavePeriod(leavePeriod === 'HALF_DAY' ? 'oneDay' : 'HALF_DAY')}
+                >
+                    <Ionicons
+                        name={leavePeriod === 'HALF_DAY' ? "checkbox" : "square-outline"}
+                        size={20}
+                        color={colors.gray2}
+                    />
+                    <Text style={styles.optionText}>Want to apply Half day</Text>
+                </TouchableOpacity>
+            }
+
+
+            {/* Encashment Checkbox */}
+            {lfaEncashable &&
+                <TouchableOpacity
+                    style={styles.optionContainer}
+                    onPress={() => setLfaEncashment(!isLfaEncashment)}
+                >
+                    <Ionicons
+                        name={isLfaEncashment ? "checkbox" : "square-outline"}
+                        size={20}
+                        color={colors.gray2}
+                    />
+                    <Text style={styles.optionText}>
+                        Want to encash with these leave (You can apply LFA encashment for one time)
                     </Text>
-                </View>
-            </View>
+                </TouchableOpacity>
+            }
 
             {/* Next Button */}
             <TouchableOpacity
-                style={[
-                    styles.nextButton,
-                    !(startDate && endDate) && styles.disabledButton,
-                ]}
-                disabled={!(startDate && endDate)}
-                onPress={onNext}
-            >
-                <Text style={styles.nextButtonText}>Next</Text>
-            </TouchableOpacity>
-        </ScrollView>
+                disabled={(leaveDays <= 0)}
+                onPress={onNext}>
+                <LinearGradient
+                    colors={(leaveDays <= 0) ?
+                        [colors?.offWhite4, colors?.offWhite5]
+                        : [colors?.cardGradient?.[0], colors?.cardGradient?.[1]]
+                    }
+                    style={styles.nextButton}
+                >
+                    <Text style={styles.nextButtonText}>Next</Text>
+                </LinearGradient>
+            </TouchableOpacity >
+
+        </>
+
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: 16,
-        paddingBottom: 20,
-        backgroundColor: "#F9F9F9",
     },
     header: {
         marginTop: 20,
@@ -145,9 +278,10 @@ const styles = StyleSheet.create({
         color: colors.black,
     },
     calendar: {
-        marginBottom: 20,
+        marginHorizontal: 20,
         borderRadius: 8,
         overflow: "hidden",
+        backgroundColor: colors.offWhite1,
     },
     summaryContainer: {
         backgroundColor: colors.white,
@@ -158,15 +292,15 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 4,
         elevation: 3,
+        marginTop: 20,
     },
     dateRow: {
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "space-evenly",
         alignItems: "center",
-        marginBottom: 10,
     },
     dateItem: {
-        alignItems: "center",
+
     },
     dateLabel: {
         ...textStyle.medium14,
@@ -175,7 +309,12 @@ const styles = StyleSheet.create({
     dateValue: {
         ...textStyle.semibold16,
         color: colors.black,
-        marginTop: 4,
+        marginVertical: 4,
+    },
+    leaveDaysInfoContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 5,
     },
     arrow: {
         ...textStyle.medium16,
@@ -183,24 +322,55 @@ const styles = StyleSheet.create({
     },
     daysRow: {
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "space-evenly",
     },
     daysText: {
         ...textStyle.medium14,
         color: colors.gray2,
     },
     nextButton: {
-        backgroundColor: colors.blue,
         paddingVertical: 14,
         borderRadius: 8,
         alignItems: "center",
     },
-    disabledButton: {
-        backgroundColor: colors.gray3,
-    },
     nextButtonText: {
         ...textStyle.semibold16,
         color: colors.white,
+    },
+    optionContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 12,
+    },
+    optionText: {
+        ...textStyle.medium14,
+        color: colors.gray2,
+        marginLeft: 8,
+    },
+    infoContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    infoText: {
+        ...textStyle.regular12,
+        color: colors.gray2,
+        flex: 1,
+    },
+    modalOverlay: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
+    },
+    modalContainer: {
+        backgroundColor: colors.white,
+        padding: 16,
+        borderRadius: 8,
+        maxWidth: "80%",
+    },
+    modalText: {
+        ...textStyle.medium14,
+        color: colors.black,
     },
 });
 

@@ -14,7 +14,11 @@ export const EmptyItems: React.FC<EmptyItemsProps> = ({
 }) => {
     return (
         <View style={styles.emptyState}>
-            <Image source={require('../../assets/images/EmptyBox.png')} style={styles.emptyImage} />
+            <Image
+                source={require('../../assets/images/EmptyBox.png')}
+                style={styles.emptyImage}
+                resizeMode='contain'
+            />
             <Text style={styles.emptyTitle}>{title}</Text>
             <Text style={styles.emptySubtitle}>{subtitle}</Text>
         </View>
@@ -31,7 +35,6 @@ const styles = StyleSheet.create({
     emptyImage: {
         width: 250,
         height: 250,
-        resizeMode: 'contain',
         marginBottom: 20,
     },
     emptyTitle: {

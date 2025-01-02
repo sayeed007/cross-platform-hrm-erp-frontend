@@ -6,13 +6,13 @@ import { colors } from "../../../utils/colors";
 
 interface SelectLeaveTypeProps {
     leaveData: LeaveDataItem[]; // Array of leave data passed as props
-    selectedLeave: string;
+    selectedLeaveType: string;
     onLeaveTypeChoose: (leave: string) => void;
 }
 
 const SelectLeaveType: React.FC<SelectLeaveTypeProps> = ({
     leaveData,
-    selectedLeave,
+    selectedLeaveType,
     onLeaveTypeChoose
 }) => {
     const renderLeaveItem = ({ item }: { item: LeaveDataItem }) => {
@@ -23,7 +23,7 @@ const SelectLeaveType: React.FC<SelectLeaveTypeProps> = ({
                 }}
                 style={[
                     styles.leaveItem,
-                    selectedLeave === item.leaveType ? styles.selectedItem : {}
+                    selectedLeaveType === item.leaveType ? styles.selectedItem : {}
                 ]}>
                 {/* Remaining Leave Count */}
                 <View style={[styles.leaveCountContainer, { backgroundColor: item.leaveColor || "#E0E0E0" }]}>

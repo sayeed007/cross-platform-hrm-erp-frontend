@@ -58,3 +58,17 @@ const styles = StyleSheet.create({
         ...textStyle?.medium12,
     }
 });
+
+
+
+export const calculateCalenderDays = (startDate: string, endDate: string) => {
+    if (startDate && endDate) {
+        const fromDate = new Date(startDate);
+        const untilDate = new Date(endDate);
+        const diff = Math.ceil(
+            (untilDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24)
+        );
+        return diff + 1; // Include both start and end dates
+    }
+    return 0;
+};

@@ -57,6 +57,27 @@ export const getRemainingLeaveCountForAnEmployee = (employeeId: number) => {
         });
 };
 
+export const getLeaveDaysBasedOnSelectedCriteria = (employeeId: number, startDate: string, endDate: string, selectedLeaveType: string, leavePeriod: string) => {
+    return axiosInstance.get(`/leave_request/employee/${employeeId}?startdate=${startDate}&enddate=${endDate}&leaveType=${selectedLeaveType}&leavePeriod=${leavePeriod}`)
+        .then(response => {
+            return [response.data];
+        })
+        .catch(error => {
+            return resolveApiError(error);
+        });
+};
+
+
+export const getIsLFAEncashableOrNot = (employeeId: number, startDate: string) => {
+    return axiosInstance.get(`/lfa_encashment_request/${employeeId}?startDate=${startDate}`)
+        .then(response => {
+            return [response.data];
+        })
+        .catch(error => {
+            return resolveApiError(error);
+        });
+};
+
 
 
 // ###################################################################
@@ -84,6 +105,24 @@ export const rejectSubordinateLeaveRequest = (employeeId: number, senderId: numb
         });
 };
 
+export const modifyAlreadyAppliedLeaveRequest = (employeeId: number, leaveRequestId: number, formData: any) => {
+    return axiosInstance.put(
+        `/employee/${employeeId}/leave_request/${leaveRequestId}/update`,
+        formData,
+        {
+            headers: {
+                "Content-Type": "multipart/form-data;",
+            },
+        }
+    )
+        .then(response => {
+            return [response.data];
+        })
+        .catch(error => {
+            return resolveApiError(error);
+        });
+};
+
 
 // ###################################################################
 // DELETE API's
@@ -91,6 +130,30 @@ export const rejectSubordinateLeaveRequest = (employeeId: number, senderId: numb
 
 export const deleteIndividualLeaveRequest = (senderId: number, leaveRequestId: number) => {
     return axiosInstance.delete(`/employee/${senderId}/leave_request/${leaveRequestId}`)
+        .then(response => {
+            return [response.data];
+        })
+        .catch(error => {
+            return resolveApiError(error);
+        });
+};
+
+
+
+// ###################################################################
+// Post API's
+// ###################################################################
+
+export const applyForLeaveRequest = (formData: any) => {
+    return axiosInstance.post(
+        `/send/leave_request`,
+        formData,
+        {
+            headers: {
+                "Content-Type": "multipart/form-data;",
+            },
+        }
+    )
         .then(response => {
             return [response.data];
         })

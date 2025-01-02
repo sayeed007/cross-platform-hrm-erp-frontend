@@ -1,25 +1,22 @@
+import { LinearGradient } from "expo-linear-gradient";
+import { useFormik } from 'formik';
+import moment from 'moment';
 import React from 'react';
 import {
+    Keyboard,
     Modal,
-    View,
+    Platform,
+    SafeAreaView,
+    StyleSheet,
     Text,
     TextInput,
-    StyleSheet,
-    Pressable,
-    Keyboard,
-    SafeAreaView,
     TouchableOpacity,
-    Platform,
+    View
 } from 'react-native';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import Icon from 'react-native-vector-icons/Feather';
+import * as Yup from 'yup';
 import { colors } from '../../../utils/colors';
-import { LinearGradient } from "expo-linear-gradient";
 import { textStyle } from '../../../utils/textStyle';
-import moment from 'moment';
-import Toast from 'react-native-toast-message';
-import DefaultToast from '../../common/DefaultToast';
 
 interface RemarksModalProps {
     isVisible: boolean;

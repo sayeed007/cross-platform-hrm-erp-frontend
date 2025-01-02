@@ -114,11 +114,24 @@ const LeaveRequestDetailsForUser: React.FC<LeaveRequestDetailsForUserProps> = ({
                                     { maxHeight: canTakeAction ? '65%' : '75%' }
                                 ]}
                             >
-                                <View style={styles.detailRow}>
-                                    <Text style={styles.detailLabel}>Leave Type</Text>
-                                    <Text style={styles.detailValue}>
-                                        {generateLeaveType(leaveType ?? '')}
-                                    </Text>
+                                <View style={[styles.detailRow, styles.multipleItems]}>
+                                    <View>
+                                        <Text style={styles.detailLabel}>Leave Type</Text>
+                                        <Text style={styles.detailValue}>
+                                            {generateLeaveType(leaveType ?? '')}
+                                        </Text>
+                                    </View>
+
+                                    {/* Edit */}
+                                    {canTakeAction &&
+                                        <TouchableOpacity
+                                            style={styles.editButton}
+                                            onPress={onEdit}
+                                        >
+                                            <Ionicons name="create-outline" size={16} color={colors.info} />
+                                            <Text style={styles.editButtonText}>Edit Request</Text>
+                                        </TouchableOpacity>
+                                    }
                                 </View>
                                 <View style={styles.detailRow}>
                                     <Text style={styles.detailLabel}>Timeline</Text>
@@ -178,22 +191,13 @@ const LeaveRequestDetailsForUser: React.FC<LeaveRequestDetailsForUserProps> = ({
                             {/* Action Buttons */}
                             {canTakeAction &&
                                 <View style={styles.buttonContainer}>
-                                    {/* Edit */}
-                                    <TouchableOpacity
-                                        style={[styles.button, styles.editButton]}
-                                        onPress={onEdit}
-                                    >
-                                        <Ionicons name="create-outline" size={24} color={colors.warning} />
-                                        <Text style={styles.editButtonText}>Edit</Text>
-                                    </TouchableOpacity>
-
                                     {/* Cancel */}
                                     <TouchableOpacity
                                         style={[styles.button, styles.cancelButton]}
                                         onPress={onCancel}
                                     >
-                                        <Ionicons name="close" size={24} color={colors.white} />
-                                        <Text style={styles.cancelButtonText}>Cancel</Text>
+                                        <Ionicons name="close" size={24} color={colors.error} />
+                                        <Text style={styles.cancelButtonText}>Cancel Leave</Text>
                                     </TouchableOpacity>
                                 </View>
                             }
@@ -203,8 +207,8 @@ const LeaveRequestDetailsForUser: React.FC<LeaveRequestDetailsForUserProps> = ({
                     </View>
                 </TouchableOpacity>
 
-            </TouchableOpacity>
-        </Modal>
+            </TouchableOpacity >
+        </Modal >
     );
 };
 
@@ -275,6 +279,10 @@ const styles = StyleSheet.create({
     detailRow: {
         marginBottom: 15,
     },
+    multipleItems: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
     detailLabel: {
         ...textStyle.regular14,
         color: colors.gray2,
@@ -294,9 +302,6 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         width: '100%',
-        flexDirection: "row",
-        justifyContent: "space-between",
-        gap: 15,
         marginTop: 15,
     },
     button: {
@@ -308,21 +313,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     editButton: {
-        borderWidth: 1,
-        borderColor: colors.warning,
-        backgroundColor: colors.warningBG,
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     cancelButton: {
-        backgroundColor: colors.error,
     },
     editButtonText: {
         ...textStyle.semibold14,
-        color: colors.warning,
+        color: colors.info,
         marginLeft: 10
     },
     cancelButtonText: {
-        ...textStyle.semibold14,
-        color: colors.white,
+        ...textStyle.semibold16,
+        color: colors.error,
         marginLeft: 10
     },
     actionContainer: {

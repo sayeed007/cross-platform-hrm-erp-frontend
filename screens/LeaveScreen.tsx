@@ -21,6 +21,8 @@ import RequestStatusFIlterModal from '../components/modals/RequestStatusFIlterMo
 import { setTabBarVisibility } from '../utils/navigationUtils';
 import { useNavigation } from '@react-navigation/native';
 import { HomeScreenNavigationProp } from '../typeInterfaces/navigationTypes';
+import ApplyLeaveModal from '../components/leave/applyLeave/ApplyLeaveModal';
+import SuccessModal from '../components/modals/SuccessModal';
 
 
 const leaveStatus = [
@@ -68,8 +70,13 @@ const LeaveScreen = () => {
     const [leaveRequestDetailsModalVisible, setLeaveRequestDetailsModalVisible] = useState<boolean>(false);
 
 
-    const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
+    const [showApplyLeaveModalVisible, setShowApplyLeaveModalVisible] = useState<boolean>(false);
     const [isCancelModalVisible, setIsCancelModalVisible] = useState<boolean>(false);
+
+
+    const [successModalVisible, setSuccessModalVisible] = useState<boolean>(false);
+    const [title, setTitle] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
 
 
     const handleYearChange = (year: string) => {
@@ -141,6 +148,16 @@ const LeaveScreen = () => {
         setTabBarVisibility(navigation, true); // Ensure tab bar is visible on home
     }, [navigation]);
 
+
+    const handleContinue = () => {
+        setTitle("");
+        setDescription("");
+        setLeaveRequestDetailsModalVisible(false);
+        setSelectedLeaveData({});
+        setSuccessModalVisible(false);
+        setReload(!reload);
+    };
+
     return (
         <>
 
@@ -176,7 +193,8 @@ const LeaveScreen = () => {
                         setSelectedLeaveData({});
                     }}
                     onEdit={() => {
-                        setIsEditModalVisible(true);
+                        setLeaveRequestDetailsModalVisible(false);
+                        setShowApplyLeaveModalVisible(true);
                     }}
                     onCancel={() => {
                         setLeaveRequestDetailsModalVisible(false)
@@ -196,6 +214,35 @@ const LeaveScreen = () => {
                         setSelectedLeaveData({});
                     }}
                     onCancel={() => { actionOnCanallingLeaveRequest() }}
+                />
+            }
+
+            {/* MODAL FOR APPLYING Leave Request */}
+            {showApplyLeaveModalVisible &&
+                <ApplyLeaveModal
+                    selectedLeave={selectedLeaveData}
+                    isVisible={showApplyLeaveModalVisible}
+                    onClose={() => {
+                        setShowApplyLeaveModalVisible(false);
+                        setSelectedLeaveData({});
+                    }}
+                    onSuccessAction={() => {
+                        setShowApplyLeaveModalVisible(false);
+                        setSelectedLeaveData({});
+                        setTitle(selectedLeaveData?.id ? "Leave Request modified Successfully" : "Leave Request Sent Successfully");
+                        setDescription("Your request is now pending for approval. Check Notification for approval status.");
+                        setSuccessModalVisible(true);
+                    }}
+                />
+            }
+
+            {/* ATTENDANCE REQUEST SUCCESS MODAL */}
+            {successModalVisible &&
+                <SuccessModal
+                    isVisible={successModalVisible}
+                    title={title}
+                    description={description}
+                    onContinue={handleContinue}
                 />
             }
 

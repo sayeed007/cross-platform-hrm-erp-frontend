@@ -1,22 +1,19 @@
+import * as Clipboard from 'expo-clipboard';
 import React, { useState } from 'react';
 import {
+    Linking,
     Modal,
+    Platform,
     StyleSheet,
     Text,
-    View,
     TouchableOpacity,
-    TouchableWithoutFeedback,
-    Linking,
-    Platform,
-    Image,
+    View
 } from 'react-native';
-import * as Clipboard from 'expo-clipboard';
+import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/Feather'; // Icons library
 import { DirectoryEmployeeOption } from '../../typeInterfaces/DirectoryEmployee';
 import { colors } from '../../utils/colors';
 import { textStyle } from '../../utils/textStyle';
-import Toast from 'react-native-toast-message';
-import { Avatar } from 'react-native-elements';
 import EmployeeAvatar from '../common/EmployeeAvatar';
 
 interface EmployeeContactDetailsModalProps {
@@ -73,9 +70,9 @@ const EmployeeContactDetailsModal: React.FC<EmployeeContactDetailsModalProps> = 
             animationType="fade"
             onRequestClose={onClose}
         >
-            <TouchableWithoutFeedback onPress={onClose}>
+            <TouchableOpacity onPress={onClose}>
                 <View style={styles.modalContainer}>
-                    <TouchableWithoutFeedback>
+                    <TouchableOpacity>
                         <View style={styles.modalContent}>
                             {/* Employee Card */}
                             <View style={styles.employeeCard}>
@@ -135,9 +132,9 @@ const EmployeeContactDetailsModal: React.FC<EmployeeContactDetailsModalProps> = 
                                 </TouchableOpacity>
                             </View>
                         </View>
-                    </TouchableWithoutFeedback>
+                    </TouchableOpacity>
                 </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         </Modal>
     );
 };

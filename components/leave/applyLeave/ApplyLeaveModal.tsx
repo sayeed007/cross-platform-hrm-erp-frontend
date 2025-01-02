@@ -7,7 +7,7 @@ import {
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { getRemainingLeaveCountForAnEmployee } from '../../../apis/Leave';
+import { applyForLeaveRequest, getRemainingLeaveCountForAnEmployee, modifyAlreadyAppliedLeaveRequest } from '../../../apis/Leave';
 import { useUser } from '../../../context/UserContext';
 import { Attendance } from '../../../typeInterfaces/Attendance';
 import { LeaveDataItem } from '../../../typeInterfaces/Leave';
@@ -16,24 +16,29 @@ import { textStyle } from '../../../utils/textStyle';
 import SelectLeaveType from './SelectLeaveType';
 import SelectLeaveRange from './SelectLeaveRange';
 import moment from 'moment';
+import GiveReasonAndDocument from './GiveLeaveReasonAndDocument';
+import { calculateCalenderDays } from '../../../utils/leaveUtils';
+import Toast from 'react-native-toast-message';
+import { LeaveApprovalRequest } from '../../../typeInterfaces/LeaveApprovalRequest';
 
 
 interface ApplyLeaveModalProps {
-    selectedAttendance: Partial<Attendance>;
+    selectedLeave: Partial<LeaveApprovalRequest>;
     isVisible: boolean;
     onClose: () => void;
     onSuccessAction: () => void;
-}
+};
+
+export type LeavePeriod = "oneDay" | "HALF_DAY" | "moreThanOneDay";
 
 
 const selectLeaveType = 'Select Leave Type';
 const selectLeaveRange = 'Select Leave Range';
-const giveLeaveReason = 'Leave Reason';
-const uploadDocument = 'Upload Necessary Document';
+const giveLeaveReasonAndDocument = 'Leave Reason & Document';
 
 
 const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
-    selectedAttendance,
+    selectedLeave,
     isVisible,
     onClose,
     onSuccessAction
@@ -43,9 +48,33 @@ const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
     const [currentState, setCurrentState] = useState<string>(selectLeaveType);
     const [remainingLeaveCount, setRemainingLeaveCount] = useState<LeaveDataItem[]>([]);
 
-    const [selectedLeave, setSelectedLeave] = useState('');
-    const [startDate, setStartDate] = useState<string | null>(moment().format('YYYY-MM-DD'));
-    const [endDate, setEndDate] = useState<string | null>(moment().format('YYYY-MM-DD'));
+    const [selectedLeaveType, setSelectedLeaveType] = useState('');
+    const [startDate, setStartDate] = useState<string>(moment().format('YYYY-MM-DD'));
+    const [endDate, setEndDate] = useState<string>(moment().format('YYYY-MM-DD'));
+    const [leaveDays, setLeaveDays] = useState<number>(0);
+    const [leavePeriod, setLeavePeriod] = useState<LeavePeriod>('oneDay');
+    const [isLfaEncashment, setLfaEncashment] = useState<boolean>(false);
+    const [leaveReason, setLeaveReason] = useState<string>('');
+    const [leaveFile, setLeaveFile] = useState<File | string | null>(null);
+
+
+
+
+    useEffect(() => {
+        if (selectedLeave?.leaveType) {
+            setSelectedLeaveType(selectedLeave?.leaveType);
+            setStartDate(selectedLeave?.startDate ?? moment().format('YYYY-MM-DD'));
+            setEndDate(selectedLeave?.endDate ?? moment().format('YYYY-MM-DD'));
+            setLeaveDays(selectedLeave?.duration ?? 0);
+            setLeavePeriod(selectedLeave?.leavePeriod === "HALF_DAY" ? "HALF_DAY" :
+                selectedLeave?.startDate === selectedLeave?.endDate ? 'oneDay' : 'moreThanOneDay'
+            );
+            setLfaEncashment(selectedLeave?.isLfaPaid ?? false);
+            setLeaveReason(selectedLeave?.message ?? '');
+            setLeaveFile(selectedLeave?.attachmentPath ?? null);
+        }
+
+    }, [selectedLeave])
 
     useEffect(() => {
         if (user?.employeeId) {
@@ -63,18 +92,17 @@ const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
     const handleOnClose = () => {
         switch (currentState) {
             case selectLeaveType:
+                resetState();
                 onClose();
                 break;
             case selectLeaveRange:
                 setCurrentState(selectLeaveType);
                 break;
-            case giveLeaveReason:
+            case giveLeaveReasonAndDocument:
                 setCurrentState(selectLeaveRange);
                 break;
-            case uploadDocument:
-                setCurrentState(uploadDocument);
-                break;
             default:
+                resetState();
                 onClose();
                 break;
         }
@@ -86,9 +114,9 @@ const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
                 return (
                     <SelectLeaveType
                         leaveData={remainingLeaveCount}
-                        selectedLeave={selectedLeave}
+                        selectedLeaveType={selectedLeaveType}
                         onLeaveTypeChoose={(leaveType) => {
-                            setSelectedLeave(leaveType);
+                            setSelectedLeaveType(leaveType);
                             setCurrentState(selectLeaveRange);
                         }}
                     />
@@ -96,22 +124,39 @@ const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
             case selectLeaveRange:
                 return (
                     <SelectLeaveRange
+                        selectedLeaveType={selectedLeaveType}
                         startDate={startDate}
                         setStartDate={setStartDate}
                         endDate={endDate}
                         setEndDate={setEndDate}
+                        leaveDays={leaveDays}
+                        setLeaveDays={setLeaveDays}
+                        leavePeriod={leavePeriod}
+                        setLeavePeriod={setLeavePeriod}
+                        isLfaEncashment={isLfaEncashment}
+                        setLfaEncashment={setLfaEncashment}
                         onNext={() => {
-
+                            setCurrentState(giveLeaveReasonAndDocument);
                         }}
                     />
                 )
-            case giveLeaveReason:
+            case giveLeaveReasonAndDocument:
                 return (
-                    <></>
-                )
-            case uploadDocument:
-                return (
-                    <></>
+                    <GiveReasonAndDocument
+                        selectedLeaveType={selectedLeaveType}
+                        startDate={startDate}
+                        endDate={endDate}
+                        leaveDays={leaveDays}
+                        leavePeriod={leavePeriod}
+                        isLfaEncashment={isLfaEncashment}
+                        leaveReason={leaveReason}
+                        setLeaveReason={setLeaveReason}
+                        leaveFile={leaveFile}
+                        setLeaveFile={setLeaveFile}
+                        onNext={() => {
+                            requestForLeave()
+                        }}
+                    />
                 )
             default:
                 return (
@@ -120,45 +165,70 @@ const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
         }
     };
 
-    // const requestForManualAttendance = (remarks: string) => {
+    const requestForLeave = () => {
+        const leaveReq = {
+            senderId: user?.employeeId,
+            startDate: moment(startDate).format("YYYY-MM-DD"),
+            endDate: moment(endDate).format("YYYY-MM-DD"),
+            duration: leaveDays,
+            calendarDays: calculateCalenderDays(startDate, endDate),
+            leavePeriod: leavePeriod,
 
-    //     setCurrentState(SelectADate);
-    //     onClose();
+            isLfaPaid: isLfaEncashment,
+            lfaEncashmentStatus: isLfaEncashment ? "REQUESTED" : "UNPAID",
 
-    //     const requestBody = {
-    //         "date": selectedDate,
-    //         "inTime": dailyAttendanceData?.inTime,
-    //         "outTime": dailyAttendanceData?.outTime,
-    //         "updatedInTime": moment(`${selectedDate} ${selectedInTime}`, 'YYYY-MM-DD HH:mm').format('YYYY-MM-DD HH:mm:ss'),
-    //         "updatedOutTime": moment(`${selectedDate} ${selectedOutTime}`, 'YYYY-MM-DD HH:mm').format('YYYY-MM-DD HH:mm:ss'),
-    //         "updatedStatus": updatedStatus,
-    //         "editReason": remarks
-    //     };
+            leaveType: selectedLeaveType,
+            message: leaveReason,
+        };
 
-    //     if (user?.employeeId) {
-    //         requestManualAttendanceForEmployee(user?.employeeId, requestBody).then((attendanceRequestResponse) => {
-    //             if (attendanceRequestResponse?.[0]) {
-    //                 onSuccessAction();
-    //             } else {
-    //                 Toast.show({
-    //                     type: 'failedToast',
-    //                     position: 'bottom',
-    //                     text1: `Attendance Request Failed, ${attendanceRequestResponse?.[1]}`,
-    //                 });
-    //             }
-    //         })
-    //     } else {
-    //         Toast.show({
-    //             type: 'failedToast',
-    //             position: 'bottom',
-    //             text1: `User id not found.`,
-    //         });
-    //     }
+        const formData = new FormData();
+        formData.append("leaveReq", JSON.stringify(leaveReq));
+        formData.append("file", leaveFile ?? '');
 
-    // };
+        // EDITING EXISTING LEAVE
+        if (selectedLeave?.id && user?.employeeId) {
+            modifyAlreadyAppliedLeaveRequest(user?.employeeId, selectedLeave?.id, formData).then((leaveRequestResponse) => {
+                if (leaveRequestResponse?.[0]) {
+                    resetState();
+                    onSuccessAction();
+                } else {
+                    Toast.show({
+                        type: 'failedToast',
+                        position: 'bottom',
+                        text1: `Leave Request Failed, ${leaveRequestResponse?.[1]}`,
+                    });
+                    resetState();
+                    onClose();
+                }
+            });
+        } else {
+            applyForLeaveRequest(formData).then((leaveRequestResponse) => {
+                if (leaveRequestResponse?.[0]) {
+                    resetState();
+                    onSuccessAction();
+                } else {
+                    Toast.show({
+                        type: 'failedToast',
+                        position: 'bottom',
+                        text1: `Leave Request Failed, ${leaveRequestResponse?.[1]}`,
+                    });
+                    resetState();
+                    onClose();
+                }
+            });
+        }
+    };
 
-
-    console.log(remainingLeaveCount);
+    const resetState = () => {
+        setSelectedLeaveType('');
+        setStartDate(moment().format('YYYY-MM-DD'));
+        setEndDate(moment().format('YYYY-MM-DD'));
+        setLeaveDays(0);
+        setLeavePeriod('oneDay');
+        setLfaEncashment(false);
+        setLeaveReason('');
+        setLeaveFile(null);
+    };
 
     return (
         <>
@@ -210,7 +280,8 @@ const styles = StyleSheet.create({
         padding: 16,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-        maxHeight: '60%', // Limit modal height to show 6 items
+        // flex: 1,
+        maxHeight: '90%', // Limit modal height to show 6 items
     },
     modalHeader: {
         flexDirection: 'row',

@@ -18,6 +18,7 @@ import FullPageLoader from '../components/modals/FullPageLoader';
 import { setTabBarVisibility } from '../utils/navigationUtils';
 import { useNavigation } from '@react-navigation/native';
 import { HomeScreenNavigationProp } from '../typeInterfaces/navigationTypes';
+import ApplyLeaveModal from '../components/leave/applyLeave/ApplyLeaveModal';
 
 const notLeaveAttendanceStatus = ["AFA", "AFL", "absent", "late", "present", "half day", "holiday", "weekend"];
 
@@ -27,6 +28,8 @@ const AttendanceScreen = () => {
     const navigation = useNavigation<HomeScreenNavigationProp>();
 
     const [successModalVisible, setSuccessModalVisible] = useState<boolean>(false);
+    const [title, setTitle] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
     const [monthYearSelectionModalVisible, setMonthYearSelectionModalVisible] = useState<boolean>(false);
 
     const [dailyAttendanceActionModalVisible, setDailyAttendanceActionModalVisible] = useState<boolean>(false);
@@ -89,6 +92,8 @@ const AttendanceScreen = () => {
     }, [selectedAttendanceStatus]);
 
     const handleContinue = () => {
+        setTitle("");
+        setDescription("");
         setSuccessModalVisible(false);
 
         // Refetch data after modal closes
@@ -132,7 +137,10 @@ const AttendanceScreen = () => {
                         setDailyAttendanceActionModalVisible(false);
                         setShowApplyAttendanceModalVisible(true);
                     }}
-                    onApplyLeave={() => alert('Apply Leave')}
+                    onApplyLeave={() => {
+                        setDailyAttendanceActionModalVisible(false);
+                        setShowApplyLeaveModalVisible(true);
+                    }}
                 />
             }
 
@@ -146,6 +154,25 @@ const AttendanceScreen = () => {
                         setSelectedAttendance({})
                     }}
                     onSuccessAction={() => {
+                        setTitle("Attendance Request Sent Successfully");
+                        setDescription("Your request is now pending for approval. Check Notification for approval status.");
+                        setSuccessModalVisible(true);
+                    }}
+                />
+            }
+
+            {/* MODAL FOR APPLYING Leave Request */}
+            {showApplyLeaveModalVisible &&
+                <ApplyLeaveModal
+                    selectedLeave={{}}
+                    isVisible={showApplyLeaveModalVisible}
+                    onClose={() => {
+                        setShowApplyLeaveModalVisible(false);
+                    }}
+                    onSuccessAction={() => {
+                        setShowApplyLeaveModalVisible(false);
+                        setTitle("Leave Request Sent Successfully");
+                        setDescription("Your request is now pending for approval. Check Notification for approval status.");
                         setSuccessModalVisible(true);
                     }}
                 />
@@ -155,8 +182,8 @@ const AttendanceScreen = () => {
             {successModalVisible &&
                 <SuccessModal
                     isVisible={successModalVisible}
-                    title="Attendance Request Sent Successfully"
-                    description="Your request is now pending for approval. Check Notification for approval status."
+                    title={title}
+                    description={description}
                     onContinue={handleContinue}
                 />
             }

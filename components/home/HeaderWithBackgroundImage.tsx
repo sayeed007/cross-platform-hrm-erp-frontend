@@ -36,6 +36,7 @@ const HeaderWithBackgroundImage: React.FC<HeaderWithBackgroundImageProps> = ({
             <ImageBackground
                 source={require('../../assets/images/HomeScreenBackground.png')} // Replace with the correct path to the image
                 style={styles.backgroundImage}
+                resizeMode='cover'
             >
                 {/* Header Section */}
                 <View style={styles.header}>
@@ -84,7 +85,6 @@ const HeaderWithBackgroundImage: React.FC<HeaderWithBackgroundImageProps> = ({
 const styles = StyleSheet.create({
     backgroundImage: {
         height: 250,
-        resizeMode: 'cover',
         padding: 16,
         paddingBottom: 90,
         marginTop: Platform.OS === 'android' ? 24 : 0,
