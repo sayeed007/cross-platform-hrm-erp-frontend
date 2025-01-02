@@ -16,6 +16,9 @@ import { useNavigation } from "@react-navigation/native";
 import { HomeScreenNavigationProp } from "../../typeInterfaces/navigationTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUser } from "../../context/UserContext";
+import { Calendar } from "react-native-calendars";
+import { getIcon } from "../../utils/generateIcon";
+import { GenerateAndViewIcon } from "../common/GenerateAndSHowIcon";
 
 
 // navigation.navigate(item.navigatePath)
@@ -29,7 +32,7 @@ const MenuList = () => {
             title: "Quick Access",
             data: [
                 { id: "1", label: "My Attendance", icon: "calendar", action: () => { navigation.navigate('Attendance') } },
-                { id: "2", label: "Attendance Request Approval", icon: "checkmark-circle", action: () => { navigation.navigate('AttendanceRequestApproval') } },
+                { id: "2", label: "Attendance Request Approval", icon: "attendanceRequestApproval", action: () => { navigation.navigate('AttendanceRequestApproval') } },
                 { id: "3", label: "My Leave Request", icon: "log-out", action: () => { navigation.navigate('Leave') } },
                 { id: "4", label: "Leave Request Approval", icon: "document-text", action: () => { navigation.navigate('LeaveApproval') } },
                 { id: "5", label: "Directory", icon: "folder", action: () => { navigation.navigate('SeeAllCoWorkersContact') } },
@@ -56,10 +59,15 @@ const MenuList = () => {
         <TouchableOpacity style={styles.menuItem}
             onPress={() => item.action()}
         >
-            <Ionicons
+            {/* <Ionicons
                 name={item.icon as keyof typeof Ionicons.glyphMap}
                 size={24}
                 color={colors.brand}
+                style={styles.menuIcon}
+            /> */}
+            <GenerateAndViewIcon
+                iconName={item.icon}
+                size={24}
                 style={styles.menuIcon}
             />
             <Text style={styles.menuLabel}>{item.label}</Text>

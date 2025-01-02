@@ -61,7 +61,7 @@ export const TabBar: React.FC = () => {
 
     const [isQuickActionModalVisible, setQuickActionModalVisible] = useState(false);
     const [showApplyAttendanceModalVisible, setShowApplyAttendanceModalVisible] = useState<boolean>(false);
-    const [showApplyLeaveModalVisible, setShowApplyLeaveModalVisible] = useState<boolean>(true);
+    const [showApplyLeaveModalVisible, setShowApplyLeaveModalVisible] = useState<boolean>(false);
 
     const toggleModal = () => {
         setQuickActionModalVisible(!isQuickActionModalVisible);
