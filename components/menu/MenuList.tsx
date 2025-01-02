@@ -33,22 +33,22 @@ const MenuList = () => {
             data: [
                 { id: "1", label: "My Attendance", icon: "calendar", action: () => { navigation.navigate('Attendance') } },
                 { id: "2", label: "Attendance Request Approval", icon: "attendanceRequestApproval", action: () => { navigation.navigate('AttendanceRequestApproval') } },
-                { id: "3", label: "My Leave Request", icon: "log-out", action: () => { navigation.navigate('Leave') } },
-                { id: "4", label: "Leave Request Approval", icon: "document-text", action: () => { navigation.navigate('LeaveApproval') } },
-                { id: "5", label: "Directory", icon: "folder", action: () => { navigation.navigate('SeeAllCoWorkersContact') } },
-                { id: "6", label: "Holidays", icon: "sunny", action: () => { navigation.navigate('Holiday') } },
-                { id: "7", label: "Notice", icon: "megaphone", action: () => { navigation.navigate('Notice') } },
-                // { id: "8", label: "Office Policy", icon: "book", action: () => { navigation.navigate('') } },
+                { id: "3", label: "My Leave Request", icon: "myLeaveRequest", action: () => { navigation.navigate('Leave') } },
+                { id: "4", label: "Leave Request Approval", icon: "leaveRequestApproval", action: () => { navigation.navigate('LeaveApproval') } },
+                { id: "5", label: "Directory", icon: "directory", action: () => { navigation.navigate('SeeAllCoWorkersContact') } },
+                { id: "6", label: "Holidays", icon: "holidays", action: () => { navigation.navigate('Holiday') } },
+                { id: "7", label: "Notice", icon: "notices", action: () => { navigation.navigate('Notice') } },
+                // { id: "8", label: "Office Policy", icon: "officePolicy", action: () => { navigation.navigate('') } },
             ],
         },
         {
             title: "Account Setting",
             data: [
-                { id: "9", label: "Profile", icon: "person", action: () => { navigation.navigate('Profile') } },
-                { id: "10", label: "Change Password", icon: "lock-closed", action: () => { } },
+                { id: "9", label: "Profile", icon: "profile", action: () => { navigation.navigate('Profile') } },
+                { id: "10", label: "Change Password", icon: "changePassword", action: () => { } },
                 // { id: "11", label: "Preference", icon: "notifications", action: () => { } },
                 {
-                    id: "12", label: "Log Out", icon: "exit-outline", action: () => { setUser(null); }
+                    id: "12", label: "Log Out", icon: "logOut", action: () => { setUser(null); }
                 },
             ],
         },
