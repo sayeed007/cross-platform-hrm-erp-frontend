@@ -47,6 +47,16 @@ export const getAllLeaveRequestOfAnEmployee = (employeeId: number) => {
         });
 };
 
+export const getEmployeeAllPendingRequest = (employeeId: number) => {
+    return axiosInstance.get(`/employee/${employeeId}/pending/leave_request/all`)
+        .then(response => {
+            return [response.data];
+        })
+        .catch(error => {
+            return resolveApiError(error);
+        });
+};
+
 export const getRemainingLeaveCountForAnEmployee = (employeeId: number) => {
     return axiosInstance.get(`employee/${employeeId}/remaining-leave-count`)
         .then(response => {

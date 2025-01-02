@@ -7,7 +7,7 @@ import {
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { applyForLeaveRequest, getRemainingLeaveCountForAnEmployee, modifyAlreadyAppliedLeaveRequest } from '../../../apis/Leave';
+import { applyForLeaveRequest, getEmployeeAllPendingRequest, getRemainingLeaveCountForAnEmployee, modifyAlreadyAppliedLeaveRequest } from '../../../apis/Leave';
 import { useUser } from '../../../context/UserContext';
 import { Attendance } from '../../../typeInterfaces/Attendance';
 import { LeaveDataItem } from '../../../typeInterfaces/Leave';
@@ -44,6 +44,18 @@ const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
     onSuccessAction
 }) => {
     const { user } = useUser();
+    const leavePolicy = {
+        ...user?.employeeInfo?.actualLeavePolicy,
+        annual: user?.employeeInfo?.annualLeaveModel.totalLeave
+    };
+    const hasLFA = user?.employeeInfo?.officialBenefit?.hasLFA;
+    const lfaEligibilityDate = user?.employeeInfo?.officialBenefit?.lfaEligibilityDate != null ? moment(user?.employeeInfo?.officialBenefit?.lfaEligibilityDate).format('YYYY-MM-DD') : '';
+    const joiningDate = user?.employeeInfo?.joiningDate;
+    const annualLeaveModel = user?.employeeInfo?.annualLeaveModel;
+    const consumed = user?.employeeInfo?.leaveConsumed;
+    const configurableLeaves = user?.employeeInfo?.leavePolicy?.configurableLeaves;
+    const empStatus = user?.employmentStatus;
+
 
     const [currentState, setCurrentState] = useState<string>(selectLeaveType);
     const [remainingLeaveCount, setRemainingLeaveCount] = useState<LeaveDataItem[]>([]);
@@ -77,17 +89,117 @@ const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
     }, [selectedLeave])
 
     useEffect(() => {
-        if (user?.employeeId) {
-            getRemainingLeaveCountForAnEmployee(user?.employeeId).then((remainingLeaveCountResponse) => {
-                if (remainingLeaveCountResponse?.[0]) {
-                    setRemainingLeaveCount([...remainingLeaveCountResponse?.[0]]);
-                } else {
+        if (!user?.employeeId) return;
 
+        const fetchLeaveData = async () => {
+            try {
+                const pendingLeaveResponse = await getEmployeeAllPendingRequest(user.employeeId);
+                if (!pendingLeaveResponse?.[0]) {
+                    Toast.show({
+                        type: 'failedToast',
+                        position: 'bottom',
+                        text1: `${pendingLeaveResponse?.[1]}`,
+                    });
+                    return;
                 }
-            })
-        }
 
+                const pendingLeave = {
+                    ...pendingLeaveResponse[0],
+                    [selectedLeave?.leaveType]: pendingLeaveResponse[0][selectedLeave?.leaveType] - selectedLeave?.duration,
+                };
+
+                const remainingLeaveCountResponse = await getRemainingLeaveCountForAnEmployee(user.employeeId);
+                if (!remainingLeaveCountResponse?.[0]) {
+                    Toast.show({
+                        type: 'failedToast',
+                        position: 'bottom',
+                        text1: `${remainingLeaveCountResponse?.[1]}`,
+                    });
+                    return;
+                }
+
+                const leaveCountResponse = [
+                    ...remainingLeaveCountResponse[0],
+                    { leaveType: "special", actualLeaveCount: 0, remainingLeaveCount: 0, leaveColor: "#E0E0E0" },
+                    { leaveType: "unpaid", actualLeaveCount: 0, remainingLeaveCount: 0, leaveColor: "#E0E0E0" },
+                ];
+
+                const calculateAnnualLeave = () => {
+                    if (
+                        empStatus === "permanent" &&
+                        (!hasLFA || (hasLFA && lfaEligibilityDate > moment().format("YYYY-MM-DD"))) &&
+                        (leavePolicy?.["annual"] ?? 0) > (consumed?.["annual"] ?? 0) &&
+                        (leavePolicy?.["annual"] ?? 0) > (consumed?.["annual"] ?? 0) + pendingLeave["annual"]
+                    ) {
+                        return {
+                            leaveType: "annual",
+                            actualLeaveCount: (leavePolicy?.["annual"] ?? 0) ?? 0,
+                            remainingLeaveCount: (leavePolicy?.["annual"] ?? 0) - ((consumed?.["annual"] ?? 0) + pendingLeave["annual"]),
+                            leaveColor: '#2F80ED',
+                        };
+                    }
+                    return null;
+                };
+
+                const calculateLfaLeave = () => {
+                    if (
+                        empStatus === "permanent" &&
+                        hasLFA &&
+                        lfaEligibilityDate <= moment().format("YYYY-MM-DD") &&
+                        (leavePolicy?.["lfa"] ?? 0) > (consumed?.["lfa"] ?? 0) &&
+                        (leavePolicy?.["lfa"] ?? 0) > (consumed?.["lfa"] ?? 0) + pendingLeave["lfa"]
+                    ) {
+                        return {
+                            leaveType: "lfa",
+                            actualLeaveCount: (leavePolicy?.["lfa"] ?? 0) ?? 0,
+                            remainingLeaveCount: (leavePolicy?.["lfa"] ?? 0) - ((consumed?.["lfa"] ?? 0) + pendingLeave["lfa"]),
+                            leaveColor: '#2F80ED',
+                        };
+                    }
+                    return null;
+                };
+
+
+                const calculateFinalLeaveCount = () => {
+                    const annualLeave = calculateAnnualLeave();
+                    const lfaLeave = calculateLfaLeave();
+
+                    const otherLeaves = configurableLeaves?.map((eachLeaveType) => {
+                        const leaveTypeData = leaveCountResponse.find((leave) => leave.leaveType === eachLeaveType.leaveType);
+                        if (!leaveTypeData) return null;
+
+                        if (eachLeaveType.leaveAllocationType === "NOT_LIMITED") {
+                            return leaveTypeData;
+                        }
+
+                        const leavePolicyCount =
+                            leavePolicy?.[eachLeaveType.leaveType] ??
+                            leavePolicy?.leaveCounts?.find((leave) => leave.leaveType === eachLeaveType.leaveType)?.leaveTypeCount ??
+                            0;
+
+                        const consumedCount = consumed?.[eachLeaveType.leaveType] ?? 0;
+                        const pendingCount = pendingLeave?.[eachLeaveType.leaveType] ?? 0;
+
+                        if (leavePolicyCount > consumedCount + pendingCount) {
+                            return leaveTypeData;
+                        }
+
+                        return null;
+                    }).filter(Boolean);
+
+                    return [...otherLeaves, annualLeave, lfaLeave].filter(Boolean);
+                };
+
+                const finalRemainingLeaveCount = calculateFinalLeaveCount();
+                setRemainingLeaveCount(finalRemainingLeaveCount);
+            } catch (error) {
+                console.error('Error fetching leave data:', error);
+            }
+        };
+
+        fetchLeaveData();
     }, [user?.employeeId]);
+
 
     const handleOnClose = () => {
         switch (currentState) {
@@ -280,7 +392,7 @@ const styles = StyleSheet.create({
         padding: 16,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-        // flex: 1,
+        flex: 1,
         maxHeight: '90%', // Limit modal height to show 6 items
     },
     modalHeader: {

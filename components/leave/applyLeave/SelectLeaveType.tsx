@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { LeaveDataItem } from "../../../typeInterfaces/Leave";
 import { colors } from "../../../utils/colors";
 
@@ -28,11 +28,16 @@ const SelectLeaveType: React.FC<SelectLeaveTypeProps> = ({
                 {/* Remaining Leave Count */}
                 <View style={[styles.leaveCountContainer, { backgroundColor: item.leaveColor || "#E0E0E0" }]}>
                     <Text style={styles.leaveCountText}>
-                        {item.remainingLeaveCount % 1 === 0
-                            ? item.remainingLeaveCount
-                            : item.remainingLeaveCount.toFixed(1)}
+                        {item.remainingLeaveCount === 0
+                            ? 'N/A'
+                            : item.remainingLeaveCount % 1 === 0
+                                ? item.remainingLeaveCount
+                                : item.remainingLeaveCount.toFixed(1)
+                        }
                     </Text>
                 </View>
+
+
 
                 {/* Leave Type */}
                 <View style={styles.leaveDetails}>
@@ -46,23 +51,32 @@ const SelectLeaveType: React.FC<SelectLeaveTypeProps> = ({
     const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
     return (
-        <View style={styles.container}>
+        // <View style={styles.container}>
+        <ScrollView
+            style={{ flex: 1 }}
+            contentContainerStyle={{ flexGrow: 1 }}
+            scrollEnabled={true}
+            nestedScrollEnabled={true}
+        >
             <FlatList
+                nestedScrollEnabled={true}
+                scrollEnabled={false}
                 data={leaveData}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={renderLeaveItem}
                 showsVerticalScrollIndicator={false}
             />
-        </View>
+        </ScrollView>
+        // </View>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-    },
+    // container: {
+    //     flex: 1,
+    //     paddingHorizontal: 16,
+    //     paddingVertical: 8,
+    // },
     leaveItem: {
         flexDirection: "row",
         alignItems: "center",

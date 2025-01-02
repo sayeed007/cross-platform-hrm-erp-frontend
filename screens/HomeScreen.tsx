@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect } from 'react';
 import {
+    Platform,
     ScrollView,
     StyleSheet,
     View
@@ -62,7 +63,7 @@ const HomeScreen = () => {
                     }
 
                     {/* Pending Requests Block */}
-                    <View style={{ marginTop: canClockAttendance ? 140 : 80 }}>
+                    <View style={{ marginTop: canClockAttendance ? Platform.OS === 'web' ? 180 : 200 : 80 }}>
                         <PendingLeaveAndAttendance />
                     </View>
 

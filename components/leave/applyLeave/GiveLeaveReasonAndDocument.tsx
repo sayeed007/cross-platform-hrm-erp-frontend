@@ -103,7 +103,6 @@ const GiveReasonAndDocument: React.FC<GiveReasonAndDocumentProps> = ({
             const result = await DocumentPicker.getDocumentAsync({
                 type: ['application/pdf', 'image/jpeg', 'application/msword'],
             });
-            debugger
 
             if (!result.canceled) {
                 // Handle the image result
@@ -188,7 +187,7 @@ const GiveReasonAndDocument: React.FC<GiveReasonAndDocumentProps> = ({
                     {leaveFile &&
                         <View style={styles.fileContainer}>
                             <Entypo name="folder" size={36} color={colors.info} />
-                            <Text style={styles.fileName}>{leaveFile?.name ?? ''}</Text>
+                            <Text style={styles.fileName}>{typeof leaveFile === 'object' && 'name' in leaveFile ? leaveFile.name : ''}</Text>
                             <TouchableOpacity onPress={handleRemoveFile}>
                                 <Ionicons name="close-circle" size={24} color={colors.red} />
                             </TouchableOpacity>
