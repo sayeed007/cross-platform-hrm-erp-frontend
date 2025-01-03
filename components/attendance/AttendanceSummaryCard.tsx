@@ -4,7 +4,7 @@ import { colors } from '../../utils/colors';
 import { textStyle } from '../../utils/textStyle';
 import shadowStyles from '../../utils/shadowStyles';
 import moment from 'moment';
-import AntDesign from '@expo/vector-icons/AntDesign';
+import { GenerateAndViewIcon } from '../common/GenerateAndSHowIcon';
 
 interface SmallCard {
     name: string; // Name of the card (e.g., "Absent", "Late")
@@ -49,7 +49,10 @@ const AttendanceSummaryCard: React.FC<SummaryCardProps> = ({
                         {selectedMonthYear}
                     </Text>
 
-                    <AntDesign name={monthYearSelectionModalVisible ? "caretup" : "caretdown"} size={12} color={colors.blue} />
+                    <GenerateAndViewIcon
+                        iconName={monthYearSelectionModalVisible ? "triangleUp" : "triangleDown"}
+                        size={12}
+                    />
                 </TouchableOpacity>
             </View>
 

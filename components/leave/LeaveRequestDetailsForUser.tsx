@@ -1,5 +1,3 @@
-import Feather from '@expo/vector-icons/Feather';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
 import React from "react";
@@ -17,6 +15,7 @@ import { generateLeaveType, getLeaveStatusText, getStatusStyle } from "../../uti
 import { textStyle } from "../../utils/textStyle";
 import EmployeeAvatar from "../common/EmployeeAvatar";
 import { FileDownload } from "../common/FileDownload";
+import { GenerateAndViewIcon } from '../common/GenerateAndSHowIcon';
 
 interface LeaveRequestDetailsForUserProps {
     isVisible: boolean;
@@ -78,7 +77,10 @@ const LeaveRequestDetailsForUser: React.FC<LeaveRequestDetailsForUserProps> = ({
                         {/* Header */}
                         <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.gradientHeader}>
                             <TouchableOpacity onPress={onClose}>
-                                <Feather name="arrow-left" size={24} color="white" />
+                            <GenerateAndViewIcon
+                                    iconName="ArrowLeft"
+                                    size={24}
+                                />
                             </TouchableOpacity>
                             <Text style={styles.headerText}>Sent Leave Details</Text>
                             <Text></Text>
@@ -128,7 +130,6 @@ const LeaveRequestDetailsForUser: React.FC<LeaveRequestDetailsForUserProps> = ({
                                             style={styles.editButton}
                                             onPress={onEdit}
                                         >
-                                            <Ionicons name="create-outline" size={16} color={colors.info} />
                                             <Text style={styles.editButtonText}>Edit Request</Text>
                                         </TouchableOpacity>
                                     }
@@ -196,7 +197,10 @@ const LeaveRequestDetailsForUser: React.FC<LeaveRequestDetailsForUserProps> = ({
                                         style={[styles.button, styles.cancelButton]}
                                         onPress={onCancel}
                                     >
-                                        <Ionicons name="close" size={24} color={colors.error} />
+                                        <GenerateAndViewIcon
+                                            iconName="reject"
+                                            size={24}
+                                        />
                                         <Text style={styles.cancelButtonText}>Cancel Leave</Text>
                                     </TouchableOpacity>
                                 </View>

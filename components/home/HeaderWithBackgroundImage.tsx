@@ -1,4 +1,3 @@
-import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
@@ -10,6 +9,7 @@ import { RootStackParamList } from '../../typeInterfaces/navigationTypes'
 import { colors } from '../../utils/colors'
 import { getGreeting } from '../../utils/getGreeting'
 import { textStyle } from '../../utils/textStyle'
+import { GenerateAndViewIcon } from '../common/GenerateAndSHowIcon'
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -57,7 +57,10 @@ const HeaderWithBackgroundImage: React.FC<HeaderWithBackgroundImageProps> = ({
 
                     <View style={styles.userImageWithNav}>
                         <TouchableOpacity style={styles.notificationIcon} onPress={handleNotificationPress}>
-                            <Ionicons name="notifications-outline" size={28} color={colors?.white} />
+                            <GenerateAndViewIcon
+                                iconName="Bell"
+                                size={24}
+                            />
                             {(unreadCount > 0) && <View style={styles.redDot} />}
                         </TouchableOpacity>
                     </View>

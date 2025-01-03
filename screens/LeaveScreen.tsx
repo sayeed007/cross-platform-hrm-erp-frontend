@@ -9,7 +9,6 @@ import moment from 'moment';
 import SelectMonthYearModal from '../components/attendance/SelectMonthYearModal';
 import YearSelectorModal from '../components/leave/YearSelectorModal';
 import { textStyle } from '../utils/textStyle';
-import AntDesign from '@expo/vector-icons/AntDesign';
 import { deleteIndividualLeaveRequest, getAllLeaveRequestOfAnEmployee } from '../apis/Leave';
 import { EmptyItems } from '../components/common/EmptyItems';
 import { LeaveApprovalRequest } from '../typeInterfaces/LeaveApprovalRequest';
@@ -23,6 +22,7 @@ import { useNavigation } from '@react-navigation/native';
 import { HomeScreenNavigationProp } from '../typeInterfaces/navigationTypes';
 import ApplyLeaveModal from '../components/leave/applyLeave/ApplyLeaveModal';
 import SuccessModal from '../components/modals/SuccessModal';
+import { GenerateAndViewIcon } from '../components/common/GenerateAndSHowIcon';
 
 
 const leaveStatus = [
@@ -280,7 +280,10 @@ const LeaveScreen = () => {
                         >
                             <Text style={styles.filterText}>{selectedFilter}</Text>
 
-                            <AntDesign name={leaveFilterModalVisible ? "caretup" : "caretdown"} size={12} color={colors.info} />
+                            <GenerateAndViewIcon
+                                iconName={monthYearSelectionModalVisible ? "triangleUp" : "triangleDown"}
+                                size={12}
+                            />
                         </TouchableOpacity>
                     </View>
 

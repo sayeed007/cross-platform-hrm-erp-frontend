@@ -1,4 +1,3 @@
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useRef, useState } from 'react';
@@ -21,6 +20,7 @@ import { markAllNotificationAsRead } from '../apis/HomeScreen';
 import { colors } from '../utils/colors';
 import { EmptyItems } from '../components/common/EmptyItems';
 import { textStyle } from '../utils/textStyle';
+import { GenerateAndViewIcon } from '../components/common/GenerateAndSHowIcon';
 
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeRoot'>;
@@ -80,7 +80,10 @@ const NotificationScreen = () => {
                 {/* Header */}
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <Ionicons name="arrow-back" size={24} color={colors?.black} />
+                        <GenerateAndViewIcon
+                            iconName="ArrowLeftBlack"
+                            size={24}
+                        />
                     </TouchableOpacity>
                     <Text style={styles.headerTitle}>Notification</Text>
                     <Text></Text>
@@ -94,7 +97,11 @@ const NotificationScreen = () => {
                     </View>
 
                     <TouchableOpacity onPress={toggleDropdown} ref={dropdownRef}>
-                        <MaterialCommunityIcons name="dots-horizontal" size={24} color={colors?.black} />
+                        <GenerateAndViewIcon
+                            iconName="DotsThreeOutline"
+                            size={24}
+                        />
+                        
                     </TouchableOpacity>
                 </View>
 
@@ -102,12 +109,18 @@ const NotificationScreen = () => {
                 {dropdownVisible && (
                     <View style={styles.dropdown}>
                         <TouchableOpacity style={styles.dropdownItem} onPress={markAllRead}>
-                            <MaterialCommunityIcons name="check" size={20} color={colors?.black} />
+                        <GenerateAndViewIcon
+                            iconName="Check"
+                            size={20}
+                        />
                             <Text style={styles.dropdownText}>Mark all reads</Text>
                         </TouchableOpacity>
 
                         {/* <TouchableOpacity style={styles.dropdownItem} onPress={clearAll}>
-                            <MaterialCommunityIcons name="trash-can-outline" size={20} color={colors?.error} />
+                            <GenerateAndViewIcon
+                                iconName="TrashSimple"
+                                size={20}
+                            />
                             <Text style={[styles.dropdownText, { color: {colors?.error} }]}>Clear all</Text>
                         </TouchableOpacity> */}
                     </View>

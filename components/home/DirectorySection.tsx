@@ -13,7 +13,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'; // For loc
 import { getEmployeeContactDetails } from '../../apis/HomeScreen';
 import { colors } from '../../utils/colors';
 import { textStyle } from '../../utils/textStyle';
-import Feather from '@expo/vector-icons/Feather';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../typeInterfaces/navigationTypes';
 import { useUser } from '../../context/UserContext';
@@ -21,6 +20,7 @@ import { Avatar } from 'react-native-elements';
 import { BASE_URL } from '../../Server';
 import { EmptyItemsInPage } from '../common/EmptyItemsInPage';
 import EmployeeAvatar from '../common/EmployeeAvatar';
+import { GenerateAndViewIcon } from '../common/GenerateAndSHowIcon';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -106,7 +106,10 @@ const DirectorySection = () => {
                 {allEmployeeOptions?.length > 0 &&
                     <TouchableOpacity onPress={handleSeeAllPress} style={styles.seeAll}>
                         <Text style={styles.seeAllText}>See All</Text>
-                        <Feather name="arrow-up-right" size={14} color={colors?.info} />
+                        <GenerateAndViewIcon
+                            iconName="ArrowUpRight"
+                            size={14}
+                        />
                     </TouchableOpacity>
                 }
             </View>

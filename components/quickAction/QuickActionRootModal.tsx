@@ -8,8 +8,8 @@ import {
 } from 'react-native';
 import { colors } from '../../utils/colors';
 import { textStyle } from '../../utils/textStyle';
-import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/Feather';
+import { GenerateAndViewIcon } from '../common/GenerateAndSHowIcon';
 
 interface QuickActionRootModalProps {
     isVisible: boolean;
@@ -58,7 +58,10 @@ const QuickActionRootModal: React.FC<QuickActionRootModalProps> = ({
 
                     </View>
                     <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                        <Ionicons name="close" size={24} color={colors?.black} />
+                        <GenerateAndViewIcon
+                            iconName="X"
+                            size={24}
+                        />
                     </TouchableOpacity>
                 </View>
 

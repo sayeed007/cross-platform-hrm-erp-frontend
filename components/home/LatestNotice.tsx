@@ -9,7 +9,6 @@ import {
     View,
     ScrollView,
 } from 'react-native';
-import Feather from '@expo/vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
@@ -22,6 +21,7 @@ import { RootStackParamList } from '../../typeInterfaces/navigationTypes';
 import LatestNoticeCard from './LatestNoticeCard';
 import { Notice, NoticeWithMonth } from '../../typeInterfaces/Notice';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { GenerateAndViewIcon } from '../common/GenerateAndSHowIcon';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -138,7 +138,10 @@ const LatestNotice = () => {
                 {noticeList?.length > 0 &&
                     <TouchableOpacity onPress={handleSeeAllPress} style={styles.seeAll}>
                         <Text style={styles.seeAllText}>See All</Text>
-                        <Feather name="arrow-up-right" size={14} color={colors?.info} />
+                        <GenerateAndViewIcon
+                            iconName="ArrowUpRight"
+                            size={14}
+                        />
                     </TouchableOpacity>
                 }
             </View>

@@ -15,7 +15,6 @@ import {
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { AllTransportRoute, updateEmployeeName, updateProfilePicture } from '../apis/Profile';
 import EmployeeAvatar from '../components/common/EmployeeAvatar';
 import EducationList from '../components/profile/EducationList';
@@ -38,6 +37,7 @@ import ProfileImageModal from '../components/profile/ProfileImageModal';
 import Toast from 'react-native-toast-message';
 import EditNameModal from '../components/profile/EditNameModal';
 import { setTabBarVisibility } from '../utils/navigationUtils';
+import { GenerateAndViewIcon } from '../components/common/GenerateAndSHowIcon';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeRoot'>;
 interface ImagePickerAsset {
@@ -516,7 +516,10 @@ const ProfileScreen = () => {
 
                     <View style={styles.navBar}>
                         <TouchableOpacity onPress={() => navigation.goBack()}>
-                            <Icon name="arrow-left" size={24} color={colors?.white} />
+                            <GenerateAndViewIcon
+                                iconName="ArrowLeft"
+                                size={24}
+                            />
                         </TouchableOpacity>
                         <Text style={styles.navTitle}>Profile</Text>
                         <Text></Text>
@@ -550,7 +553,10 @@ const ProfileScreen = () => {
 
                         {/* EDIT ICON */}
                         <TouchableOpacity onPress={() => setEditingNameModal(true)} >
-                            <FontAwesome name="pencil" size={16} color={colors.white} />
+                            <GenerateAndViewIcon
+                                iconName="PencilSimple"
+                                size={16}
+                            />
                         </TouchableOpacity>
                     </View>
 

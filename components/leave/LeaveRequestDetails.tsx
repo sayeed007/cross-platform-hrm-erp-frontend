@@ -1,5 +1,3 @@
-import Feather from '@expo/vector-icons/Feather';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
 import React from "react";
@@ -17,6 +15,7 @@ import { generateLeaveType } from "../../utils/leaveUtils";
 import { textStyle } from "../../utils/textStyle";
 import EmployeeAvatar from "../common/EmployeeAvatar";
 import { FileDownload } from "../common/FileDownload";
+import { GenerateAndViewIcon } from '../common/GenerateAndSHowIcon';
 
 interface LeaveRequestDetailsProps {
     isVisible: boolean;
@@ -68,7 +67,10 @@ const LeaveRequestDetails: React.FC<LeaveRequestDetailsProps> = ({
                         {/* Header */}
                         <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.gradientHeader}>
                             <TouchableOpacity onPress={onClose}>
-                                <Feather name="arrow-left" size={24} color="white" />
+                                <GenerateAndViewIcon
+                                    iconName="ArrowLeft"
+                                    size={24}
+                                />
                             </TouchableOpacity>
                             <Text style={styles.headerText}>Leave Request Approval</Text>
                             <Text></Text>
@@ -146,14 +148,20 @@ const LeaveRequestDetails: React.FC<LeaveRequestDetailsProps> = ({
                                     style={[styles.button, styles.rejectButton]}
                                     onPress={onReject}
                                 >
-                                    <Ionicons name="close" size={24} color={colors.error} />
+                                    <GenerateAndViewIcon
+                                            iconName="reject"
+                                            size={24}
+                                        />
                                     <Text style={styles.rejectButtonText}>Reject</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={[styles.button, styles.approveButton]}
                                     onPress={onApprove}
                                 >
-                                    <Ionicons name="checkmark" size={24} color={colors.white} />
+                                    <GenerateAndViewIcon
+                                            iconName="approve"
+                                            size={24}
+                                        />
                                     <Text style={styles.approveButtonText}>Approve</Text>
                                 </TouchableOpacity>
                             </View>

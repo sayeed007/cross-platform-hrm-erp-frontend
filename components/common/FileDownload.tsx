@@ -1,4 +1,3 @@
-import { FontAwesome } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
 import React from "react";
 import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -7,6 +6,7 @@ import { BASE_URL } from "../../Server";
 import { colors } from "../../utils/colors";
 import { getFileIcon } from "../../utils/fileTypeIcons";
 import { textStyle } from "../../utils/textStyle";
+import { GenerateAndViewIcon } from "./GenerateAndSHowIcon";
 
 
 const downloadFile = async (attachmentPath: string, fileName: string) => {
@@ -87,10 +87,9 @@ export const FileDownload = ({ attachmentPath }: { attachmentPath?: string }) =>
                     style={styles.documentContainer}
                     onPress={() => downloadFile(attachmentPath, attachmentPath.split("/").pop() || "document")}
                 >
-                    <FontAwesome
-                        name={getFileIcon(attachmentPath)}
+                    <GenerateAndViewIcon
+                        iconName="PDF"
                         size={16}
-                        color={colors.info}
                     />
                     <Text style={styles.documentText}>{attachmentPath}</Text>
                 </TouchableOpacity>

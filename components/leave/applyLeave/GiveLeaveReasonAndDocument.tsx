@@ -7,11 +7,10 @@ import { colors } from '../../../utils/colors';
 import { textStyle } from '../../../utils/textStyle';
 import { useUser } from '../../../context/UserContext';
 import * as DocumentPicker from 'expo-document-picker';
-import Entypo from '@expo/vector-icons/Entypo';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import shadowStyles from '../../../utils/shadowStyles';
 import { capitalizeFirstLetter } from '../../../utils/capitalizeFirstLetter';
 import LeaveSummary from './LeaveSummary';
+import { GenerateAndViewIcon } from '../../common/GenerateAndSHowIcon';
 
 
 interface GiveReasonAndDocumentProps {
@@ -176,7 +175,10 @@ const GiveReasonAndDocument: React.FC<GiveReasonAndDocumentProps> = ({
                         style={styles.uploadBox}
                         onPress={handleDocumentSelection}
                     >
-                        <Entypo name="folder" size={36} color={colors.info} />
+                        <GenerateAndViewIcon
+                                iconName="FolderNotchOpen"
+                                size={36}
+                            />
                         <Text style={styles.uploadText}>Click here to upload file</Text>
                         <Text style={styles.supportedText}>
                             Supported files are JPEG, DOC, PDF
@@ -186,10 +188,16 @@ const GiveReasonAndDocument: React.FC<GiveReasonAndDocumentProps> = ({
                     {/* Show selected document */}
                     {leaveFile &&
                         <View style={styles.fileContainer}>
-                            <Entypo name="folder" size={36} color={colors.info} />
+                            <GenerateAndViewIcon
+                                iconName="FolderNotchOpen"
+                                size={36}
+                            />
                             <Text style={styles.fileName}>{typeof leaveFile === 'object' && 'name' in leaveFile ? leaveFile.name : ''}</Text>
                             <TouchableOpacity onPress={handleRemoveFile}>
-                                <Ionicons name="close-circle" size={24} color={colors.red} />
+                                <GenerateAndViewIcon
+                                    iconName="reject"
+                                    size={24}
+                                />
                             </TouchableOpacity>
                         </View>
                     }

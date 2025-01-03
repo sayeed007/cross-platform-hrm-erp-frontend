@@ -8,13 +8,13 @@ import {
     Dimensions,
     Platform,
 } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import { colors } from "../../utils/colors";
 import { textStyle } from "../../utils/textStyle";
 import { useUser } from "../../context/UserContext";
 import { getActualAndRemainingLeaveCount } from "../../apis/Leave";
 import { capitalizeFirstLetter } from "../../utils/capitalizeFirstLetter";
 import { hexToRgba } from "../../utils/hexToRgba";
+import { GenerateAndViewIcon } from "../common/GenerateAndSHowIcon";
 
 const { width } = Dimensions.get("window");
 
@@ -79,10 +79,9 @@ const LeaveSummaryCard: React.FC<SummaryCardProps> = ({
                     style={styles.monthYearSelectionButton}
                 >
                     <Text style={styles.monthYearText}>{selectedYear}</Text>
-                    <AntDesign
-                        name={monthYearSelectionModalVisible ? "caretup" : "caretdown"}
+                    <GenerateAndViewIcon
+                        iconName={monthYearSelectionModalVisible ? "triangleUp" : "triangleDown"}
                         size={12}
-                        color={colors.blue}
                     />
                 </TouchableOpacity>
             </View>

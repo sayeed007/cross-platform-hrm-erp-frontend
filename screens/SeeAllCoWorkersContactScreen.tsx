@@ -21,6 +21,7 @@ import { textStyle } from '../utils/textStyle';
 import { Avatar } from 'react-native-elements';
 import { BASE_URL } from '../Server';
 import EmployeeAvatar from '../components/common/EmployeeAvatar';
+import { GenerateAndViewIcon } from '../components/common/GenerateAndSHowIcon';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeRoot'>;
 
@@ -76,7 +77,10 @@ const SeeAllCoWorkersContactScreen: React.FC<SeeAllCoWorkersContactScreenProps> 
                 <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.header}>
                     <View style={styles.navBar}>
                         <TouchableOpacity onPress={() => navigation.navigate('HomeRoot')}>
-                            <Icon name="arrow-left" size={24} color={colors?.white} />
+                            <GenerateAndViewIcon
+                                iconName="ArrowLeft"
+                                size={24}
+                            />
                         </TouchableOpacity>
                         <Text style={styles.navTitle}>Directory</Text>
                         <Text></Text>

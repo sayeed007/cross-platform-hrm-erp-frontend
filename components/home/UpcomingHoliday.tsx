@@ -1,5 +1,4 @@
 
-import Feather from '@expo/vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import moment from 'moment';
@@ -20,6 +19,7 @@ import HolidayCard from './HolidayCard';
 import { colors } from '../../utils/colors';
 import { textStyle } from '../../utils/textStyle';
 import { EmptyItemsInPage } from '../common/EmptyItemsInPage';
+import { GenerateAndViewIcon } from '../common/GenerateAndSHowIcon';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -136,7 +136,10 @@ const UpcomingHoliday = () => {
                 {holidayList?.length > 0 && (
                     <TouchableOpacity onPress={handleSeeAllPress} style={styles.seeAll}>
                         <Text style={styles.seeAllText}>See All</Text>
-                        <Feather name="arrow-up-right" size={14} color={colors?.info} />
+                        <GenerateAndViewIcon
+                            iconName="ArrowUpRight"
+                            size={14}
+                        />
                     </TouchableOpacity>
                 )}
             </View>

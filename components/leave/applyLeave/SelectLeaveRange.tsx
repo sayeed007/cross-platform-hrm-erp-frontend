@@ -3,15 +3,13 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Modal, Pressable 
 import { CalendarList } from "react-native-calendars";
 import { colors } from "../../../utils/colors";
 import { textStyle } from "../../../utils/textStyle";
-import Entypo from '@expo/vector-icons/Entypo';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import moment from "moment";
 import { LinearGradient } from "expo-linear-gradient";
 import { getIsLFAEncashableOrNot, getLeaveDaysBasedOnSelectedCriteria } from "../../../apis/Leave";
 import { useUser } from "../../../context/UserContext";
-import { Ionicons } from "@expo/vector-icons";
 import { LeavePeriod } from "./ApplyLeaveModal";
 import LeaveSummary from "./LeaveSummary";
+import { GenerateAndViewIcon } from "../../common/GenerateAndSHowIcon";
 
 
 interface SelectLeaveRangeProps {
@@ -218,10 +216,9 @@ const SelectLeaveRange: React.FC<SelectLeaveRangeProps> = ({
                     style={styles.optionContainer}
                     onPress={() => setLeavePeriod(leavePeriod === 'HALF_DAY' ? 'oneDay' : 'HALF_DAY')}
                 >
-                    <Ionicons
-                        name={leavePeriod === 'HALF_DAY' ? "checkbox" : "square-outline"}
-                        size={20}
-                        color={colors.gray2}
+                    <GenerateAndViewIcon
+                        iconName={leavePeriod === 'HALF_DAY' ? "CheckBox" : "CheckBox-checked"}
+                        size={24}
                     />
                     <Text style={styles.optionText}>Want to apply Half day</Text>
                 </TouchableOpacity>
@@ -234,10 +231,9 @@ const SelectLeaveRange: React.FC<SelectLeaveRangeProps> = ({
                     style={styles.optionContainer}
                     onPress={() => setLfaEncashment(!isLfaEncashment)}
                 >
-                    <Ionicons
-                        name={isLfaEncashment ? "checkbox" : "square-outline"}
-                        size={20}
-                        color={colors.gray2}
+                    <GenerateAndViewIcon
+                        iconName={isLfaEncashment ? "CheckBox" : "CheckBox-checked"}
+                        size={24}
                     />
                     <Text style={styles.optionText}>
                         Want to encash with these leave (You can apply LFA encashment for one time)

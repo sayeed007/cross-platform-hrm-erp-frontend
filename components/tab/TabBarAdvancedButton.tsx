@@ -1,11 +1,10 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { FontAwesome as Icon } from '@expo/vector-icons';
 import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
 import { TabBg } from '../../svg/TabBg';
 import { colors } from '../../utils/colors';
-import Feather from '@expo/vector-icons/Feather';
 import { textStyle } from '../../utils/textStyle';
+import { GenerateAndViewIcon } from '../common/GenerateAndSHowIcon';
 
 
 type Props = BottomTabBarButtonProps;
@@ -22,7 +21,10 @@ export const TabBarAdvancedButton: React.FC<Props> = ({ ...props }) => (
                 style={styles.button}
                 onPress={props.onPress}
             >
-                <Feather name="plus" size={24} color="white" />
+                <GenerateAndViewIcon
+                    iconName="Plus"
+                    size={24}
+                />
             </TouchableOpacity>
         </View>
 

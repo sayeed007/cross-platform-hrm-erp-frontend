@@ -1,4 +1,3 @@
-import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -27,6 +26,7 @@ import { RootStackParamList } from '../typeInterfaces/navigationTypes';
 import { colors } from '../utils/colors';
 import { setTabBarVisibility } from '../utils/navigationUtils';
 import { textStyle } from '../utils/textStyle';
+import { GenerateAndViewIcon } from '../components/common/GenerateAndSHowIcon';
 
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeRoot'>;
@@ -299,8 +299,10 @@ export const AttendanceRequestApprovalScreen = () => {
                         style={styles.filterButton}
                     >
                         <Text style={styles.filterText}>{selectedFilter}</Text>
-
-                        <AntDesign name={attendanceRequestFilterModalVisible ? "caretup" : "caretdown"} size={12} color={colors.info} />
+                        <GenerateAndViewIcon
+                            iconName={attendanceRequestFilterModalVisible ? "triangleUp" : "triangleDown"}
+                            size={12}
+                        />
                     </TouchableOpacity>
                 </View>
 

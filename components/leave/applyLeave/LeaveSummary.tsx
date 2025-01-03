@@ -2,10 +2,9 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Modal, Pressable } from "react-native";
 import { colors } from "../../../utils/colors";
 import { textStyle } from "../../../utils/textStyle";
-import { Ionicons } from "@expo/vector-icons";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import moment from "moment";
 import { calculateCalenderDays } from "../../../utils/leaveUtils";
+import { GenerateAndViewIcon } from "../../common/GenerateAndSHowIcon";
 
 interface LeaveSummaryProps {
     startDate: string;
@@ -41,10 +40,9 @@ const LeaveSummary: React.FC<LeaveSummaryProps> = ({
                             style={styles.infoContainer}
                             onPress={() => setTooltipVisible(true)}
                         >
-                            <Ionicons
-                                name="information-circle-outline"
+                            <GenerateAndViewIcon
+                                iconName="info"
                                 size={16}
-                                color={colors.info}
                             />
                         </TouchableOpacity>
 
@@ -67,8 +65,10 @@ const LeaveSummary: React.FC<LeaveSummaryProps> = ({
                 </View>
 
                 {/* Arrow Icon */}
-                <FontAwesome name="long-arrow-right" size={36} color="black" />
-
+                <GenerateAndViewIcon
+                    iconName="longArrowRight"
+                    size={36}
+                />
                 <View style={styles.dateItem}>
                     <Text style={styles.dateLabel}>Until</Text>
                     <Text style={styles.dateValue}>{moment(endDate).format('ddd, MMM DD') || "-"}</Text>

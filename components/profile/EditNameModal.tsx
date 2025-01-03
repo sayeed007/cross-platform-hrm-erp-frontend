@@ -8,11 +8,10 @@ import {
     TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import AntDesign from '@expo/vector-icons/AntDesign';
 import { colors } from '../../utils/colors';
 import { textStyle } from '../../utils/textStyle';
-import shadowStyles from '../../utils/shadowStyles';
 import { LinearGradient } from 'expo-linear-gradient';
+import { GenerateAndViewIcon } from '../common/GenerateAndSHowIcon';
 
 interface EditNameModalProps {
     isVisible: boolean;
@@ -53,7 +52,10 @@ const EditNameModal: React.FC<EditNameModalProps> = ({
                         {/* Header */}
                         <View style={styles.modalHeader}>
                             <TouchableOpacity onPress={onClose}>
-                                <Icon name="arrow-left" size={24} color={colors.gray1} />
+                            <GenerateAndViewIcon
+                                iconName="ArrowLeftGray"
+                                size={24}
+                            />
                             </TouchableOpacity>
                             <Text style={styles.headerTitle}>Edit Name</Text>
                             <View />
@@ -61,7 +63,11 @@ const EditNameModal: React.FC<EditNameModalProps> = ({
 
                         {/* Warning Section */}
                         <View style={styles.warningContainer}>
-                            <AntDesign name="warning" size={24} color={colors.red} />
+                            <GenerateAndViewIcon
+                                iconName="WarningRed"
+                                size={24}
+                            />
+                            
                             <Text style={styles.warningText}>
                                 This name change will affect everywhere throughout the system.
                             </Text>

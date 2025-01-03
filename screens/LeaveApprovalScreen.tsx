@@ -21,7 +21,6 @@ import { LeaveApprovalRequest } from '../typeInterfaces/LeaveApprovalRequest';
 import { approveSubordinateLeaveRequest, getAllAcceptedRejectedLeaveRequestForEmployee, getAllPendingLeaveRequestForEmployee, rejectSubordinateLeaveRequest } from '../apis/Leave';
 import { useUser } from '../context/UserContext';
 import moment from 'moment';
-import AntDesign from '@expo/vector-icons/AntDesign';
 import FullPageLoader from '../components/modals/FullPageLoader';
 import RejectModal from '../components/modals/RejectModal';
 import ApproveModal from '../components/modals/ApproveModal';
@@ -29,6 +28,7 @@ import Toast from 'react-native-toast-message';
 import LeaveRequestDetails from '../components/leave/LeaveRequestDetails';
 import { EmptyItems } from '../components/common/EmptyItems';
 import RequestStatusFIlterModal from '../components/modals/RequestStatusFIlterModal';
+import { GenerateAndViewIcon } from '../components/common/GenerateAndSHowIcon';
 
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeRoot'>;
@@ -288,8 +288,10 @@ export const LeaveApprovalScreen = () => {
                         style={styles.filterButton}
                     >
                         <Text style={styles.filterText}>{selectedFilter}</Text>
-
-                        <AntDesign name={leaveFilterModalVisible ? "caretup" : "caretdown"} size={12} color={colors.info} />
+                        <GenerateAndViewIcon
+                        iconName={leaveFilterModalVisible ? "triangleUp" : "triangleDown"}
+                        size={12}
+                    />
                     </TouchableOpacity>
                 </View>
 

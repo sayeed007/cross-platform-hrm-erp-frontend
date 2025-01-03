@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import Icon from 'react-native-vector-icons/Feather';
 import LatestNoticeCard from '../components/home/LatestNoticeCard';
 import { NoticeScreenProps, RootStackParamList } from '../typeInterfaces/navigationTypes';
 import { NoticeWithMonth } from '../typeInterfaces/Notice';
@@ -11,6 +10,7 @@ import { throttle } from 'lodash';
 import { setTabBarVisibility } from '../utils/navigationUtils';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
+import { GenerateAndViewIcon } from '../components/common/GenerateAndSHowIcon';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const fullMonthNames = [
@@ -100,8 +100,11 @@ const NoticeScreen: React.FC<NoticeScreenProps> = ({ route }) => {
             <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.header}>
                 <View style={styles.navBar}>
                     <TouchableOpacity onPress={() => navigation.navigate('HomeRoot')}>
-                        <Icon name="arrow-left" size={24} color={colors?.white} />
-                    </TouchableOpacity>
+                        <GenerateAndViewIcon
+                            iconName="ArrowLeft"
+                            size={24}
+                        />
+                       </TouchableOpacity>
                     <Text style={styles.navTitle}>Notice</Text>
                     <View />
                 </View>

@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons'; // Icon library for the warning icon
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'; 
 import { colors } from '../../utils/colors';
 import shadowStyles from '../../utils/shadowStyles';
 import { textStyle } from '../../utils/textStyle';
+import { GenerateAndViewIcon } from '../common/GenerateAndSHowIcon';
 
 interface AbsentNotificationProps {
     onLinkPress: () => void; // Function with no parameters and no return value
@@ -12,11 +12,9 @@ interface AbsentNotificationProps {
 const AbsentNotification: React.FC<AbsentNotificationProps> = ({ onLinkPress }) => {
     return (
         <View style={styles.container}>
-            <MaterialIcons
-                // name="error-outline"
-                name="warning"
+            <GenerateAndViewIcon
+                iconName="Warning"
                 size={24}
-                color={colors?.orange}
                 style={styles.icon}
             />
             <View style={styles.textContainer}>
