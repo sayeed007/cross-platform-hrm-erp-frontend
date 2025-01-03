@@ -1,23 +1,17 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
+    Image,
     SectionList,
     StyleSheet,
     Text,
     TouchableOpacity,
-    View,
-    Image,
-    Platform,
-    ScrollView,
+    View
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { useUser } from "../../context/UserContext";
+import { HomeScreenNavigationProp } from "../../typeInterfaces/navigationTypes";
 import { colors } from "../../utils/colors";
 import { textStyle } from "../../utils/textStyle";
-import { useNavigation } from "@react-navigation/native";
-import { HomeScreenNavigationProp } from "../../typeInterfaces/navigationTypes";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useUser } from "../../context/UserContext";
-import { Calendar } from "react-native-calendars";
-import { getIcon } from "../../utils/generateIcon";
 import { GenerateAndViewIcon } from "../common/GenerateAndSHowIcon";
 
 
@@ -59,12 +53,6 @@ const MenuList = () => {
         <TouchableOpacity style={styles.menuItem}
             onPress={() => item.action()}
         >
-            {/* <Ionicons
-                name={item.icon as keyof typeof Ionicons.glyphMap}
-                size={24}
-                color={colors.brand}
-                style={styles.menuIcon}
-            /> */}
             <GenerateAndViewIcon
                 iconName={item.icon}
                 size={24}

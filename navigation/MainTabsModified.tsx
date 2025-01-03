@@ -1,10 +1,10 @@
-import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationProp, useNavigation, useNavigationState, useRoute } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import * as Notifications from "expo-notifications";
 import React, { useEffect, useState } from 'react';
 import { Modal, Platform, StyleSheet, Text, View } from 'react-native';
 import ApplyAttendanceModal from '../components/attendance/applyAttendance/ApplyAttendanceModal';
+import { GenerateAndViewIcon } from '../components/common/GenerateAndSHowIcon';
 import { SingleNotification } from '../components/home/SingleNotification';
 import ApplyLeaveModal from '../components/leave/applyLeave/ApplyLeaveModal';
 import SuccessModal from '../components/modals/SuccessModal';
@@ -15,10 +15,10 @@ import AttendanceStack from '../Stack/AttendanceStack';
 import HomeStack from '../Stack/HomeStack';
 import LeaveStack from '../Stack/LeaveStack';
 import MenuStack from '../Stack/MenuStack';
+import { RootStackParamList } from '../typeInterfaces/navigationTypes';
 import { defaultNotification } from '../typeInterfaces/Notification';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
-import { RootStackParamList } from '../typeInterfaces/navigationTypes';
 
 
 const BottomBar = createBottomTabNavigator();
@@ -26,19 +26,13 @@ const BottomBar = createBottomTabNavigator();
 // Extract the screenOptions logic
 const getScreenOptions = ({ route }: { route: any }) => ({
     tabBarIcon: ({ focused }: { focused: boolean }) => {
-        let iconName: keyof typeof Ionicons.glyphMap | undefined;
-
-        if (route.name === 'Home') iconName = 'home';
-        else if (route.name === 'Attendance') iconName = 'calendar';
-        else if (route.name === 'Leave') iconName = 'log-out';
-        else if (route.name === 'Menu') iconName = 'menu';
-
         return (
-            <Ionicons
-                name={iconName}
-                size={24}
-                color={focused ? colors?.spinner : colors?.bottomNav}
-            />
+            <>
+                <GenerateAndViewIcon
+                    iconName={ focused ? `${route.name}-Focused`:`${route.name}`}
+                    size={24}
+                />
+            </>
         );
     },
     tabBarLabel: ({ focused }: { focused: boolean }) => (

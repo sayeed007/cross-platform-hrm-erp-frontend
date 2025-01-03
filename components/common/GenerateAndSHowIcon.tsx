@@ -4,7 +4,7 @@ import { getIcon } from "../../utils/generateIcon";
 interface GenerateAndViewIconProps {
     iconName: string;
     size: number; // Use `number` for dimensions in React Native
-    style: any
+    style?: any
 };
 
 export const GenerateAndViewIcon = ({ iconName, size, style }: GenerateAndViewIconProps) => {
