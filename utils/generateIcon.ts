@@ -25,6 +25,7 @@ export const getIcon = (iconName: string): any => {
         "reject": require("../assets/icons/reject.png"),
         "approve": require("../assets/icons/approve.png"),
         "ArrowLeft": require("../assets/icons/ArrowLeft.png"),
+        "ArrowRight": require("../assets/icons/ArrowRight.png"),
         "ArrowLeftGray": require("../assets/icons/ArrowLeftGray.png"),
         "ArrowLeftBlack": require("../assets/icons/ArrowLeftBlack.png"),
         "triangleDown": require("../assets/icons/triangleDown.png"),
@@ -43,8 +44,15 @@ export const getIcon = (iconName: string): any => {
         "PencilSimple": require("../assets/icons/PencilSimple.png"),
         "Plus": require("../assets/icons/Plus.png"),
         "X": require("../assets/icons/X.png"),
+        "X-white": require("../assets/icons/X-white.png"),
         "CheckBox": require("../assets/icons/CheckBox.png"),
         "CheckBox-checked": require("../assets/icons/CheckBox-checked.png"),
+        "mail": require("../assets/icons/mail.png"),
+        "lock": require("../assets/icons/lock.png"),
+        "visibility-off": require("../assets/icons/visibility-off.png"),
+        "visibility": require("../assets/icons/visibility.png"),
+        "checked-circle": require("../assets/icons/checked-circle.png"),
+        "cancel": require("../assets/icons/mark.png"),
     };
 
     return iconMap[iconName] || null; // Return the mapped icon or null if not found

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { useFormik } from 'formik';
@@ -13,6 +12,7 @@ import { useErrorModal } from '../context/ErrorModalProvider';
 import FullPageLoader from '../components/modals/FullPageLoader';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
+import { GenerateAndViewIcon } from '../components/common/GenerateAndSHowIcon';
 
 const ForgotPasswordScreen: React.FC = () => {
     const navigation = useNavigation<ForgotPasswordScreenNavigationProp>();
@@ -59,7 +59,10 @@ const ForgotPasswordScreen: React.FC = () => {
             <View style={styles.container}>
                 <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.header}>
                     <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                        <MaterialIcons name="arrow-back" size={24} color={colors?.white} />
+                        <GenerateAndViewIcon
+                            iconName="ArrowLeft"
+                            size={24}
+                        />
                     </TouchableOpacity>
                 </LinearGradient>
                 <View style={styles.content}>
@@ -70,7 +73,10 @@ const ForgotPasswordScreen: React.FC = () => {
                         Please enter your email address to request a password reset.
                     </Text>
                     <View style={styles.inputContainer}>
-                        <MaterialIcons name="email" size={24} color={colors?.black} style={styles.icon} />
+                        <GenerateAndViewIcon
+                            iconName="mail"
+                            size={24}
+                        />
                         <TextInput
                             style={styles.input}
                             placeholder="Enter your email"

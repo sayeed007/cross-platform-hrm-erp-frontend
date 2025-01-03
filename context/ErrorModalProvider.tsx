@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useRef } from 'react';
 import { Modal, View, Text, StyleSheet } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '../utils/colors';
 import shadowStyles from '../utils/shadowStyles';
 import { textStyle } from '../utils/textStyle';
+import { GenerateAndViewIcon } from '../components/common/GenerateAndSHowIcon';
 
 interface ErrorModalContextType {
     showError: (message: string, onClose?: () => void, delay?: number) => void;
@@ -48,7 +48,10 @@ export const ErrorModalProvider: React.FC<{ children: React.ReactNode }> = ({ ch
                 <Modal animationType="fade" transparent visible={isVisible}>
                     <View style={styles.overlay}>
                         <View style={styles.modalContainer}>
-                            <MaterialIcons name="error" size={64} color={colors?.error} />
+                            <GenerateAndViewIcon
+                                iconName="cancel"
+                                size={64}
+                            />
                             <Text style={styles.message}>{message}</Text>
                         </View>
                     </View>

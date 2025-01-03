@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useRef } from 'react';
 import { Modal, View, Text, StyleSheet } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
+import { GenerateAndViewIcon } from '../components/common/GenerateAndSHowIcon';
 
 interface SuccessModalContextType {
     showSuccess: (message: string, onClose?: () => void, delay?: number) => void;
@@ -47,7 +47,10 @@ export const SuccessModalProvider: React.FC<{ children: React.ReactNode }> = ({ 
                 <Modal animationType="fade" transparent visible={isVisible}>
                     <View style={styles.overlay}>
                         <View style={styles.modalContainer}>
-                            <MaterialIcons name="check-circle" size={64} color={colors?.success} />
+                            <GenerateAndViewIcon
+                                iconName="checked-circle"
+                                size={64}
+                            />
                             <Text style={styles.message}>{message}</Text>
                         </View>
                     </View>

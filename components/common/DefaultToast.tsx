@@ -1,9 +1,9 @@
-import Feather from '@expo/vector-icons/Feather';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Toast, { ToastConfig } from 'react-native-toast-message';
 import { colors } from '../../utils/colors';
 import shadowStyles from '../../utils/shadowStyles';
 import { textStyle } from '../../utils/textStyle';
+import { GenerateAndViewIcon } from './GenerateAndSHowIcon';
 
 
 const DefaultToast = () => {
@@ -42,7 +42,11 @@ const DefaultToast = () => {
         approvalSuccess: ({ text1, text2, props }) => (
             <View style={[styles?.approvalContainer, styles.approvalSuccess]} >
                 <View style={styles.approvalMessage}>
-                    <Feather name="info" size={18} color="white" style={styles.marginRight} />
+                    <GenerateAndViewIcon
+                        iconName="info"
+                        size={18}
+                        style={styles.marginRight}
+                    />
                     <Text style={styles.toastTitle}> {text1} </Text>
                 </View>
 
@@ -50,7 +54,11 @@ const DefaultToast = () => {
                     style={[styles.approvalAction, styles.actionSuccess]}
                     onPress={props.onCheckPress} >
                     <Text style={styles.toastMessage}> {text2} </Text>
-                    < Feather name="arrow-right" size={18} color="white" style={styles.marginLeft} />
+                    <GenerateAndViewIcon
+                        iconName="ArrowRight"
+                        size={18}
+                        style={styles.marginLeft}
+                    />
                 </TouchableOpacity>
             </View>
         ),
@@ -58,7 +66,11 @@ const DefaultToast = () => {
         approvalReject: ({ text1, text2, props }) => (
             <View style={[styles.approvalContainer, styles.approvalReject]} >
                 <View style={styles.approvalMessage}>
-                    <Feather name="info" size={18} color="white" style={styles.marginRight} />
+                <GenerateAndViewIcon
+                        iconName="info"
+                        size={18}
+                        style={styles.marginRight}
+                    />
                     <Text style={styles.toastTitle}> {text1} </Text>
                 </View>
 
@@ -66,28 +78,44 @@ const DefaultToast = () => {
                     style={[styles.approvalAction, styles.actionReject]}
                     onPress={props.onCheckPress} >
                     <Text style={styles.toastMessage}> {text2} </Text>
-                    < Feather name="arrow-right" size={18} color="white" style={styles.marginLeft} />
+                    <GenerateAndViewIcon
+                        iconName="ArrowRight"
+                        size={18}
+                        style={styles.marginLeft}
+                    />
                 </TouchableOpacity>
             </View>
         ),
         // Info Toast
         infoToast: ({ text1 }) => (
             <View style={[styles.infoContainer]} >
-                <Feather name="info" size={18} color="white" style={styles.marginRight} />
+                <GenerateAndViewIcon
+                        iconName="info"
+                        size={18}
+                        style={styles.marginRight}
+                    />
                 <Text style={styles.toastMessage}> {text1} </Text>
             </View>
         ),
         // Success Toast
         successToast: ({ text1 }) => (
             <View style={[styles.successToastContainer]} >
-                <Feather name="check-circle" size={18} color="white" style={styles.marginRight} />
+                <GenerateAndViewIcon
+                        iconName="approve"
+                        size={18}
+                        style={styles.marginRight}
+                    />
                 <Text style={styles.toastMessage}> {text1} </Text>
             </View>
         ),
         // Failed Toast
         failedToast: ({ text1 }) => (
             <View style={[styles.failedContainer]} >
-                <Feather name="x-circle" size={18} color="white" style={styles.marginRight} />
+                <GenerateAndViewIcon
+                        iconName="X-white"
+                        size={18}
+                        style={styles.marginRight}
+                    />
                 <Text style={styles.toastMessage}> {text1} </Text>
             </View>
         ),

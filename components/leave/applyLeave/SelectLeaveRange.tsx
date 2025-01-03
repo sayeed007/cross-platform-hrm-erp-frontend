@@ -217,7 +217,7 @@ const SelectLeaveRange: React.FC<SelectLeaveRangeProps> = ({
                     onPress={() => setLeavePeriod(leavePeriod === 'HALF_DAY' ? 'oneDay' : 'HALF_DAY')}
                 >
                     <GenerateAndViewIcon
-                        iconName={leavePeriod === 'HALF_DAY' ? "CheckBox" : "CheckBox-checked"}
+                        iconName={leavePeriod === 'HALF_DAY' ? "CheckBox-checked" : "CheckBox"}
                         size={24}
                     />
                     <Text style={styles.optionText}>Want to apply Half day</Text>
@@ -232,7 +232,7 @@ const SelectLeaveRange: React.FC<SelectLeaveRangeProps> = ({
                     onPress={() => setLfaEncashment(!isLfaEncashment)}
                 >
                     <GenerateAndViewIcon
-                        iconName={isLfaEncashment ? "CheckBox" : "CheckBox-checked"}
+                        iconName={isLfaEncashment ? "CheckBox-checked" : "CheckBox"}
                         size={24}
                     />
                     <Text style={styles.optionText}>

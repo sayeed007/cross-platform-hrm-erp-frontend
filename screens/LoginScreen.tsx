@@ -1,4 +1,3 @@
-import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import Checkbox from 'expo-checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -15,6 +14,7 @@ import { LoginScreenNavigationProp } from '../typeInterfaces/navigationTypes';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
 import { User } from '../typeInterfaces/User';
+import { GenerateAndViewIcon } from '../components/common/GenerateAndSHowIcon';
 
 const LoginScreen: React.FC = () => {
     const navigation = useNavigation<LoginScreenNavigationProp>();
@@ -105,7 +105,10 @@ const LoginScreen: React.FC = () => {
 
                         {/* Email Input */}
                         <View style={styles.inputContainer}>
-                            <MaterialIcons name="email" size={24} color={colors?.black} style={styles.icon} />
+                            <GenerateAndViewIcon
+                                iconName="mail"
+                                size={24}
+                            />
                             <TextInput
                                 style={styles.input}
                                 placeholder="Email"
@@ -122,8 +125,10 @@ const LoginScreen: React.FC = () => {
                         {/* Password Input */}
                         <View style={styles.inputContainer}>
                             {/* Lock Icon */}
-                            <MaterialIcons name="lock" size={24} color={colors?.black} style={styles.icon} />
-
+                            <GenerateAndViewIcon
+                                iconName="lock"
+                                size={24}
+                            />
                             {/* Password TextInput */}
                             <TextInput
                                 style={styles.input}
@@ -137,10 +142,9 @@ const LoginScreen: React.FC = () => {
 
                             {/* Visibility Toggle Icon */}
                             <TouchableOpacity onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
-                                <MaterialIcons
-                                    name={isPasswordVisible ? 'visibility' : 'visibility-off'}
+                                <GenerateAndViewIcon
+                                    iconName={isPasswordVisible ? 'visibility' : 'visibility-off'}
                                     size={24}
-                                    color={colors?.black}
                                     style={styles.icon}
                                 />
                             </TouchableOpacity>
