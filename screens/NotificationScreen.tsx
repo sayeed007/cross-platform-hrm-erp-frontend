@@ -101,7 +101,7 @@ const NotificationScreen = () => {
                             iconName="DotsThreeOutline"
                             size={24}
                         />
-                        
+
                     </TouchableOpacity>
                 </View>
 
@@ -109,10 +109,10 @@ const NotificationScreen = () => {
                 {dropdownVisible && (
                     <View style={styles.dropdown}>
                         <TouchableOpacity style={styles.dropdownItem} onPress={markAllRead}>
-                        <GenerateAndViewIcon
-                            iconName="Check"
-                            size={20}
-                        />
+                            <GenerateAndViewIcon
+                                iconName="Check"
+                                size={20}
+                            />
                             <Text style={styles.dropdownText}>Mark all reads</Text>
                         </TouchableOpacity>
 
@@ -151,7 +151,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors?.offWhite1,
-        marginTop: Platform.OS === 'android' ? 24 : 0,
     },
     header: {
         flexDirection: 'row',

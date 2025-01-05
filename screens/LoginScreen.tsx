@@ -2,8 +2,8 @@ import { useNavigation } from '@react-navigation/native';
 import Checkbox from 'expo-checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Image, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import * as Yup from 'yup';
 import { getUserAdditionalAccessibility, getUserInfo, userLogIn } from '../apis/LogIn';
 import FullPageLoader from '../components/modals/FullPageLoader';
@@ -15,6 +15,18 @@ import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
 import { User } from '../typeInterfaces/User';
 import { GenerateAndViewIcon } from '../components/common/GenerateAndSHowIcon';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { decryptData, encryptData } from '../utils/encryptDecryptCredentials';
+
+export interface CredentialType {
+    username: string;
+    password: string;
+};
+
+// Type guard for CredentialType
+const isCredentialType = (data: any): data is CredentialType => {
+    return data && typeof data.username === 'string' && typeof data.password === 'string';
+};
 
 const LoginScreen: React.FC = () => {
     const navigation = useNavigation<LoginScreenNavigationProp>();
@@ -22,18 +34,21 @@ const LoginScreen: React.FC = () => {
     const { showError } = useErrorModal();
     const { setUser } = useUser();
 
-    const [isChecked, setIsChecked] = useState(false);
+    const [isRememberCredential, setIsRememberCredential] = useState(false);
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const { handleSubmit, handleChange, values, touched, errors, handleBlur } = useFormik({
+    const { handleSubmit, handleChange, values, setValues, touched, errors, handleBlur } = useFormik({
         initialValues: {
             // PRODUCTION
             // username: "sayeed.bappy@neural-semiconductor.com",
             // password: "SHB987654321.",
             // DEMO
-            username: "200024",
-            password: "123456",
+            // username: "200024",
+            // password: "123456",
+            // REAL
+            username: "",
+            password: "",
         },
         validationSchema: Yup.object({
             username: Yup.string().required("Username is required"),
@@ -42,36 +57,107 @@ const LoginScreen: React.FC = () => {
         onSubmit: async (values) => {
             setLoading(true);
 
-            userLogIn(values?.username, values?.password).then((response) => {
-                setLoading(false);
-                if (response?.[0]) {
-                    showSuccess('Log in is successful, taking you to dashboard.', () => handleSuccessClose(response?.[0]));
-                } else {
-                    showError(response?.[1]);
-                }
-            })
+            userLogIn(values?.username, values?.password)
+                .then(async (response) => {
+                    if (response?.[0]) {
+                        const encryptedCredentials = encryptData({
+                            username: values?.username,
+                            password: values?.password
+                        });
+                        if (isRememberCredential) {
+                            await AsyncStorage.setItem('user-credentials', encryptedCredentials);
+                        } else {
+                            await AsyncStorage.removeItem('user-credentials');
+                        }
+                        handleSuccessClose(response?.[0]);
+                    } else {
+                        setLoading(false);
+                        showError(response?.[1]);
+                    }
+                });
+
         },
     });
 
-    const handleSuccessClose = (userInfo: User) => {
-        getUserInfo(userInfo?.employeeId, userInfo?.accessToken).then(employeeInfoResponse => {
-            if (employeeInfoResponse?.[0]) {
-                getUserAdditionalAccessibility(userInfo?.employeeId, userInfo?.
-                    accessToken).then(additionalAccessibilityResponse => {
-                        if (additionalAccessibilityResponse?.[0]) {
-                            setUser({
-                                ...userInfo,
-                                employeeInfo: { ...employeeInfoResponse?.[0] },
-                                additionalAccessibility: { ...additionalAccessibilityResponse?.[0] }
-                            });
-                        } else {
-                            showError(additionalAccessibilityResponse?.[1]);
-                        }
-                    })
-            } else {
-                showError(employeeInfoResponse?.[1]);
+
+    useEffect(() => {
+        const loadCredentials = async () => {
+            try {
+                const encryptedCredentials = await AsyncStorage.getItem('user-credentials');
+                if (encryptedCredentials) {
+                    const decryptedCredentials = decryptData(encryptedCredentials);
+                    if (decryptedCredentials && isCredentialType(decryptedCredentials)) {
+                        const { username, password } = decryptedCredentials;
+                        setValues({
+                            username: username,
+                            password: password
+                        });
+                        setIsRememberCredential(true);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading credentials:', error);
             }
-        })
+        };
+
+        loadCredentials();
+    }, []);
+
+    // const handleSuccessClose = (userInfo: User) => {
+    //     getUserInfo(userInfo?.employeeId, userInfo?.accessToken).then(employeeInfoResponse => {
+    //         if (employeeInfoResponse?.[0]) {
+    //             getUserAdditionalAccessibility(userInfo?.employeeId, userInfo?.
+    //                 accessToken).then(async (additionalAccessibilityResponse) => {
+    //                     if (additionalAccessibilityResponse?.[0]) {
+    //                         setLoading(false);
+    //                         setUser({
+    //                             ...userInfo,
+    //                             employeeInfo: { ...employeeInfoResponse?.[0] },
+    //                             additionalAccessibility: { ...additionalAccessibilityResponse?.[0] }
+    //                         });
+    //                     } else {
+    //                         setLoading(false);
+    //                         showError(additionalAccessibilityResponse?.[1]);
+    //                     }
+    //                 })
+    //         } else {
+    //             setLoading(false);
+    //             showError(employeeInfoResponse?.[1]);
+    //         }
+    //     })
+    // };
+
+    const handleSuccessClose = (userInfo: User) => {
+        getUserInfo(userInfo?.employeeId, userInfo?.accessToken)
+            .then(employeeInfoResponse => {
+                if (employeeInfoResponse?.[0]) {
+                    getUserAdditionalAccessibility(userInfo?.employeeId, userInfo?.accessToken)
+                        .then(async (additionalAccessibilityResponse) => {
+                            if (additionalAccessibilityResponse?.[0]) {
+                                setLoading(false);
+                                setUser({
+                                    ...userInfo,
+                                    employeeInfo: { ...employeeInfoResponse?.[0] },
+                                    additionalAccessibility: { ...additionalAccessibilityResponse?.[0] }
+                                });
+                            } else {
+                                setLoading(false);
+                                showError(additionalAccessibilityResponse?.[1]);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error in Additional Accessibility:', error); // Debug
+                            setLoading(false);
+                        });
+                } else {
+                    setLoading(false);
+                    showError(employeeInfoResponse?.[1]);
+                }
+            })
+            .catch(error => {
+                console.error('Error in Employee Info:', error); // Debug
+                setLoading(false);
+            });
     };
 
 
@@ -108,6 +194,7 @@ const LoginScreen: React.FC = () => {
                             <GenerateAndViewIcon
                                 iconName="mail"
                                 size={24}
+                                style={{ marginHorizontal: 10 }}
                             />
                             <TextInput
                                 style={styles.input}
@@ -128,6 +215,7 @@ const LoginScreen: React.FC = () => {
                             <GenerateAndViewIcon
                                 iconName="lock"
                                 size={24}
+                                style={{ marginHorizontal: 10 }}
                             />
                             {/* Password TextInput */}
                             <TextInput
@@ -156,12 +244,17 @@ const LoginScreen: React.FC = () => {
                         <View style={styles.optionsContainer}>
                             <View style={styles.checkboxContainer}>
                                 <Checkbox
-                                    value={isChecked}
-                                    onValueChange={setIsChecked}
-                                    color={isChecked ? colors?.info : undefined}
+                                    value={isRememberCredential}
+                                    onValueChange={setIsRememberCredential}
+                                    color={isRememberCredential ? colors?.info : undefined}
                                 />
-                                <Text style={styles.checkboxLabel}>Remember me</Text>
+                                <TouchableOpacity onPress={() => setIsRememberCredential(!isRememberCredential)} >
+                                    <Text style={styles.checkboxLabel}>
+                                        Remember me
+                                    </Text>
+                                </TouchableOpacity>
                             </View>
+
                             <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
                                 <Text style={styles.forgotPassword}>Forgot password</Text>
                             </TouchableOpacity>
@@ -203,7 +296,6 @@ const styles = StyleSheet.create({
         top: '25%',
         width: '100%',
         height: '70%',
-
         // Shadow for iOS
         shadowColor: colors?.black,
         shadowOffset: { width: 0, height: -3 },

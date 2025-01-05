@@ -40,7 +40,7 @@ export type MainTabsParamList = {
     Add: undefined;
     AttendanceRequestApproval: undefined;
     LeaveApproval: undefined;
-    SeeAllCoWorkersContact: undefined;
+    SeeAllCoWorkersContact: { employees: DirectoryEmployeeOption[] };
     Holiday: undefined;
     Notice: undefined;
     Profile: undefined;

@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
         height: 250,
         padding: 16,
         paddingBottom: 90,
-        marginTop: Platform.OS === 'android' ? 24 : 0,
     },
     header: {
         flexDirection: 'row',

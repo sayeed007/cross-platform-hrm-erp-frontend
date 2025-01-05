@@ -9,10 +9,10 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
-import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/Feather'; // Icons library
 import { DirectoryEmployeeOption } from '../../typeInterfaces/DirectoryEmployee';
 import { colors } from '../../utils/colors';
+import shadowStyles from '../../utils/shadowStyles';
 import { textStyle } from '../../utils/textStyle';
 import EmployeeAvatar from '../common/EmployeeAvatar';
 
@@ -33,19 +33,9 @@ const EmployeeContactDetailsModal: React.FC<EmployeeContactDetailsModalProps> = 
         if (Platform.OS === 'web' && navigator.clipboard) {
             // Use the native Clipboard API on Web
             await navigator.clipboard.writeText(text);
-            Toast.show({
-                type: 'infoToast',
-                position: 'bottom',
-                text1: 'Copied to clipboard!',
-            });
         } else {
             // Use expo-clipboard for Native
             await Clipboard.setStringAsync(text);
-            Toast.show({
-                type: 'infoToast',
-                position: 'bottom',
-                text1: 'Copied to clipboard!',
-            });
         }
 
         setCopiedField(field);
@@ -67,91 +57,90 @@ const EmployeeContactDetailsModal: React.FC<EmployeeContactDetailsModalProps> = 
         <Modal
             visible={visible}
             transparent
-            animationType="fade"
+            animationType="slide"
             onRequestClose={onClose}
         >
-            <TouchableOpacity onPress={onClose}>
-                <View style={styles.modalContainer}>
-                    <TouchableOpacity>
-                        <View style={styles.modalContent}>
-                            {/* Employee Card */}
-                            <View style={styles.employeeCard}>
-                                <EmployeeAvatar
-                                    profileShowImage={employee?.profileShowImage ?? ''}
-                                    label={`${employee.label.charAt(0)}`}
-                                    size={40}
-                                />
+            <TouchableOpacity
+                style={styles.modalOuterContainer}
+                onPress={onClose}>
 
-                                <View style={styles.employeeInfo}>
-                                    <Text style={styles.employeeName}>{employee.label}</Text>
-                                    <Text style={styles.employeeRole}>{employee.designation}</Text>
-                                </View>
-                                <Text style={styles.department}>{employee.department}</Text>
-                            </View>
+                <TouchableOpacity style={styles.modalContainer} activeOpacity={1}>
+                    {/* Employee Card */}
+                    <View style={styles.employeeCard}>
+                        <EmployeeAvatar
+                            profileShowImage={employee?.profileShowImage ?? ''}
+                            label={`${employee.label.charAt(0)}`}
+                            size={40}
+                        />
 
-                            {/* Phone */}
-                            <View style={styles.contactRow}>
-                                <Icon name="phone" size={20} color={colors?.black} style={styles.icon} />
-                                <Text style={styles.contactText}>
-                                    {employee.phone || 'N/A'}
-                                </Text>
-                                <View style={styles.iconActions}>
-                                    {/* Dialer Icon */}
-                                    <TouchableOpacity
-                                        onPress={() => openPhoneDialer(employee.phone || '')}
-                                    >
-                                        <Icon name="phone-call" size={20} color={colors?.green} />
-                                    </TouchableOpacity>
-                                    {/* Copy Icon */}
-                                    <TouchableOpacity
-                                        onPress={() => handleCopy(employee.phone || '', 'phone')}
-                                    >
-                                        <Icon
-                                            name={copiedField === 'phone' ? 'check' : 'copy'}
-                                            size={20}
-                                            color={copiedField === 'phone' ? colors?.green : colors?.info}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-
-                            {/* Email */}
-                            <View style={styles.contactRow}>
-                                <Icon name="mail" size={20} color={colors?.black} style={styles.icon} />
-                                <Text style={styles.contactText}>
-                                    {employee.email || 'N/A'}
-                                </Text>
-                                <TouchableOpacity
-                                    onPress={() => handleCopy(employee.email || '', 'email')}
-                                >
-                                    <Icon
-                                        name={copiedField === 'email' ? 'check' : 'copy'}
-                                        size={20}
-                                        color={copiedField === 'email' ? colors?.green : colors?.info}
-                                    />
-                                </TouchableOpacity>
-                            </View>
+                        <View style={styles.employeeInfo}>
+                            <Text style={styles.employeeName}>{employee.label}</Text>
+                            <Text style={styles.employeeRole}>{employee.designation}</Text>
                         </View>
-                    </TouchableOpacity>
-                </View>
+                        <Text style={styles.department}>{employee.department}</Text>
+                    </View>
+
+                    {/* Phone */}
+                    <View style={styles.contactRow}>
+                        <Icon name="phone" size={20} color={colors?.black} style={styles.icon} />
+                        <Text style={styles.contactText}>
+                            {employee.phone || 'N/A'}
+                        </Text>
+                        <View style={styles.iconActions}>
+                            {/* Dialer Icon */}
+                            <TouchableOpacity
+                                onPress={() => openPhoneDialer(employee.phone || '')}
+                            >
+                                <Icon name="phone-call" size={20} color={colors?.green} />
+                            </TouchableOpacity>
+                            {/* Copy Icon */}
+                            <TouchableOpacity
+                                onPress={() => handleCopy(employee.phone || '', 'phone')}
+                            >
+                                <Icon
+                                    name={copiedField === 'phone' ? 'check' : 'copy'}
+                                    size={20}
+                                    color={copiedField === 'phone' ? colors?.green : colors?.info}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    {/* Email */}
+                    <View style={styles.contactRow}>
+                        <Icon name="mail" size={20} color={colors?.black} style={styles.icon} />
+                        <Text style={styles.contactText}>
+                            {employee.email || 'N/A'}
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => handleCopy(employee.email || '', 'email')}
+                        >
+                            <Icon
+                                name={copiedField === 'email' ? 'check' : 'copy'}
+                                size={20}
+                                color={copiedField === 'email' ? colors?.green : colors?.info}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                </TouchableOpacity>
             </TouchableOpacity>
         </Modal>
     );
 };
 
 const styles = StyleSheet.create({
-    modalContainer: {
+    modalOuterContainer: {
         flex: 1,
+        backgroundColor: colors.modalBG,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: colors?.modalBG,
     },
-    modalContent: {
-        backgroundColor: colors?.white,
-        padding: 20,
-        borderRadius: 8,
+    modalContainer: {
         width: '85%',
-        elevation: 5,
+        backgroundColor: colors.white,
+        borderRadius: 16,
+        padding: 16,
+        ...shadowStyles.popUpShadow2,
     },
     employeeCard: {
         flexDirection: 'row',

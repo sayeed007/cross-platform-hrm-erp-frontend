@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect } from 'react';
 import {
     Platform,
+    SafeAreaView,
     ScrollView,
     StyleSheet,
     View
@@ -37,21 +38,16 @@ const HomeScreen = () => {
 
     return (
         <>
-
-            {/* <SafeAreaView style={styles.safeArea} > */}
-
             <ScrollView
-                style={{ flex: 1 }}
-                contentContainerStyle={{ flexGrow: 1 }}
-                scrollEnabled={true}
-                nestedScrollEnabled={true}
+                style={styles.scrollView}
+                contentContainerStyle={styles.scrollViewContent}
+                nestedScrollEnabled
             >
                 {/* HEADER - NOTIFICATION - GREETINGS */}
                 <HeaderWithBackgroundImage
                     showGreeting={true}
                     navTitle='Home'
                 />
-
 
                 <View style={styles?.container}>
 
@@ -63,7 +59,7 @@ const HomeScreen = () => {
                     }
 
                     {/* Pending Requests Block */}
-                    <View style={{ marginTop: canClockAttendance ? Platform.OS === 'web' ? 180 : 200 : 80 }}>
+                    <View style={{ marginTop: canClockAttendance ? 210 : 80 }}>
                         <PendingLeaveAndAttendance />
                     </View>
 
@@ -76,29 +72,31 @@ const HomeScreen = () => {
                     {/* Latest Notice Section */}
                     <LatestNotice />
 
-
                     {/* Upcoming Holiday Section */}
                     <UpcomingHoliday />
 
                 </View>
 
             </ScrollView>
-            {/* </SafeAreaView> */}
         </>
 
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: {
+    scrollView: {
         flex: 1,
         backgroundColor: colors?.offWhite1,
+    },
+    scrollViewContent: {
+        flexGrow: 1,
+        paddingBottom: Platform.OS === 'android' ? 80 : 60, // Prevent overlap with navbar
     },
     container: {
         width: '100%',
         padding: '4%',
         position: 'relative',
-        paddingBottom: 20,
+        // paddingBottom: 60,
     },
 });
 

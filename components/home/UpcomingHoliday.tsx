@@ -24,13 +24,12 @@ import { GenerateAndViewIcon } from '../common/GenerateAndSHowIcon';
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 export const HOLIDAY_STORAGE_KEY = 'upcoming_holiday_data';
+const startOfYear = moment().startOf('year').format('YYYY-MM-DD');
+const endOfYear = moment().endOf('year').format('YYYY-MM-DD');
 
 const UpcomingHoliday = () => {
     const { user } = useUser();
     const navigation = useNavigation<NavigationProp>();
-
-    const startOfYear = moment().startOf('year').format('YYYY-MM-DD');
-    const endOfYear = moment().endOf('year').format('YYYY-MM-DD');
 
     const [loading, setLoading] = useState(true);
     const [holidayList, setHolidayList] = useState<HolidayWithMonth[]>([]);

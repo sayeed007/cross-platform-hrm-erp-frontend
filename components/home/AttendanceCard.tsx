@@ -80,8 +80,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         flex: 1,
         width: Platform.OS === 'web' ? '92%' : '100%',
-        top: -70,
+        top: -85,
         left: '4%',
+        height: 175,
     },
     attendanceTitle: {
         ...textStyle?.bold16,

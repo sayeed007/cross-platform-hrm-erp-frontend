@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { useUser } from '../context/UserContext'; // Import the UserContext
 import SplashScreen from '../screens/SplashScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
@@ -50,7 +50,9 @@ export default function RootNavigation() {
 
     return (
         <SafeAreaView style={styles.container}>
+            {/* <ScrollView contentContainerStyle={styles.scrollContent}> */}
             {user ? <TabBar /> : <AuthStack />}
+            {/* </ScrollView> */}
         </SafeAreaView>
     );
 }
@@ -58,5 +60,8 @@ export default function RootNavigation() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    scrollContent: {
+        paddingTop: 60, // Adjust as needed for your top nav
     },
 });

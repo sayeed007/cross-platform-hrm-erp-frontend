@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import * as Notifications from "expo-notifications";
 import React, { useEffect, useState } from 'react';
-import { Modal, Platform, StyleSheet, Text, View } from 'react-native';
+import { Modal, Platform, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import ApplyAttendanceModal from '../components/attendance/applyAttendance/ApplyAttendanceModal';
 import { GenerateAndViewIcon } from '../components/common/GenerateAndSHowIcon';
 import { SingleNotification } from '../components/home/SingleNotification';
@@ -29,7 +29,7 @@ const getScreenOptions = ({ route }: { route: any }) => ({
         return (
             <>
                 <GenerateAndViewIcon
-                    iconName={ focused ? `${route.name}-Focused`:`${route.name}`}
+                    iconName={focused ? `${route.name}-Focused` : `${route.name}`}
                     size={24}
                 />
             </>
@@ -110,7 +110,7 @@ export const TabBar: React.FC = () => {
     return (
         <>
 
-
+            <StatusBar backgroundColor={colors.brand} />
             {/* Modal */}
             {isQuickActionModalVisible && (
                 <QuickActionRootModal
@@ -222,8 +222,8 @@ export const TabBar: React.FC = () => {
                     component={MenuStack}
                 />
             </BottomBar.Navigator>
-        </>
 
+        </>
     )
 };
 

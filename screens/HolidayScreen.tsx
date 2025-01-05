@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import HolidayCard from '../components/home/HolidayCard';
-import { HolidayWithMonth } from '../typeInterfaces/Holiday';
+import { Holiday, HolidayWithMonth } from '../typeInterfaces/Holiday';
 import { HolidayScreenProps, RootStackParamList } from '../typeInterfaces/navigationTypes';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -12,6 +12,11 @@ import { setTabBarVisibility } from '../utils/navigationUtils';
 import { colors } from '../utils/colors';
 import { textStyle } from '../utils/textStyle';
 import { GenerateAndViewIcon } from '../components/common/GenerateAndSHowIcon';
+import { useUser } from '../context/UserContext';
+import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getYearWiseAllHolidayForEmployee } from '../apis/HomeScreen';
+import FullPageLoader from '../components/modals/FullPageLoader';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const fullMonthNames = [
@@ -20,8 +25,15 @@ const fullMonthNames = [
 ];
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeRoot'>;
+export const HOLIDAY_STORAGE_KEY = 'upcoming_holiday_data';
+
+const startOfYear = moment().startOf('year').format('YYYY-MM-DD');
+const endOfYear = moment().endOf('year').format('YYYY-MM-DD');
 
 const HolidayScreen: React.FC<HolidayScreenProps> = ({ route }) => {
+
+    const { user } = useUser();
+
     const scrollViewRef = useRef<ScrollView>(null);
     const monthScrollViewRef = useRef<ScrollView>(null);
     const sectionRefs = useRef<{ [key: string]: number }>({});
@@ -29,13 +41,15 @@ const HolidayScreen: React.FC<HolidayScreenProps> = ({ route }) => {
 
     const navigation = useNavigation<NavigationProp>();
 
+    const [loading, setLoading] = useState(true);
     const [selectedMonth, setSelectedMonth] = useState('Jan');
+    const [holidayListData, setHolidayListData] = useState<HolidayWithMonth[]>([]);
 
-    const { holidayList }: { holidayList: HolidayWithMonth[] } = route.params;
+    const { holidayList }: { holidayList: HolidayWithMonth[] } = route?.params || [];
 
-    const groupedHolidays = months.map((month, index) => ({
-        title: fullMonthNames[index],
-        data: holidayList.filter((holiday) => holiday.month === month),
+    const groupedHolidays = months?.map((month, index) => ({
+        title: fullMonthNames?.[index],
+        data: holidayListData?.filter((holiday) => holiday?.month === month),
     }));
 
     useEffect(() => {
@@ -45,6 +59,78 @@ const HolidayScreen: React.FC<HolidayScreenProps> = ({ route }) => {
             setTabBarVisibility(navigation, true); // Show tab bar when unmounting
         };
     }, [navigation]);
+
+    const getMonth = (date: string) => {
+        return moment(date, 'YYYY-MM-DD').format('MMM');
+    };
+
+    const fetchAndStoreHolidays = async (currentAccessToken: string) => {
+        try {
+            const holidayResponse = await getYearWiseAllHolidayForEmployee(
+                user?.employeeId ?? 0,
+                startOfYear,
+                endOfYear
+            );
+            const dummyHolidayList = holidayResponse?.[0]?.holidays || [];
+
+            const updatedHolidayList: HolidayWithMonth[] = dummyHolidayList.map((item: Holiday) => ({
+                ...item,
+                holidayStartDate: moment(item.holidayStartDate).format('MMM DD, YYYY'),
+                holidayEndDate: moment(item.holidayEndDate).format('MMM DD, YYYY'),
+                month: getMonth(item.holidayStartDate),
+            }));
+
+            const sortedHolidayList = updatedHolidayList.sort((a, b) =>
+                moment(a.holidayStartDate).diff(moment(b.holidayStartDate))
+            );
+
+            setHolidayListData([...sortedHolidayList]);
+
+            // Store data in AsyncStorage
+            const storageValue = JSON.stringify({
+                accessToken: currentAccessToken,
+                data: holidayResponse?.[0],
+            });
+            await AsyncStorage.setItem(HOLIDAY_STORAGE_KEY, storageValue);
+        } catch (error) {
+            console.error('Error fetching holidays:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const loadHolidays = async () => {
+        const currentAccessToken = user?.accessToken ?? ''; // Replace with actual token logic
+        setLoading(true);
+
+        try {
+            const storedData = await AsyncStorage.getItem(HOLIDAY_STORAGE_KEY);
+
+            if (storedData) {
+                const { accessToken, data } = JSON.parse(storedData);
+                if (accessToken === currentAccessToken) {
+                    setHolidayListData(data?.holidays);
+
+                    setLoading(false);
+                    return;
+                }
+            }
+            // Fetch and store data if no valid cache is available
+            await fetchAndStoreHolidays(currentAccessToken);
+        } catch (error) {
+            console.error('Error loading holidays:', error);
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (holidayList?.length > 0) {
+            setHolidayListData([...holidayList]);
+        } else if (user?.employeeId) {
+            loadHolidays();
+        }
+    }, [user?.employeeId, holidayList]);
+
 
     // Smooth Scroll to Section
     const handleMonthClick = (month: string) => {
@@ -98,7 +184,7 @@ const HolidayScreen: React.FC<HolidayScreenProps> = ({ route }) => {
         <View style={styles.container}>
             <LinearGradient colors={[colors?.cardGradient?.[0], colors?.cardGradient?.[1]]} style={styles.header}>
                 <View style={styles.navBar}>
-                    <TouchableOpacity onPress={() => navigation.navigate('HomeRoot')}>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
                         <GenerateAndViewIcon
                             iconName="ArrowLeft"
                             size={24}
@@ -142,30 +228,34 @@ const HolidayScreen: React.FC<HolidayScreenProps> = ({ route }) => {
                 onScroll={onScrollHandler}
                 scrollEventThrottle={16}
             >
-                {groupedHolidays.map((section) => (
-                    <View
-                        key={section.title}
-                        onLayout={(event) => {
-                            sectionRefs.current[section.title.substring(0, 3)] =
-                                event.nativeEvent.layout.y;
-                        }}
-                    >
-                        <Text style={styles.sectionTitle}>{section.title}</Text>
-                        {section.data.length > 0 ? (
-                            section.data.map((holiday) => (
-                                <HolidayCard
-                                    key={holiday.id}
-                                    holidayTitle={holiday.holidayTitle}
-                                    startDate={holiday.holidayStartDate}
-                                    endDate={holiday.holidayEndDate}
-                                    duration={holiday.holidayDuration}
-                                />
-                            ))
-                        ) : (
-                            <Text style={styles.noHolidays}>No holiday available</Text>
-                        )}
-                    </View>
-                ))}
+
+                {loading ?
+                    <FullPageLoader visible={loading} />
+                    :
+                    groupedHolidays.map((section) => (
+                        <View
+                            key={section.title}
+                            onLayout={(event) => {
+                                sectionRefs.current[section.title.substring(0, 3)] =
+                                    event.nativeEvent.layout.y;
+                            }}
+                        >
+                            <Text style={styles.sectionTitle}>{section.title}</Text>
+                            {section.data.length > 0 ? (
+                                section.data.map((holiday) => (
+                                    <HolidayCard
+                                        key={holiday.id}
+                                        holidayTitle={holiday.holidayTitle}
+                                        startDate={holiday.holidayStartDate}
+                                        endDate={holiday.holidayEndDate}
+                                        duration={holiday.holidayDuration}
+                                    />
+                                ))
+                            ) : (
+                                <Text style={styles.noHolidays}>No holiday available</Text>
+                            )}
+                        </View>
+                    ))}
             </ScrollView>
         </View>
     );
@@ -177,8 +267,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors?.offWhite1,
     },
     header: {
-        paddingTop: 40,
-        paddingBottom: 10,
+        paddingVertical: 15,
     },
     navBar: {
         flexDirection: 'row',

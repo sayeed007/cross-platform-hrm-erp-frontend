@@ -339,6 +339,7 @@ const styles = StyleSheet.create({
         width: Platform.OS === 'web' ? '92%' : '100%',
         top: -100,
         left: '4%',
+        height: 315,
     },
     imageContainer: {
         marginBottom: 12,

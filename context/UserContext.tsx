@@ -6,6 +6,8 @@ import { useErrorModal } from './ErrorModalProvider';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../typeInterfaces/navigationTypes';
 import { User } from '../typeInterfaces/User';
+import { encryptData } from '../utils/encryptDecryptCredentials';
+import { CredentialType } from '../screens/LoginScreen';
 
 interface UserContextType {
     user: User | null;
@@ -74,16 +76,28 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Handle logout
     const logout = async () => {
         try {
-            setUser(null);
+            // Step 1: Save credentials to a different key using encryption
+            const storedCredential = await AsyncStorage.getItem('user-credentials');
+            const storedHasSeenWelcome = await AsyncStorage.getItem('hasSeenWelcome');
+
+            // Step 2: Clear all storage
             await AsyncStorage.clear();
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'Login' }], // Ensure 'Login' is the correct route name
-            });
+
+            if (storedCredential) {
+                await AsyncStorage.setItem('user-credentials', storedCredential);
+            }
+
+            if (storedHasSeenWelcome) {
+                await AsyncStorage.setItem('hasSeenWelcome', storedHasSeenWelcome);
+            }
+
+            setUser(() => null);
         } catch (error) {
             console.error('Error during logout:', error);
         }
     };
+
+
 
     // Handle invalid or expired token
     const handleInvalidToken = () => {

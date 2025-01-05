@@ -17,7 +17,7 @@ import { GenerateAndViewIcon } from "../common/GenerateAndSHowIcon";
 
 // navigation.navigate(item.navigatePath)
 const MenuList = () => {
-    const { setUser } = useUser();
+    const { logout } = useUser();
     const navigation = useNavigation<HomeScreenNavigationProp>();
 
     // Define grouped menu data
@@ -29,7 +29,7 @@ const MenuList = () => {
                 { id: "2", label: "Attendance Request Approval", icon: "attendanceRequestApproval", action: () => { navigation.navigate('AttendanceRequestApproval') } },
                 { id: "3", label: "My Leave Request", icon: "myLeaveRequest", action: () => { navigation.navigate('Leave') } },
                 { id: "4", label: "Leave Request Approval", icon: "leaveRequestApproval", action: () => { navigation.navigate('LeaveApproval') } },
-                { id: "5", label: "Directory", icon: "directory", action: () => { navigation.navigate('SeeAllCoWorkersContact') } },
+                { id: "5", label: "Directory", icon: "directory", action: () => { navigation.navigate('SeeAllCoWorkersContact', { employees: [] }) } },
                 { id: "6", label: "Holidays", icon: "holidays", action: () => { navigation.navigate('Holiday') } },
                 { id: "7", label: "Notice", icon: "notices", action: () => { navigation.navigate('Notice') } },
                 // { id: "8", label: "Office Policy", icon: "officePolicy", action: () => { navigation.navigate('') } },
@@ -42,7 +42,7 @@ const MenuList = () => {
                 { id: "10", label: "Change Password", icon: "changePassword", action: () => { } },
                 // { id: "11", label: "Preference", icon: "notifications", action: () => { } },
                 {
-                    id: "12", label: "Log Out", icon: "logOut", action: () => { setUser(null); }
+                    id: "12", label: "Log Out", icon: "logOut", action: () => { logout(); }
                 },
             ],
         },
