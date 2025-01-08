@@ -29,6 +29,8 @@ export type RootStackParamList = {
     // Menu
     Menu: undefined;
     MenuRoot: undefined;
+
+    ChangePassword: undefined;
 };
 
 // Define the bottom tab's parameter list
@@ -45,6 +47,7 @@ export type MainTabsParamList = {
     Notice: undefined;
     Profile: undefined;
     Login: undefined;
+    ChangePassword: undefined;
 };
 
 export type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;

@@ -11,6 +11,7 @@ import SeeAllCoWorkersContactScreen from '../screens/SeeAllCoWorkersContactScree
 import HolidayScreen from '../screens/HolidayScreen';
 import NoticeScreen from '../screens/NoticeScreen';
 import LoginScreen from '../screens/LoginScreen';
+import ChangePasswordScreen from '../screens/ChangePasswordScreen';
 
 // Define the stack with RootStackParamList
 const Stack = createStackNavigator<RootStackParamList>();
@@ -71,6 +72,13 @@ const MenuStack = () => {
                 options={{ headerShown: false }} // Hide header for Home screen
             />
 
+            {/* Change Password Screen */}
+            <Stack.Screen
+                name="ChangePassword"
+                component={ChangePasswordScreen}
+                options={{ headerShown: false }} // Hide header for Home screen
+            />
+
 
             {/* Notification Screen */}
             <Stack.Screen
@@ -79,8 +87,7 @@ const MenuStack = () => {
                 options={{ headerShown: false }} // Hide header for Home screen
             />
 
-
-            {/* Notification Screen */}
+            {/* Log=In Screen */}
             <Stack.Screen
                 name="Login"
                 component={LoginScreen}

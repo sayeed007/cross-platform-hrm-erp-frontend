@@ -39,7 +39,7 @@ const MenuList = () => {
             title: "Account Setting",
             data: [
                 { id: "9", label: "Profile", icon: "profile", action: () => { navigation.navigate('Profile') } },
-                { id: "10", label: "Change Password", icon: "changePassword", action: () => { } },
+                { id: "10", label: "Change Password", icon: "changePassword", action: () => { navigation.navigate('ChangePassword') } },
                 // { id: "11", label: "Preference", icon: "notifications", action: () => { } },
                 {
                     id: "12", label: "Log Out", icon: "logOut", action: () => { logout(); }
